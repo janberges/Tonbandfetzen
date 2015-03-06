@@ -37,8 +37,7 @@ contains
          &  action='read',        &
          &  status='old',         &
          &    form='unformatted', &
-         &  access='stream',      &
-         & convert='big_endian')
+         &  access='stream')
 
       position = 13
 
@@ -101,8 +100,7 @@ contains
          &  action='write',       &
          &  status='replace',     &
          &    form='unformatted', &
-         &  access='stream',      &
-         & convert='big_endian')
+         &  access='stream')
 
       write (unit) 'FORM', int(76 + size, 4), 'AIFF'
 

@@ -54,7 +54,7 @@ contains
       integer :: byte, bytes(10), bit, exponent
       real(dp) :: mantissa
 
-      exponent = int(log(max(abs(value), 1.0_dp)) / log(2.0_dp))
+      exponent = int(log(abs(value)) / log(2.0_dp))
       mantissa = abs(value) / 2.0_dp ** exponent
       exponent = exponent + 16383
 
@@ -73,8 +73,8 @@ contains
 
       do byte = 3, 10
          do bit = 7, 0, -1
-            if (mantissa .ge. 1) then
-               mantissa = mantissa - 1
+            if (mantissa .ge. 1.0_dp) then
+               mantissa = mantissa - 1.0_dp
                bytes(byte) = ibset(bytes(byte), bit)
             end if
             mantissa = 2.0_dp * mantissa

@@ -4,7 +4,7 @@ from os import listdir
 from re import search, IGNORECASE as i
 
 compiler = 'gfortran'
-options = '-std=f2003 -fconvert=big-endian -Wall -pedantic' # -O3 -fcheck=all
+options = '-std=f2008 -fconvert=big-endian -Wall -pedantic' # -O3 -fcheck=all
 executable = 'tonbandfetzen'
 
 F90 = sorted(file for file in listdir('.') if '.f90' in file)

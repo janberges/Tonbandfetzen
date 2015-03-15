@@ -7,12 +7,12 @@ module aiff
    public :: audio, take, make
 
    type audio
-      integer(2) :: channels
-      integer(4) :: points
+      integer(i2) :: channels
+      integer(i4) :: points
 
       real(dp) :: rate
 
-      integer(2), allocatable :: sound(:, :)
+      integer(i2), allocatable :: sound(:, :)
    end type audio
 
 contains
@@ -24,8 +24,8 @@ contains
       integer, parameter :: unit = 14
       integer :: position, error
 
-      integer(2) :: bits
-      integer(4) :: bytes
+      integer(i2) :: bits
+      integer(i4) :: bytes
 
       character(4) :: id
       character(10) :: extended
@@ -104,9 +104,9 @@ contains
 
       write (unit) 'FORM', int(76 + size, 4), 'AIFF'
 
-      write (unit) 'COMM', 18_4, s%channels, s%points, 16_2, encode(s%rate)
+      write (unit) 'COMM', 18_i4, s%channels, s%points, 16_i2, encode(s%rate)
 
-      write (unit) 'SSND', int(8 + size, 4), 0_4, 0_4, s%sound
+      write (unit) 'SSND', int(8 + size, 4), 0_i4, 0_i4, s%sound
 
       close(unit)
    end subroutine make

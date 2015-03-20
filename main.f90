@@ -1,5 +1,6 @@
 program tonbandfetzen
    use aiff
+   use rationals
    use search
    implicit none
 
@@ -27,7 +28,7 @@ program tonbandfetzen
                n = next('0123456789.:')
                if (n .eq. 'none') exit
 
-               write (*, '(A)') n
+               write (*, "(ES8.3E1, ' <- ', A)") rational(n), n
             end do
       end select
    end do

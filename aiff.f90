@@ -91,7 +91,7 @@ contains
       integer, parameter :: unit = 15
       integer :: size
 
-      size = 4 * s%channels * s%points
+      size = 2 * s%channels * s%points
 
       write (*, "('writing audio file: ', A)") file
 

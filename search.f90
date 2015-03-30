@@ -1,5 +1,4 @@
 module search
-   use io
    implicit none
    private
 
@@ -11,10 +10,12 @@ module search
 
 contains
 
-      subroutine focus(filename)
-         character(*), intent(in) :: filename
+      subroutine focus(it)
+         character(*), intent(in) :: it
 
-         sequence = slurp(filename)
+         sequence = it
+
+         call reset
       end subroutine focus
 
       subroutine reset

@@ -12,7 +12,7 @@ program ratios
 
       write (*, "('looking for rationals: ', A)") file
 
-      call focus(file)
+      call focus(slurp(file))
 
       do
          numeral = next('0123456789.:')

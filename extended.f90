@@ -58,7 +58,7 @@ contains
       mantissa = abs(value) / 2.0_dp ** exponent
       exponent = exponent + 16383
 
-      bytes(:) = 0
+      bytes = 0
 
       if (value .lt. 0) bytes(1) = ibset(bytes(1), 7)
 

@@ -45,7 +45,8 @@ for folder in folders:
                             components[name] = {doto}
 
 for target, modules in references.items():
-    references[target] = set(companions[name] for name in modules)
+    references[target] = set(companions[name]
+        for name in modules if name in companions)
 
 related = set()
 

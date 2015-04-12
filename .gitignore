@@ -1,11 +1,16 @@
 .*
 !.gitignore
+
 *.o
 *.mod
 *.aif
 *.pdf
+
 *.txt
 !README.txt
+
 makefile
+
+harmonics
 ratios
 reverse

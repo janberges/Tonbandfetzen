@@ -1,5 +1,5 @@
 program harmonics
-   use accuracy
+   use constants
    use io
    use samples
    use spectra

@@ -1,4 +1,4 @@
-module accuracy
+module constants
    use, intrinsic :: iso_fortran_env, only: int16, int32
    implicit none
    private
@@ -9,4 +9,4 @@ module accuracy
    integer, parameter :: i2 = int16, i4 = int32
 
    real(dp), parameter :: pi = 4.0_dp * atan(1.0_dp)
-end module accuracy
+end module constants

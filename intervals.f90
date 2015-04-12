@@ -1,5 +1,5 @@
 module intervals
-   use accuracy
+   use constants
    implicit none
    private
 

@@ -1,5 +1,5 @@
 module rationals
-   use accuracy
+   use constants
    implicit none
    private
 

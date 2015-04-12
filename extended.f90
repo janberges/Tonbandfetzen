@@ -1,5 +1,5 @@
 module extended
-   use accuracy
+   use constants
    implicit none
    private
 

@@ -1,5 +1,5 @@
 module aiff
-   use accuracy
+   use constants
    use extended
    implicit none
    private

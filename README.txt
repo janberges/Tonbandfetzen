@@ -1,19 +1,17 @@
-~ ~ ~ ~ ~ ~ ~ ~ ~
-~ Tonbandfetzen ~
-~ ~ ~ ~ ~ ~ ~ ~ ~
+T o n b a n d f e t z e n
 
 
 Table of contents
 
-    1  Outline  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 12
-    2  Installation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 19
+    1  Outline  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+    2  Installation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 17
 
 
 1  Outline
 
-'Tonbandfetzen'  will be  a collection  of programs  which allow  you to  create
-audio data  from plain text input,  to modify and  arrange it and to  handle the
-Audio Interchange File Format.
+'Tonbandfetzen' will be a collection of programs which allow you to create audio
+data from  plain text input, to  modify and arrange  it and to handle  the Audio
+Interchange File Format.
 
 
 2  Installation

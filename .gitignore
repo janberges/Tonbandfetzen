@@ -9,8 +9,6 @@
 *.txt
 !README.txt
 
-makefile
-
 harmonics
 mel
 reverse

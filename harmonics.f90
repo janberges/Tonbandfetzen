@@ -8,7 +8,7 @@ program harmonics
    integer :: i, n
    integer, parameter :: nmax = 100
 
-   real(dp) :: wave(2 * nmax), amplitude
+   real(dp) :: wave(2 * nmax), amplitude, phase
    complex(dp) :: spectrum(nmax)
 
    character(:), allocatable :: what
@@ -20,15 +20,17 @@ program harmonics
 
       call fourier(wave, spectrum)
 
-      write (*, "(/'f(t) = sum_n a_n cos(n omega t - phi_n)'/)")
-      write (*, '(A2, A15, A15)') 'n', 'a_n', 'phi_n'
+      write (*, "(/ 'f(t) = sum r[n] cos(n omega t - phi[n])' /)")
+      write (*, '(A2, 2A15)') 'n', 'r[n]', 'phi[n]'
 
       do n = 1, size(spectrum)
-         amplitude = 2.0_dp * abs(spectrum(n))
+         amplitude = 2 * abs(spectrum(n))
 
-         if (amplitude .lt. 1.0e-10_dp) cycle
+         if (amplitude .lt. 1e-10_dp) cycle
 
-         write (*, '(I2, F15.10, SP, F15.10)') n, amplitude, arg(spectrum(n))
+         phase = atan2(aimag(spectrum(n)), real(spectrum(n)))
+
+         write (*, '(I2, 2F15.10)') n, amplitude, phase
       end do
    end do
 end program harmonics

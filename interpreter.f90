@@ -275,7 +275,8 @@ contains
          end select
       end do
 
-      tones%sound = nint((2 ** 15 - 1) / maxval(abs(mel)) * mel, i2)
+      tones%amplitude = maxval(abs(mel))
+      tones%sound = nint((2 ** 15 - 1) / tones%amplitude * mel, i2)
 
    contains
 

@@ -11,6 +11,7 @@ module aiff
       integer(i4) :: points
 
       real(dp) :: rate
+      real(dp) :: amplitude = 1.0_dp
 
       integer(i2), allocatable :: sound(:, :)
    end type audio
@@ -74,6 +75,13 @@ contains
 
                read (unit, pos=position + 8) s%sound
 
+            case ('APPL')
+               read (unit, pos=position) extended
+
+               s%amplitude = decode(extended)
+
+               write (*, "('. . amplitude: ', F0.1)") s%amplitude
+
             case default
                write (*, "('. . ignored')")
          end select
@@ -107,6 +115,8 @@ contains
       write (unit) 'COMM', 18_i4, s%channels, s%points, 16_i2, encode(s%rate)
 
       write (unit) 'SSND', int(8 + size, 4), 0_i4, 0_i4, s%sound
+
+      if (s%amplitude .ne. 1.0_dp) write (unit) 'APPL', 10_i4, encode(s%amplitude)
 
       close(unit)
    end subroutine make

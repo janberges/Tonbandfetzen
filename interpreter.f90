@@ -114,9 +114,10 @@ contains
       do
          symbol = next(special)
 
+         tmin = min(tmin, t)
+         tmax = max(tmax, t)
+
          if (done()) then
-            tmin = min(tmin, t - c)
-            tmax = max(tmax, t)
             cmax = max(cmax, c)
             c = 0
          end if
@@ -276,7 +277,10 @@ contains
       end do
 
       tones%amplitude = maxval(abs(mel))
-      tones%sound = nint((2 ** 15 - 1) / tones%amplitude * mel, i2)
+
+      if (tones%amplitude .ne. 0.0_dp) mel(:, :) = mel / tones%amplitude
+
+      tones%sound = nint((2 ** 15 - 1) * mel, i2)
 
    contains
 

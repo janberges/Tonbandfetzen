@@ -4,7 +4,7 @@ program stack
    use io
    implicit none
 
-   integer :: i, n
+   integer :: i, n, t
    real(dp), allocatable :: sound(:, :)
    type(audio), allocatable :: p(:)
    type(audio) :: s
@@ -35,7 +35,10 @@ program stack
    sound(:, :) = 0.0_dp
 
    do i = 1, n - 1
-      sound(:, :p(i)%points) = sound(:, :p(i)%points) + p(i)%amplitude * p(i)%sound
+      do t = 1, s%points
+        sound(:, t) = sound(:, t) &
+          + p(i)%amplitude * p(i)%sound(:, 1 + modulo(t, p(i)%points))
+      end do
    end do
 
    sound(:, :) = sound / (2 ** 15 - 1)

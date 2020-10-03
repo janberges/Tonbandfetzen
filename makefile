@@ -1,7 +1,7 @@
 compiler = gfortran
 
 ifeq ($(compiler), gfortran)
-  options = -std=f2008 -fconvert=big-endian -Wall -pedantic
+  options = -std=f2008 -fconvert=big-endian -Wall -Wno-maybe-uninitialized -pedantic
 endif
 
 needless = *.mod .DS_Store

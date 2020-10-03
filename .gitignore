@@ -1,17 +1,5 @@
 .*
 !.gitignore
 
-*.o
-*.mod
 *.aif
 *.pdf
-
-*.txt
-!README.txt
-
-harmonics
-mel
-repeat
-reverse
-stack
-stick

@@ -280,7 +280,7 @@ contains
 
       if (tones%amplitude .ne. 0.0_dp) mel(:, :) = mel / tones%amplitude
 
-      tones%sound = nint((2 ** 15 - 1) * mel, i2)
+      tones%sound = nint(i2max * mel, i2)
 
    contains
 

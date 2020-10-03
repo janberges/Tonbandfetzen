@@ -41,10 +41,10 @@ program stack
       end do
    end do
 
-   sound(:, :) = sound / (2 ** 15 - 1)
+   sound(:, :) = sound / i2max
 
    s%amplitude = maxval(abs(sound))
-   s%sound = nint((2 ** 15 - 1) / s%amplitude * sound, i2)
+   s%sound = nint(i2max / s%amplitude * sound, i2)
 
    call make(command_argument(n), s)
 end program stack

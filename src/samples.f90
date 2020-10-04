@@ -27,6 +27,10 @@ contains
                   call interval(x, 0.0_dp, 2.0_dp * pi, 1)
                   x = sin(x) ** 5
 
+               case ('constant')
+                  call interval(x, 0.0_dp, 2.0_dp * pi, 1)
+                  x = sign(1.0_dp, sin(x))
+
                case ('linear')
                   call interval(x, 0.0_dp, 2.0_dp * pi, 1)
                   x = 2.0_dp / pi * asin(sin(x))

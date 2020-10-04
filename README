@@ -1,31 +1,21 @@
 T o n b a n d f e t z e n
 
-'Tonbandfetzen' is a collection of programs which allow you to create audio data
-from plain  text input, modify and  arrange it and handle  the Audio Interchange
-File Format.
+Tonbandfetzen is a collection of command-line tools that allow you to compose
+music based on audio fragments generated from plain text input.
 
 
 I n s t a l l a t i o n
 
-Given a recent version of the GNU Fortran compiler, simply run 'make'.
+Simply run 'make' and add bin/ to your PATH. You need a recent version of the
+GNU Fortran compiler.
 
 
-B a s i c   i d e a   o f   u s a g e
+U s a g e
 
-Different task are spread across  separate executables. This yields a collection
-of independent, specific tools which can  be applied easily via the command line
-without having to pass lots of additional arguments.
-
-Most of them  act on files, especially Audio Interchange  Files (.aif). Input is
-read from existing files, output is written to new ones, both depending on given
-filenames.
-
-This favors a usage in combination  with build automation software. Any project,
-such as  a musical  composition, is  then made up  from several  fragments, e.g.
-audio  samples and  textual musical  notes, the  dependencies between  which are
-declared in a  makefile. This has the  advantage that it is possible  to work on
-any intermediate step  without having to needlessly walk through  all the others
-again and again.
+Different task are spread across separate executables, which communicate via
+Audio Interchange Files files (.aif). Hence, the composition process can be
+controlled using build-automation software, allowing for partial updates and
+parallel execution (-j).
 
 
 P r o v i d e d   p r o g r a m s

@@ -311,9 +311,17 @@ contains
       real(dp), intent(out), allocatable :: x(:)
       character(*), intent(in) :: what, how
       integer, intent(in) :: length
+      type(audio) :: s
 
-      allocate(x(0:length - 1))
+      if (what .eq. 'loop' .and. length .eq. 0) then
+         call take(how // '.aif', s)
 
-      call sample(x, what, how)
+         x = s%sound(0, :)
+         x = s%amplitude / i2max * x
+      else
+         allocate(x(0:length - 1))
+
+         call sample(x, what, how)
+      end if
    end subroutine load
 end module interpreter

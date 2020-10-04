@@ -3,7 +3,7 @@
 all: freedom.aif
 
 clean:
-	rm -f *.aif
+	git clean -Xdf
 
 %.aif: %.mel
 	mel $<

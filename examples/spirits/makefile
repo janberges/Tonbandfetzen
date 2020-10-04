@@ -3,7 +3,7 @@
 all: spirits.aif
 
 clean:
-	rm -f *.aif
+	git clean -Xdf
 
 %.aif: %.mel
 	mel $<

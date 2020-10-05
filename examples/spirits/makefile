@@ -8,5 +8,8 @@ clean:
 %.aif: %.mel
 	mel $<
 
+%.mel: %.gtr
+	guitar $< $@
+
 spirits.aif: parts/part1.aif parts/part2.aif parts/part2.aif
 	stick $+ $@

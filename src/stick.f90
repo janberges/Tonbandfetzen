@@ -1,6 +1,6 @@
 program stick
    use constants
-   use aiff
+   use riff
    use io
    implicit none
 

@@ -1,5 +1,5 @@
 program reverse
-   use aiff
+   use riff
    use paths
    use io
    implicit none
@@ -15,6 +15,6 @@ program reverse
 
       s%sound(:, :) = s%sound(:, s%points:1:-1)
 
-      call make(stem(path) // '_reversed.aif', s)
+      call make(stem(path) // '_reversed.wav', s)
    end do
 end program reverse

@@ -1,6 +1,6 @@
 program stack
    use constants
-   use aiff
+   use riff
    use io
    implicit none
 

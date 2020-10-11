@@ -1,5 +1,5 @@
 program repeat
-   use aiff
+   use riff
    use paths
    use io
    implicit none
@@ -27,5 +27,5 @@ program repeat
       s%sound(:, i:i + s1%points) = s1%sound
    end do
 
-   call make(stem(path) // 'x' // n // '.aif', s)
+   call make(stem(path) // 'x' // n // '.wav', s)
 end program repeat

@@ -1,6 +1,6 @@
 program noise
    use constants
-   use aiff
+   use riff
    use paths
    use io
    implicit none

@@ -1,69 +1,69 @@
 .PHONY: all clean
 
-all: freedom.aif
+all: freedom.wav
 
 clean:
 	git clean -Xdf
 
-%.aif: %.mel
+%.wav: %.mel
 	mel $<
 
-melody/b_hi.aif: melody/b_hi1.aif melody/b_hi1.aif melody/b_hi2.aif melody/b_hi1.aif
+melody/b_hi.wav: melody/b_hi1.wav melody/b_hi1.wav melody/b_hi2.wav melody/b_hi1.wav
 	stick $+ $@
 
-melody/a_lo_flanged.aif: melody/a_lo.aif
+melody/a_lo_flanged.wav: melody/a_lo.wav
 	flange $^ 0.025
 
-melody/b_lo_flanged.aif: melody/b_lo.aif
+melody/b_lo_flanged.wav: melody/b_lo.wav
 	flange $^ 0.0125
 
-parts/a_lo.aif: melody/a_lo.aif melody/a_lo_flanged.aif
+parts/a_lo.wav: melody/a_lo.wav melody/a_lo_flanged.wav
 	stack $^ $@
 
-parts/b_lo.aif: melody/b_lo.aif melody/b_lo_flanged.aif
+parts/b_lo.wav: melody/b_lo.wav melody/b_lo_flanged.wav
 	stack $^ $@
 
-parts/chords_a.aif: chords/g.aif chords/g.aif chords/g.aif chords/a.aif
+parts/chords_a.wav: chords/g.wav chords/g.wav chords/g.wav chords/a.wav
 	stick $+ $@
 
-parts/chords_c.aif: chords/e.aif chords/e.aif chords/e.aif chords/a.aif
+parts/chords_c.wav: chords/e.wav chords/e.wav chords/e.wav chords/a.wav
 	stick $+ $@
 
-parts/a1.aif: drums/hihat.aif parts/chords_a.aif
+parts/a1.wav: drums/hihat.wav parts/chords_a.wav
 	stack $^ $@
 
-parts/a2.aif: parts/a1.aif drums/bass.aif
+parts/a2.wav: parts/a1.wav drums/bass.wav
 	stack $^ $@
 
-parts/a3.aif: parts/a2.aif parts/a_lo.aif
+parts/a3.wav: parts/a2.wav parts/a_lo.wav
 	stack $^ $@
 
-parts/a4.aif: parts/a3.aif melody/a_mi.aif melody/a_hi.aif
+parts/a4.wav: parts/a3.wav melody/a_mi.wav melody/a_hi.wav
 	stack $^ $@
 
-parts/b.aif: drums/bass.aif drums/hihat.aif chords/e.aif parts/b_lo.aif melody/b_mi.aif melody/b_hi.aif
+parts/b.wav: drums/bass.wav drums/hihat.wav chords/e.wav parts/b_lo.wav melody/b_mi.wav melody/b_hi.wav
 	stack $^ $@
 
-parts/c.aif: drums/bass.aif parts/chords_c.aif
+parts/c.wav: drums/bass.wav parts/chords_c.wav
 	stack $^ $@
 
-parts/intro.aif: parts/a1.aif parts/a2.aif
+parts/intro.wav: parts/a1.wav parts/a2.wav
 	stick $+ $@
 
-parts/verse1.aif: parts/a3.aif
+parts/verse1.wav: parts/a3.wav
 	stack $^ $@
 
-parts/verse2.aif: parts/a3.aif
+parts/verse2.wav: parts/a3.wav
 	stack $^ $@
 
-parts/verse3.aif: parts/a3.aif
+parts/verse3.wav: parts/a3.wav
 	stack $^ $@
 
-parts/chorus.aif: parts/a4.aif parts/a4.aif parts/b.aif
+parts/chorus.wav: parts/a4.wav parts/a4.wav parts/b.wav
 	stick $+ $@
 
-parts/outro.aif: parts/c.aif
+parts/outro.wav: parts/c.wav
 	stack $^ $@
 
-freedom.aif: parts/intro.aif parts/verse1.aif parts/chorus.aif parts/c.aif parts/verse2.aif parts/chorus.aif parts/c.aif parts/verse3.aif parts/chorus.aif parts/outro.aif
+freedom.wav: parts/intro.wav parts/verse1.wav parts/chorus.wav parts/c.wav parts/verse2.wav parts/chorus.wav parts/c.wav parts/verse3.wav parts/chorus.wav parts/outro.wav
 	stick $+ $@

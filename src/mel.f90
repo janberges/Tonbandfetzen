@@ -1,5 +1,5 @@
 program mel
-   use aiff
+   use riff
    use interpreter
    use io
    use paths
@@ -14,6 +14,6 @@ program mel
 
       call play(slurp(path), music)
 
-      call make(stem(path) // '.aif', music)
+      call make(stem(path) // '.wav', music)
    end do
 end program mel

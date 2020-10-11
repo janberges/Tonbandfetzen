@@ -1,23 +1,23 @@
 .PHONY: all clean
 
-all: wanderer.aif
+all: wanderer.wav
 
 clean:
 	git clean -Xdf
 
-%.aif: %.mel
+%.wav: %.mel
 	cd `dirname $<`; mel `basename $<`
 
-%.aif: %.arg
+%.wav: %.arg
 	noise $@ `cat $<`
 
-melody/melody.aif: melody/noise.aif
+melody/melody.wav: melody/noise.wav
 
-parts/verse.aif: chords/a.aif chords/b.aif chords/b.aif chords/a.aif
+parts/verse.wav: chords/a.wav chords/b.wav chords/b.wav chords/a.wav
 	stick $+ $@
 
-parts/chorus.aif: chords/c.aif melody/melody.aif
+parts/chorus.wav: chords/c.wav melody/melody.wav
 	stack $^ $@
 
-wanderer.aif: chords/e.aif parts/verse.aif parts/chorus.aif chords/d.aif chords/e.aif
+wanderer.wav: chords/e.wav parts/verse.wav parts/chorus.wav chords/d.wav chords/e.wav
 	stick $+ $@

@@ -1,6 +1,6 @@
 program flange
    use constants
-   use aiff
+   use riff
    use paths
    use io
    implicit none
@@ -30,5 +30,5 @@ program flange
          + nint(amplitude * s%rate * sin(2 * pi * i / (s%points - 1)) ** 2))
    end do
 
-   call make(stem(path) // '_flanged.aif', s)
+   call make(stem(path) // '_flanged.wav', s)
 end program flange

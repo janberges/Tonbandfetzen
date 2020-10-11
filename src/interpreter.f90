@@ -1,5 +1,5 @@
 module interpreter
-   use aiff
+   use riff
    use constants
    use rationals
    use samples
@@ -314,7 +314,7 @@ contains
       type(audio) :: s
 
       if (what .eq. 'loop' .and. length .eq. 0) then
-         call take(how // '.aif', s)
+         call take(how // '.wav', s)
 
          x = s%sound(0, :)
          x = s%amplitude / i2max * x

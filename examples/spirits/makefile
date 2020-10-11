@@ -1,15 +1,15 @@
 .PHONY: all clean
 
-all: spirits.aif
+all: spirits.wav
 
 clean:
 	git clean -Xdf
 
-%.aif: %.mel
+%.wav: %.mel
 	mel $<
 
 %.mel: %.gtr
 	guitar $< $@
 
-spirits.aif: parts/part1.aif parts/part2.aif parts/part2.aif
+spirits.wav: parts/part1.wav parts/part2.wav parts/part2.wav
 	stick $+ $@

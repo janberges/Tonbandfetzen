@@ -1,33 +1,33 @@
 .PHONY: all clean
 
-all: water.aif
+all: water.wav
 
 clean:
 	git clean -Xdf
 
-%.aif: %.mel
+%.wav: %.mel
 	mel $<
 
-parts/fsh.aif: bass/fsh.aif melody/verse.aif
+parts/fsh.wav: bass/fsh.wav melody/verse.wav
 	stack $^ $@
 
-parts/b.aif: bass/b.aif melody/verse.aif
+parts/b.wav: bass/b.wav melody/verse.wav
 	stack $^ $@
 
-parts/csh.aif: bass/csh.aif melody/segue.aif
+parts/csh.wav: bass/csh.wav melody/segue.wav
 	stack $^ $@
 
-parts/chords.aif: chords/fsh.aif chords/b.aif chords/csh.aif
+parts/chords.wav: chords/fsh.wav chords/b.wav chords/csh.wav
 	stick $^ $@
 
-parts/melody.aif: parts/fsh.aif parts/fsh.aif parts/fsh.aif parts/fsh.aif parts/b.aif parts/b.aif parts/csh.aif
+parts/melody.wav: parts/fsh.wav parts/fsh.wav parts/fsh.wav parts/fsh.wav parts/b.wav parts/b.wav parts/csh.wav
 	stick $+ $@
 
-pattern/patternx8.aif: pattern/pattern.aif
+pattern/patternx8.wav: pattern/pattern.wav
 	repeat $< 8 $@
 
-parts/pattern.aif: pattern/break.aif pattern/patternx8.aif
+parts/pattern.wav: pattern/break.wav pattern/patternx8.wav
 	stick $^ $@
 
-water.aif: parts/melody.aif parts/chords.aif parts/pattern.aif
+water.wav: parts/melody.wav parts/chords.wav parts/pattern.wav
 	stack $^ $@

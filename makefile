@@ -1,8 +1,10 @@
 compiler = gfortran
 
 ifeq ($(compiler), gfortran)
-  options = -std=f2008 -fconvert=big-endian -Wall -Wno-maybe-uninitialized -pedantic -Jbuild
+  options = -std=f2008 -Wall -Wno-maybe-uninitialized -pedantic -Jbuild
 endif
+
+options_aiff = -std=legacy -Wno-pedantic
 
 needless = *.mod .DS_Store
 
@@ -26,7 +28,7 @@ $(programs):
 
 build/%.o: src/%.f90
 	@echo compile $*
-	@$(compiler) $(options) -c $< -o $@
+	@$(compiler) $(options) $(options_$*) -c $< -o $@
 
 bin/flange: build/aiff.o build/constants.o build/extended.o build/flange.o build/io.o build/paths.o
 bin/harmonics: build/constants.o build/harmonics.o build/intervals.o build/io.o build/samples.o build/spectra.o

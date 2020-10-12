@@ -15,6 +15,6 @@ program mel
 
       call play(slurp(path), music)
 
-      call make(stem(path) // '.wav', music)
+      call write_riff(stem(path) // '.wav', music)
    end do
 end program mel

@@ -13,7 +13,7 @@ program repeat
    path = command_argument(1)
    n    = command_argument(2)
 
-   call take(path, s1)
+   call read_riff(path, s1)
 
    read (n, *) s%points
 
@@ -28,5 +28,5 @@ program repeat
       s%sound(:, i:i + s1%points) = s1%sound
    end do
 
-   call make(stem(path) // 'x' // n // '.wav', s)
+   call write_riff(stem(path) // 'x' // n // '.wav', s)
 end program repeat

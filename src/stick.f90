@@ -17,7 +17,7 @@ program stick
    allocate(p(n - 1))
 
    do i = 1, n - 1
-      call take(command_argument(i), p(i))
+      call read_riff(command_argument(i), p(i))
 
       if (p(i)%channels .ne. 2) then
          write (*, "('ERROR: only two channels supported')")
@@ -45,5 +45,5 @@ program stick
       offset = offset + p(i)%points
    end do
 
-   call make(command_argument(n), s)
+   call write_riff(command_argument(n), s)
 end program stick

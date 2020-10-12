@@ -12,10 +12,10 @@ program reverse
    do i = 1, command_argument_count()
       path = command_argument(i)
 
-      call take(path, s)
+      call read_riff(path, s)
 
       s%sound(:, :) = s%sound(:, s%points:1:-1)
 
-      call make(stem(path) // '_reversed.wav', s)
+      call write_riff(stem(path) // '_reversed.wav', s)
    end do
 end program reverse

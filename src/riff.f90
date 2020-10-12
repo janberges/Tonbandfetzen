@@ -4,11 +4,11 @@ module riff
    implicit none
    private
 
-   public :: take, make
+   public :: read_riff, write_riff
 
 contains
 
-   subroutine take(file, s)
+   subroutine read_riff(file, s)
       character(*), intent(in) :: file
       type(audio), intent(inout) :: s
 
@@ -84,9 +84,9 @@ contains
       end do
 
       close(unit)
-   end subroutine take
+   end subroutine read_riff
 
-   subroutine make(file, s)
+   subroutine write_riff(file, s)
       character(*), intent(in) :: file
       type(audio), intent(inout) :: s
 
@@ -119,5 +119,5 @@ contains
       if (s%amplitude .ne. 1.0_dp) write (unit) 'INFO', 10_i4, encode(s%amplitude)
 
       close(unit)
-   end subroutine make
+   end subroutine write_riff
 end module riff

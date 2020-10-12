@@ -14,7 +14,7 @@ program flange
    path = command_argument(1)
    ampl = command_argument(2)
 
-   call take(path, s1)
+   call read_riff(path, s1)
 
    read (ampl, *) amplitude
 
@@ -30,5 +30,5 @@ program flange
          + nint(amplitude * s%rate * sin(2 * pi * i / (s%points - 1)) ** 2))
    end do
 
-   call make(stem(path) // '_flanged.wav', s)
+   call write_riff(stem(path) // '_flanged.wav', s)
 end program flange

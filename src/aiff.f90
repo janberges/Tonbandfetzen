@@ -4,11 +4,11 @@ module aiff
    implicit none
    private
 
-   public :: take, make
+   public :: read_aiff, write_aiff
 
 contains
 
-   subroutine take(file, s)
+   subroutine read_aiff(file, s)
       character(*), intent(in) :: file
       type(audio), intent(inout) :: s
 
@@ -81,9 +81,9 @@ contains
       end do
 
       close(unit)
-   end subroutine take
+   end subroutine read_aiff
 
-   subroutine make(file, s)
+   subroutine write_aiff(file, s)
       character(*), intent(in) :: file
       type(audio), intent(inout) :: s
 
@@ -111,5 +111,5 @@ contains
       if (s%amplitude .ne. 1.0_dp) write (unit) 'APPL', 10_i4, encode(s%amplitude)
 
       close(unit)
-   end subroutine make
+   end subroutine write_aiff
 end module aiff

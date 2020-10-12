@@ -73,5 +73,5 @@ program noise
 
    arg = command_argument(1)
 
-   call make(arg, s)
+   call write_riff(arg, s)
 end program noise

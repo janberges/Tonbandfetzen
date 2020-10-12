@@ -12,7 +12,7 @@ program fit
 
    path = command_argument(1)
 
-   call take(path, s0)
+   call read_riff(path, s0)
 
    n = command_argument_count()
 
@@ -54,5 +54,5 @@ program fit
 
    if (duration .lt. 0.0_dp) s%sound(:, :) = s%sound(:, s%points:1:-1)
 
-   call make(stem(path) // '_fitted.wav', s)
+   call write_riff(stem(path) // '_fitted.wav', s)
 end program fit

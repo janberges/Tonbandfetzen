@@ -19,7 +19,7 @@ program stack
    allocate(p(n - 1))
 
    do i = 1, n - 1
-      call take(command_argument(i), p(i))
+      call read_riff(command_argument(i), p(i))
 
       s%channels = max(s%channels, p(i)%channels)
       s%points   = max(s%points,   p(i)%points)
@@ -45,5 +45,5 @@ program stack
    s%amplitude = maxval(abs(sound))
    s%sound = nint(i2max / s%amplitude * sound, i2)
 
-   call make(command_argument(n), s)
+   call write_riff(command_argument(n), s)
 end program stack

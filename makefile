@@ -46,11 +46,11 @@ build/flange.o: build/constants.o build/io.o build/paths.o build/riff.o
 build/harmonics.o: build/constants.o build/io.o build/samples.o build/spectra.o
 build/interpreter.o: build/constants.o build/rationals.o build/riff.o build/samples.o build/search.o
 build/intervals.o: build/constants.o
-build/mel.o: build/interpreter.o build/io.o build/paths.o build/riff.o
+build/mel.o: build/constants.o build/interpreter.o build/io.o build/paths.o build/riff.o
 build/noise.o: build/constants.o build/io.o build/paths.o build/riff.o
 build/rationals.o: build/constants.o
-build/repeat.o: build/io.o build/paths.o build/riff.o
-build/reverse.o: build/io.o build/paths.o build/riff.o
+build/repeat.o: build/constants.o build/io.o build/paths.o build/riff.o
+build/reverse.o: build/constants.o build/io.o build/paths.o build/riff.o
 build/riff.o: build/constants.o build/extended.o
 build/samples.o: build/constants.o build/intervals.o
 build/spectra.o: build/constants.o

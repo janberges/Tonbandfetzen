@@ -4,17 +4,7 @@ module riff
    implicit none
    private
 
-   public :: audio, take, make
-
-   type audio
-      integer(i2) :: channels
-      integer(i4) :: points
-
-      real(dp) :: rate
-      real(dp) :: amplitude = 1.0_dp
-
-      integer(i2), allocatable :: sound(:, :)
-   end type audio
+   public :: take, make
 
 contains
 

@@ -1,4 +1,5 @@
 program mel
+   use constants
    use riff
    use interpreter
    use io

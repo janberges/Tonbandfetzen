@@ -1,4 +1,5 @@
 program reverse
+   use constants
    use riff
    use paths
    use io

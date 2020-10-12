@@ -1,4 +1,5 @@
 program repeat
+   use constants
    use riff
    use paths
    use io

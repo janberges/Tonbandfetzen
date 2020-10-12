@@ -21,8 +21,6 @@ contains
       character(4) :: id
       character(10) :: extended
 
-      write (*, "('reading audio file: ', A)") file
-
       open(unit,                  &
          &    file=file,          &
          &  action='read',        &
@@ -39,8 +37,6 @@ contains
 
          position = position + 8
 
-         write (*, "('. reading ', A, ' chunk')") trim(id)
-
          select case (id)
             case ('fmt ')
                read (unit, pos=position) audio_format, &
@@ -48,21 +44,13 @@ contains
 
                s%rate = real(sample_rate, dp)
 
-               write (*, "('. . number of channels: ', I0)") s%channels
-               write (*, "('. . bits per channel and point: ', I0)") bits
-
                if (bits .ne. 16) then
-                  write (*, "('. . . ERROR: only 16 bits supported')")
+                  write (*, "('ERROR: only 16 bits supported')")
                   stop
                end if
 
-               write (*, "('. . sample rate: ', F0.1, 'Hz')") s%rate
-
             case ('data')
                s%points = int(bytes / s%channels / 2, i4)
-
-               write (*, "('. . number of points in time: ', I0)") s%points
-               write (*, "('. . duration: ', F0.1, 's')") s%points / s%rate
 
                if (allocated(s%sound)) deallocate(s%sound)
                allocate(s%sound(s%channels, s%points))
@@ -73,11 +61,6 @@ contains
                read (unit, pos=position) extended
 
                s%amplitude = decode(extended)
-
-               write (*, "('. . amplitude: ', F0.1)") s%amplitude
-
-            case default
-               write (*, "('. . ignored')")
          end select
 
          position = position + bytes
@@ -99,8 +82,6 @@ contains
       sample_rate = nint(s%rate, i4)
       byte_rate = block_align * sample_rate
       size = block_align * s%points
-
-      write (*, "('writing audio file: ', A)") file
 
       open(unit,                  &
          &    file=file,          &

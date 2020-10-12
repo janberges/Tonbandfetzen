@@ -21,8 +21,6 @@ contains
       character(4) :: id
       character(10) :: extended
 
-      write (*, "('reading audio file: ', A)") file
-
       open(unit,                  &
          &    file=file,          &
          &  action='read',        &
@@ -40,25 +38,16 @@ contains
 
          position = position + 8
 
-         write (*, "('. reading ', A, ' chunk')") trim(id)
-
          select case (id)
             case ('COMM')
                read (unit, pos=position) s%channels, s%points, bits, extended
 
                s%rate = decode(extended)
 
-               write (*, "('. . number of channels: ', I0)") s%channels
-               write (*, "('. . number of points in time: ', I0)") s%points
-               write (*, "('. . bits per channel and point: ', I0)") bits
-
                if (bits .ne. 16) then
-                  write (*, "('. . . ERROR: only 16 bits supported')")
+                  write (*, "('ERROR: only 16 bits supported')")
                   stop
                end if
-
-               write (*, "('. . sample rate: ', F0.1, 'Hz')") s%rate
-               write (*, "('. . duration: ', F0.1, 's')") s%points / s%rate
 
             case ('SSND')
                if (allocated(s%sound)) deallocate(s%sound)
@@ -70,11 +59,6 @@ contains
                read (unit, pos=position) extended
 
                s%amplitude = decode(extended)
-
-               write (*, "('. . amplitude: ', F0.1)") s%amplitude
-
-            case default
-               write (*, "('. . ignored')")
          end select
 
          position = position + bytes
@@ -91,8 +75,6 @@ contains
       integer :: size
 
       size = 2 * s%channels * s%points
-
-      write (*, "('writing audio file: ', A)") file
 
       open(unit,                  &
          &    file=file,          &

@@ -1,9 +1,9 @@
 program mel
    use constants
-   use riff
    use interpreter
    use io
    use paths
+   use riff
    implicit none
 
    integer :: i

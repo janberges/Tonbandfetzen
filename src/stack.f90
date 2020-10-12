@@ -1,7 +1,7 @@
 program stack
    use constants
-   use riff
    use io
+   use riff
    implicit none
 
    integer :: i, n, t

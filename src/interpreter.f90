@@ -1,7 +1,7 @@
 module interpreter
-   use riff
    use constants
    use rationals
+   use riff
    use samples
    use search
    implicit none

@@ -1,8 +1,8 @@
 program reverse
    use constants
-   use riff
-   use paths
    use io
+   use paths
+   use riff
    implicit none
 
    integer :: i

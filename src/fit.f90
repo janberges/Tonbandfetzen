@@ -1,8 +1,8 @@
 program fit
    use constants
-   use riff
-   use paths
    use io
+   use paths
+   use riff
    implicit none
 
    integer :: t, t0, n

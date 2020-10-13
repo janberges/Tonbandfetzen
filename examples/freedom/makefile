@@ -12,16 +12,16 @@ clean:
 	espeak -vde+f1 -s130 -f$^ -w$@
 
 lyrics/verse1_fitted.wav: lyrics/verse1.wav
-	fit $< 16.0 200.0 44100.0
+	fit $< 16 75 44100
 
 lyrics/verse2_fitted.wav: lyrics/verse2.wav
-	fit $< 32.0 200.0 44100.0
+	fit $< 32 75 44100
 
 lyrics/verse3_fitted.wav: lyrics/verse3.wav
-	fit $< 16.0 200.0 44100.0
+	fit $< 16 75 44100
 
 lyrics/outro_fitted.wav: lyrics/outro.wav
-	fit $< 16.0 200.0 44100.0
+	fit $< 16 75 44100
 
 melody/a_lo_flanged.wav: melody/a_lo.wav
 	flange $< 0.025

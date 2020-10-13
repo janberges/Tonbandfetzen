@@ -10,58 +10,47 @@ contains
 
    subroutine read_aiff(file, s)
       character(*), intent(in) :: file
-      type(audio), intent(inout) :: s
+      type(audio), intent(out) :: s
 
-      integer, parameter :: unit = 14
-      integer :: position, error
-
-      integer(i2) :: bits
-      integer(i4) :: bytes
-
-      character(4) :: id
+      character(1) :: byte
+      character(4) :: ckID, formType
       character(10) :: extended
+      integer, parameter :: unit = 14
+      integer :: i, stat
+      integer(i4) :: ckSize, offset, blockSize
+      integer(i2) :: sampleSize
 
-      open(unit,                  &
-         &    file=file,          &
-         &  action='read',        &
-         &  status='old',         &
-         &    form='unformatted', &
-         &  access='stream',      &
-         & convert='big_endian')
-
-      position = 13
+      open(unit, file=file, action='read', status='old', &
+         form='unformatted', access='stream', convert='big_endian')
 
       do
-         read (unit, pos=position, iostat=error) id, bytes
+         read (unit, iostat=stat) ckID, ckSize
+         if (stat .eq. eof) exit
 
-         if (error .ne. 0) exit
+         select case (ckID)
+            case ('FORM')
+               read (unit) formType
 
-         position = position + 8
-
-         select case (id)
             case ('COMM')
-               read (unit, pos=position) s%channels, s%points, bits, extended
-
+               read (unit) s%channels, s%points, sampleSize, extended
                s%rate = decode(extended)
 
-               if (bits .ne. 16) then
-                  write (*, "('ERROR: only 16 bits supported')")
+               if (sampleSize .ne. 16_i2) then
+                  write (*, "('Error: only 16 bits supported')")
                   stop
                end if
 
             case ('SSND')
-               if (allocated(s%sound)) deallocate(s%sound)
                allocate(s%sound(s%channels, s%points))
-
-               read (unit, pos=position + 8) s%sound
+               read (unit) offset, blockSize, s%sound
 
             case ('APPL')
-               read (unit, pos=position) extended
-
+               read (unit) extended
                s%amplitude = decode(extended)
-         end select
 
-         position = position + bytes
+            case default
+               read (unit) (byte, i = 1, ckSize)
+         end select
       end do
 
       close(unit)
@@ -69,28 +58,38 @@ contains
 
    subroutine write_aiff(file, s)
       character(*), intent(in) :: file
-      type(audio), intent(inout) :: s
+      type(audio), intent(in) :: s
 
       integer, parameter :: unit = 15
-      integer :: size
+      integer(i4), parameter :: commSize = 18_i4, applSize = 10_i4
+      integer(i4), parameter :: offset = 0_i4, blockSize = 0_i4
+      integer(i4) :: formSize, ssndSize
+      integer(i2), parameter :: sampleSize = 16_i2
+      integer(i2) :: blockAlign
 
-      size = 2 * s%channels * s%points
+      blockAlign = 2_i2 * s%channels
 
-      open(unit,                  &
-         &    file=file,          &
-         &  action='write',       &
-         &  status='replace',     &
-         &    form='unformatted', &
-         &  access='stream',      &
-         & convert='big_endian')
+      ssndSize = 8_i4 + blockAlign * s%points
+      formSize = 4_i4 + 8_i4 + commSize + 8_i4 + ssndSize
 
-      write (unit) 'FORM', int(76 + size, 4), 'AIFF'
+      if (s%amplitude .ne. 1.0_dp) then
+         formSize = formSize + 8_i4 + applSize
+      end if
 
-      write (unit) 'COMM', 18_i4, s%channels, s%points, 16_i2, encode(s%rate)
+      open(unit, file=file, action='write', status='replace', &
+         form='unformatted', access='stream', convert='big_endian')
 
-      write (unit) 'SSND', int(8 + size, 4), 0_i4, 0_i4, s%sound
+      write (unit) 'FORM', formSize
+      write (unit) 'AIFF'
+      write (unit) 'COMM', commSize
+      write (unit) s%channels, s%points, sampleSize, encode(s%rate)
+      write (unit) 'SSND', ssndSize
+      write (unit) offset, blockSize, s%sound
 
-      if (s%amplitude .ne. 1.0_dp) write (unit) 'APPL', 10_i4, encode(s%amplitude)
+      if (s%amplitude .ne. 1.0_dp) then
+         write (unit) 'APPL', applSize
+         write (unit) encode(s%amplitude)
+      end if
 
       close(unit)
    end subroutine write_aiff

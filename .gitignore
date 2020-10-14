@@ -2,4 +2,5 @@
 !.gitignore
 
 *.aif
+*.db
 *.wav

@@ -1,0 +1,310 @@
+.\" Man page for the command mel of the Tonbandfetzen tool box
+.TH MEL 1 2020 "Jan Berges" "Tonbandfetzen Manual"
+.SH NAME
+mel \- generate sound fragments from plain text
+.SH SYNOPSIS
+.BI mel
+.IR infile
+.IR outfile
+.SH DESCRIPTION
+.PP
+Interpret ASCII input in
+.IR infile
+as audio and save it to
+.IR outfile
+in the WAVE format.
+The syntax for
+.IR infile
+is given below.
+.SH SYNTAX
+.PP
+The input shall be a sequence words
+.IR w
+(lowercase letters
+.IR a " to " z ),
+numbers
+.IR n
+(digits
+.IR 0 " to " 9 ,
+decimal points
+.IR . ,
+and a dividing colon
+.IR : ),
+and commands (other ASCII characters).
+Commands expect words and/or numbers as arguments, as listed below.
+The input is processed linearly.
+Unexpected characters are simply skipped.
+Whitespace may serve as a separator or is ignored.
+.TP
+.BI ~ w " " n
+Set a wave sample of shape
+.IR w
+and a duration of
+.IR n
+seconds.
+Predefined values for
+.IR w
+are listed below.
+The corresponding spectra can be viewed with the command
+.BI harmonics
+.IR w .
+If
+.IR n
+is zero, a sound file named
+.IR w .wav
+in the working directory is read instead.
+The default is a
+.IR circular
+wave that lasts
+.IR 1
+second.
+.RS
+.TP
+.IR harmonic
+sin(x) for x in (0, 2\[*p]]
+.TP
+.IR power
+sin\[S3](x) for x in (0, 2\[*p]]
+.TP
+.IR major
+sin\[u2075](x) for x in (0, 2\[*p]]
+.TP
+.IR constant
+sgn(sin(x)) for x in (0, 2\[*p]]
+.TP
+.IR linear
+2/\[*p] arcsin(sin(x)) for x in (0, 2\[*p]]
+.TP
+.IR quadratic
+sgn(x) (2|x| - x\[S2]) for x in (-2, 2]
+.TP
+.IR circular
+sgn(x) sqrt(2|x| - x\[S2]) for x in (-2, 2]
+.TP
+.IR cubic
+3/2 sqrt(3) (x\[S3] - x) for x in (-1, 1]
+.TP
+.IR random
+white noise
+.RE
+.TP
+.BI /~ w " " n
+Set an attack envelope of shape
+.IR w
+and a duration of
+.IR n
+seconds.
+Predefined values for
+.IR w
+are listed below.
+The default is a
+.IR circular
+envelope that lasts
+.IR 0.001
+seconds.
+.RS
+.TP
+.IR harmonic
+sin(x) for x in (0, \[*p]/2)
+.TP
+.IR smooth
+sin\[S2](x) for x in (0, \[*p]/2)
+.TP
+.IR power
+sin\[S3](x) for x in (0, \[*p]/2)
+.TP
+.IR major
+sin\[u2075](x) for x in (0, \[*p]/2)
+.TP
+.IR linear
+x for x in (0, 1)
+.TP
+.IR quadratic
+1 - x\[S2] for x in (-1, 0)
+.TP
+.IR circular
+sqrt(1 - x\[S2]) for x in (-1, 0)
+.TP
+.IR cubic
+3x\[S2] - 2x\[S2] for x in (0, 1)
+.RE
+.TP
+.BI ~\e w " " n
+Set the release envelope. Arguments as above.
+.TP
+.BI /~\e w " " n
+Set attack and release envelope at once. Arguments as above.
+.TP
+.BI $ n
+Set a sample rate of
+.IR n
+samples per second.
+The default is
+.IR 44100 .
+This setting holds globally and is ignored after the the first note played.
+.TP
+.BI * n
+Set the number of channels to
+.IR n .
+The default is
+.IR 2 .
+This setting holds globally and is ignored after the the first note played.
+.TP
+.BI | n
+Set the duration of a beat to
+.IR n
+seconds.
+The default is
+.IR 0.5
+seconds.
+.TP
+.BI @ n
+Set the concert pitch to
+.IR n
+Hz.
+The default is
+.IR 440
+Hz.
+.TP
+.BI # n
+Divide on octave into
+.IR n
+halftones.
+The default is
+.IR 12
+halftones.
+.TP
+.BI = n
+Set the reference frequency to
+.IR n
+Hz.
+The default is the concert pitch.
+.TP
+.BI & n
+Set the reference amplitude sqrt(L\[S2] + R\[S2]) to
+.IR n
+dB.
+The default is
+.IR 1
+dB.
+.TP
+.BI % n
+Set the reference ratio R:L between the amplitudes of the left and the right channel to
+.IR n
+dB.
+The default is
+.IR 1
+dB.
+.TP
+.BI "C C# D D# E F F# G G# B" n
+Set the reference frequency via scientific pitch notation.
+.IR n
+is the number of the octave.
+.BI A 4
+is the concert pitch.
+.TP
+.BI ' n
+Play sound for a duration of
+.IR n
+beats.
+.TP
+.BI \(dq n
+Pause for a duration of
+.IR n
+beats.
+.TP
+.BI ` n
+Rewind by
+.IR n
+beats.
+(Negative pause.)
+.TP
+.BI + n
+Set frequency to
+.IR n
+halftones above the reference frequency.
+.TP
+.BI - n
+Set frequency to
+.IR n
+halftones below the reference frequency.
+.TP
+.BI / n
+Continuously increase frequency by
+.IR n
+halftones during the next play sequence.
+.TP
+.BI \e n
+Continuously decrease frequency by
+.IR n
+halftones during the next play sequence.
+.TP
+.BI ^ n
+Continuously increase frequency by
+.IR n
+halftones per beat from now on.
+.TP
+.BI _ n
+Continuously decrease frequency by
+.IR n
+halftones per beat from now on.
+.TP
+.BI ! n
+Set amplitude to
+.IR n
+dB above the reference amplitude.
+.TP
+.BI ? n
+Set amplitude to
+.IR n
+dB below the reference amplitude.
+.TP
+.BI > n
+Continuously increase amplitude by
+.IR n
+db during the next play sequence.
+.TP
+.BI < n
+Continuously decrease amplitude by
+.IR n
+dB during the next play sequence.
+.TP
+.BI ; n
+Continuously increase amplitude by
+.IR n
+db per beat from now on.
+.TP
+.BI , n
+Continuously decrease amplitude by
+.IR n
+dB per beat from now on.
+.TP
+.BI ] n
+Set amplitude ratio to
+.IR n
+dB above (right of) the reference amplitude ratio.
+.TP
+.BI [ n
+Set amplitude ratio to
+.IR n
+dB below (left of) the reference amplitude ratio.
+.TP
+.BI ) n
+Continuously increase amplitude ratio by
+.IR n
+db during the next play sequence.
+.TP
+.BI ( n
+Continuously decrease amplitude ratio by
+.IR n
+dB during the next play sequence.
+.TP
+.BI } n
+Continuously increase amplitude ratio by
+.IR n
+db per beat from now on.
+.TP
+.BI { n
+Continuously decrease amplitude ratio by
+.IR n
+dB per beat from now on.

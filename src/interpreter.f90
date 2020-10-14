@@ -15,11 +15,11 @@ contains
       character(*), intent(in) :: notes
       type(audio), intent(out) :: tones
 
-      character(*), parameter ::                             &
-         numeral = '0123456789.:',                           &
-         lexical = 'abcdefghijklmnopqrstuvwxyz',             &
-         special = '~"`ABCDEFG=-+&?!%[]\/><()_^,;{}$*|@#''', &
-         initial = special(:19)
+      character(*), parameter :: &
+         numeral = '0123456789.:', &
+         lexical = 'abcdefghijklmnopqrstuvwxyz', &
+         special = '~"`ABCDEFGNSZ=-+&?!%[]\/><()_^,;{}$*|@#''', &
+         initial = special(:22)
 
       character(:), allocatable :: symbol, word ! special/lexical string
 
@@ -82,10 +82,10 @@ contains
             case ('$'); tones%rate = n()
             case ('*'); tones%channels = int(n(), i2)
 
-            case ( '~' ); todo( 1 ) = .false.
-            case ('/~' ); todo( 2 ) = .false.
-            case ( '~\'); todo( 3 ) = .false.
-            case ('/~\'); todo(2:3) = .false.
+            case ('~'); todo( 1 ) = .false.
+            case ('S'); todo( 2 ) = .false.
+            case ('Z'); todo( 3 ) = .false.
+            case ('N'); todo(2:3) = .false.
 
             case ("'", 'none')
                exit
@@ -198,15 +198,15 @@ contains
          end if
 
          select case (symbol)
-            case ('~', '/~', '~\', '/~\')
+            case ('~', 'S', 'Z', 'N')
                word = next(lexical)
                i = nint(n() * s)
 
                select case (symbol)
-                  case ( '~' ); call load(wave, 'loop', word, i)
-                  case ('/~' ); call load(rise, 'fade', word, i)
-                  case ( '~\'); call load(fall, 'fade', word, i)
-                  case ('/~\'); call load(rise, 'fade', word, i)
+                  case ('~'); call load(wave, 'loop', word, i)
+                  case ('S'); call load(rise, 'fade', word, i)
+                  case ('Z'); call load(fall, 'fade', word, i)
+                  case ('N'); call load(rise, 'fade', word, i)
                      fall = rise
                end select
 

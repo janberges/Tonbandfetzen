@@ -19,19 +19,19 @@ The syntax for
 .IR infile
 is given below.
 .SH SYNTAX
-.PP
-The input shall be a sequence words
+.IR infile
+shall contain a sequence words
 .IR w
 (lowercase letters
-.IR a " to " z ),
+.BR a " to " z ),
 numbers
 .IR n
 (digits
-.IR 0 " to " 9 ,
+.BR 0 " to " 9 ,
 decimal points
-.IR . ,
+.BR . ,
 and a dividing colon
-.IR : ),
+.BR : ),
 and commands (other ASCII characters).
 Commands are followed by words and/or numbers as arguments, as listed below.
 The input is processed linearly, whereby unexpected characters, including whitespace, act as separators and are otherwise ignored.
@@ -52,43 +52,43 @@ The corresponding spectra are shown by the command
 If
 .IR w
 reads
-.IR file ,
+.BR file ,
 the first channel of the
 .IR n th
 .IR wavefile
 given on the command line is loaded instead.
 The default is a
-.IR circular
+.BR circular
 wave that lasts
-.IR 1
+.BR 1
 second.
 .RS
 .TP
-.IR harmonic
+.BR harmonic
 sin(x) for x in (0, 2\[*p]]
 .TP
-.IR power
+.BR power
 sin\[S3](x) for x in (0, 2\[*p]]
 .TP
-.IR major
+.BR major
 sin\[u2075](x) for x in (0, 2\[*p]]
 .TP
-.IR constant
+.BR constant
 sgn(sin(x)) for x in (0, 2\[*p]]
 .TP
-.IR linear
+.BR linear
 2/\[*p] arcsin(sin(x)) for x in (0, 2\[*p]]
 .TP
-.IR quadratic
+.BR quadratic
 sgn(x) (2|x| - x\[S2]) for x in (-2, 2]
 .TP
-.IR circular
+.BR circular
 sgn(x) sqrt(2|x| - x\[S2]) for x in (-2, 2]
 .TP
-.IR cubic
+.BR cubic
 3/2 sqrt(3) (x\[S3] - x) for x in (-1, 1]
 .TP
-.IR random
+.BR random
 white noise
 .RE
 .TP
@@ -102,34 +102,34 @@ Predefined values for
 .IR w
 are listed below.
 The default is a
-.IR circular
+.BR circular
 envelope that lasts
-.IR 0.1
+.BR 0.1
 seconds.
 .RS
 .TP
-.IR harmonic
+.BR harmonic
 sin(x) for x in (0, \[*p]/2)
 .TP
-.IR smooth
+.BR smooth
 sin\[S2](x) for x in (0, \[*p]/2)
 .TP
-.IR power
+.BR power
 sin\[S3](x) for x in (0, \[*p]/2)
 .TP
-.IR major
+.BR major
 sin\[u2075](x) for x in (0, \[*p]/2)
 .TP
-.IR linear
+.BR linear
 x for x in (0, 1)
 .TP
-.IR quadratic
+.BR quadratic
 1 - x\[S2] for x in (-1, 0)
 .TP
-.IR circular
+.BR circular
 sqrt(1 - x\[S2]) for x in (-1, 0)
 .TP
-.IR cubic
+.BR cubic
 3x\[S2] - 2x\[S2] for x in (0, 1)
 .RE
 .TP
@@ -144,7 +144,7 @@ Set a sample rate of
 .IR n
 samples per second.
 The default is
-.IR 44100
+.BR 44100
 samples per second.
 This setting holds globally and is ignored after first note played.
 .TP
@@ -152,7 +152,7 @@ This setting holds globally and is ignored after first note played.
 Set number of channels to
 .IR n .
 The default is
-.IR 2 .
+.BR 2 .
 This setting holds globally and is ignored after first note played.
 .TP
 .BI | n
@@ -160,15 +160,17 @@ Set duration of a beat to
 .IR n
 seconds.
 The default is
-.IR 0.5
+.BR 0.5
 seconds.
 .TP
 .BI @ n
-Set concert pitch A4 to
+Set concert pitch
+.BR A4
+to
 .IR n
 Hz.
 The default is
-.IR 440
+.BR 440
 Hz.
 .TP
 .BI # n
@@ -176,34 +178,35 @@ Divide one octave into
 .IR n
 halftones.
 The default is
-.IR 12
+.BR 12
 halftones.
 .TP
 .BI = n
 Set reference frequency to
 .IR n
 Hz.
-The default is the concert pitch A4.
+The default is the concert pitch
+.BR A4 .
 .TP
 .BI & n
 Set reference amplitude sqrt(L\[S2] + R\[S2]) to
 .IR n
 arb. units.
 The default is
-.IR 1
+.BR 1
 arb. unit.
 .TP
 .BI % n
 Set reference amplitude ratio R:L between right and left channel to
 .IR n .
 The default is
-.IR 1 .
+.BR 1 .
 .TP
 .BI "C C# D D# E F F# G G# A B" n
 Set reference frequency via scientific pitch notation.
 .IR n
 is the octave number.
-.BI A 4
+.BI A4
 is the concert pitch.
 .TP
 .BI ' n
@@ -246,13 +249,13 @@ dB below/above the reference.
 .BI "< >" n
 Continuously lower/raise amplitude by
 .IR n
-db during the next play period
+dB during the next play period
 .RB ( ' ).
 .TP
 .BI ", ;" n
 Continuously lower/raise amplitude by
 .IR n
-db per beat from now on.
+dB per beat from now on.
 .TP
 .BI "[ ]" n
 Set amplitude ratio to
@@ -262,13 +265,13 @@ dB below/above the reference.
 .BI "( )" n
 Continuously lower/raise amplitude ratio by
 .IR n
-db during the next play period
+dB during the next play period
 .RB ( ' ).
 .TP
 .BI "{ }" n
 Continuously lower/raise amplitude ratio by
 .IR n
-db per beat from now on.
+dB per beat from now on.
 .TP
 .BI M n
 Set
@@ -276,7 +279,7 @@ Set
 mark at current position in time.
 .IR n
 must be an integer between
-.IR 0 " and " 99 .
+.BR 0 " and " 99 .
 .TP
 .BI W n
 Wind to

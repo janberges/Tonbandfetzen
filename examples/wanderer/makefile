@@ -12,7 +12,7 @@ clean:
 	noise $@ `cat $<`
 
 melody/melody.wav: melody/noise.wav melody/melody.mel
-	mel $+ $@
+	mel $^ $@
 
 parts/verse.wav: chords/a.wav chords/b.wav chords/b.wav chords/a.wav
 	stick $+ $@

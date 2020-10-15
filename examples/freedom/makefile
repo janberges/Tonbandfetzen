@@ -11,17 +11,17 @@ clean:
 %.wav: %.txt
 	espeak -vde+f1 -s130 -f$^ -w$@
 
-lyrics/verse1_fitted.wav: lyrics/verse1.wav
-	fit $< 16 75 44100
+lyrics/verse1_fitted.wav: lyrics/verse1.wav lyrics/verse1_fitted.mel
+	mel $^ $@
 
-lyrics/verse2_fitted.wav: lyrics/verse2.wav
-	fit $< 32 75 44100
+lyrics/verse2_fitted.wav: lyrics/verse2.wav lyrics/verse2_fitted.mel
+	mel $^ $@
 
-lyrics/verse3_fitted.wav: lyrics/verse3.wav
-	fit $< 16 75 44100
+lyrics/verse3_fitted.wav: lyrics/verse3.wav lyrics/verse3_fitted.mel
+	mel $^ $@
 
-lyrics/outro_fitted.wav: lyrics/outro.wav
-	fit $< 16 75 44100
+lyrics/outro_fitted.wav: lyrics/outro.wav lyrics/outro_fitted.mel
+	mel $^ $@
 
 melody/a_lo_flanged.wav: melody/a_lo.wav
 	flange $< 0.025

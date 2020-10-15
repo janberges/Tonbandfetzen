@@ -50,7 +50,7 @@ build/fit.o: build/constants.o build/io.o build/paths.o build/riff.o
 build/flange.o: build/constants.o build/io.o build/paths.o build/riff.o
 build/harmonics.o: build/constants.o build/io.o build/samples.o build/spectra.o
 build/inspect.o: build/aiff.o build/constants.o build/io.o build/riff.o
-build/interpreter.o: build/constants.o build/rationals.o build/riff.o build/samples.o build/search.o
+build/interpreter.o: build/constants.o build/io.o build/rationals.o build/riff.o build/samples.o build/search.o
 build/intervals.o: build/constants.o
 build/mel.o: build/constants.o build/interpreter.o build/io.o build/riff.o
 build/noise.o: build/constants.o build/io.o build/paths.o build/riff.o

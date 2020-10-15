@@ -1,5 +1,6 @@
 module interpreter
    use constants
+   use io
    use rationals
    use riff
    use samples
@@ -227,7 +228,12 @@ contains
          select case (symbol)
             case ('~', 'S', 'Z', 'N')
                word = next(lexical)
-               i = nint(n() * s)
+
+               if (word .eq. 'file') then
+                  i = int(n())
+               else
+                  i = nint(n() * s)
+               end if
 
                select case (symbol)
                   case ('~'); call load(wave, 'loop', word, i)
@@ -363,19 +369,21 @@ contains
       end function sgn
    end subroutine play
 
-   subroutine load(x, what, how, length)
+   subroutine load(x, what, how, i)
       real(dp), intent(out), allocatable :: x(:)
       character(*), intent(in) :: what, how
-      integer, intent(in) :: length
+      integer, intent(in) :: i
       type(audio) :: s
 
-      if (what .eq. 'loop' .and. length .eq. 0) then
-         call read_riff(how // '.wav', s)
+      if (how .eq. 'file') then
+         call read_riff(command_argument(i), s)
 
-         x = s%sound(0, :)
-         x = s%amplitude / i2max * x
+         allocate(x(0:s%points - 1))
+
+         x(:) = s%sound(0, :)
+         x(:) = s%amplitude / i2max * x
       else
-         allocate(x(0:length - 1))
+         allocate(x(0:i - 1))
 
          call sample(x, what, how)
       end if

@@ -5,8 +5,11 @@ program mel
    use riff
    implicit none
 
+   integer :: n
    type(audio) :: music
 
-   call play(slurp(command_argument(1)), music)
-   call write_riff(command_argument(2), music)
+   n = command_argument_count()
+
+   call play(slurp(command_argument(n - 1)), music)
+   call write_riff(command_argument(n), music)
 end program mel

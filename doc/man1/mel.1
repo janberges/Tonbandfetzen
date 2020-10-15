@@ -4,6 +4,7 @@
 mel \- generate sound fragments from plain text
 .SH SYNOPSIS
 .BI mel
+.RI [ wavefile " ...]"
 .IR infile
 .IR outfile
 .SH DESCRIPTION
@@ -12,7 +13,8 @@ Interpret ASCII input in
 .IR infile
 as audio and save it to
 .IR outfile
-in the WAVE format.
+in the WAVE format, optionally using samples provided in
+.IR wavefile s.
 The syntax for
 .IR infile
 is given below.
@@ -48,10 +50,13 @@ The corresponding spectra are shown by the command
 .BI harmonics
 .IR w .
 If
-.IR n
-is zero, the first channel of the WAVE file
-.IR w .wav
-in the working directory is loaded instead.
+.IR w
+reads
+.IR file ,
+the first channel of the
+.IR n th
+.IR wavefile
+given on the command line is loaded instead.
 The default is a
 .IR circular
 wave that lasts

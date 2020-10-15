@@ -31,28 +31,27 @@ decimal points
 and a dividing colon
 .IR : ),
 and commands (other ASCII characters).
-Commands expect words and/or numbers as arguments, as listed below.
-The input is processed linearly.
-Unexpected characters are simply skipped.
-Whitespace may serve as a separator or is ignored.
+Commands are followed by words and/or numbers as arguments, as listed below.
+The input is processed linearly, whereby unexpected characters, including whitespace, act as separators and are otherwise ignored.
 .TP
 .BI ~ w " " n
-Set a wave sample of shape
+Choose wave sample of shape
 .IR w
-and a duration of
+and duration
 .IR n
-seconds.
+in seconds.
+This is the building block for sound at arbitrary frequency and amplitude.
 Predefined values for
 .IR w
 are listed below.
-The corresponding spectra can be viewed with the command
+The corresponding spectra are shown by the command
 .BI harmonics
 .IR w .
 If
 .IR n
-is zero, a sound file named
+is zero, the first channel of the WAVE file
 .IR w .wav
-in the working directory is read instead.
+in the working directory is loaded instead.
 The default is a
 .IR circular
 wave that lasts
@@ -88,19 +87,19 @@ sgn(x) sqrt(2|x| - x\[S2]) for x in (-2, 2]
 white noise
 .RE
 .TP
-.BI /~ w " " n
-Set an attack envelope of shape
+.BI S w " " n
+Choose attack envelope of shape
 .IR w
-and a duration of
+and duration
 .IR n
-seconds.
+in seconds.
 Predefined values for
 .IR w
 are listed below.
 The default is a
 .IR circular
 envelope that lasts
-.IR 0.001
+.IR 0.1
 seconds.
 .RS
 .TP
@@ -129,29 +128,30 @@ sqrt(1 - x\[S2]) for x in (-1, 0)
 3x\[S2] - 2x\[S2] for x in (0, 1)
 .RE
 .TP
-.BI ~\e w " " n
-Set the release envelope. Arguments as above.
+.BI Z w " " n
+Choose release envelope. Arguments as above.
 .TP
-.BI /~\e w " " n
-Set attack and release envelope at once. Arguments as above.
+.BI N w " " n
+Choose attack and release envelope at once. Arguments as above.
 .TP
 .BI $ n
 Set a sample rate of
 .IR n
 samples per second.
 The default is
-.IR 44100 .
-This setting holds globally and is ignored after the the first note played.
+.IR 44100
+samples per second.
+This setting holds globally and is ignored after first note played.
 .TP
 .BI * n
-Set the number of channels to
+Set number of channels to
 .IR n .
 The default is
 .IR 2 .
-This setting holds globally and is ignored after the the first note played.
+This setting holds globally and is ignored after first note played.
 .TP
 .BI | n
-Set the duration of a beat to
+Set duration of a beat to
 .IR n
 seconds.
 The default is
@@ -159,7 +159,7 @@ The default is
 seconds.
 .TP
 .BI @ n
-Set the concert pitch to
+Set concert pitch A4 to
 .IR n
 Hz.
 The default is
@@ -167,7 +167,7 @@ The default is
 Hz.
 .TP
 .BI # n
-Divide on octave into
+Divide one octave into
 .IR n
 halftones.
 The default is
@@ -175,31 +175,29 @@ The default is
 halftones.
 .TP
 .BI = n
-Set the reference frequency to
+Set reference frequency to
 .IR n
 Hz.
-The default is the concert pitch.
+The default is the concert pitch A4.
 .TP
 .BI & n
-Set the reference amplitude sqrt(L\[S2] + R\[S2]) to
+Set reference amplitude sqrt(L\[S2] + R\[S2]) to
 .IR n
-dB.
+arb. units.
 The default is
 .IR 1
-dB.
+arb. unit.
 .TP
 .BI % n
-Set the reference ratio R:L between the amplitudes of the left and the right channel to
-.IR n
-dB.
+Set reference amplitude ratio R:L between right and left channel to
+.IR n .
 The default is
-.IR 1
-dB.
+.IR 1 .
 .TP
-.BI "C C# D D# E F F# G G# B" n
-Set the reference frequency via scientific pitch notation.
+.BI "C C# D D# E F F# G G# A B" n
+Set reference frequency via scientific pitch notation.
 .IR n
-is the number of the octave.
+is the octave number.
 .BI A 4
 is the concert pitch.
 .TP
@@ -219,92 +217,79 @@ Rewind by
 beats.
 (Negative pause.)
 .TP
-.BI + n
+.BI "- +" n
 Set frequency to
 .IR n
-halftones above the reference frequency.
+halftones below/above the reference.
 .TP
-.BI - n
-Set frequency to
+.BI "\e /" n
+Continuously lower/raise frequency by
 .IR n
-halftones below the reference frequency.
+halftones during the next play period
+.RB ( ' ).
 .TP
-.BI / n
-Continuously increase frequency by
-.IR n
-halftones during the next play sequence.
-.TP
-.BI \e n
-Continuously decrease frequency by
-.IR n
-halftones during the next play sequence.
-.TP
-.BI ^ n
-Continuously increase frequency by
+.BI "_ ^" n
+Continuously lower/raise frequency by
 .IR n
 halftones per beat from now on.
 .TP
-.BI _ n
-Continuously decrease frequency by
-.IR n
-halftones per beat from now on.
-.TP
-.BI ! n
+.BI "? !" n
 Set amplitude to
 .IR n
-dB above the reference amplitude.
+dB below/above the reference.
 .TP
-.BI ? n
-Set amplitude to
+.BI "< >" n
+Continuously lower/raise amplitude by
 .IR n
-dB below the reference amplitude.
+db during the next play period
+.RB ( ' ).
 .TP
-.BI > n
-Continuously increase amplitude by
-.IR n
-db during the next play sequence.
-.TP
-.BI < n
-Continuously decrease amplitude by
-.IR n
-dB during the next play sequence.
-.TP
-.BI ; n
-Continuously increase amplitude by
+.BI ", ;" n
+Continuously lower/raise amplitude by
 .IR n
 db per beat from now on.
 .TP
-.BI , n
-Continuously decrease amplitude by
-.IR n
-dB per beat from now on.
-.TP
-.BI ] n
+.BI "[ ]" n
 Set amplitude ratio to
 .IR n
-dB above (right of) the reference amplitude ratio.
+dB below/above the reference.
 .TP
-.BI [ n
-Set amplitude ratio to
+.BI "( )" n
+Continuously lower/raise amplitude ratio by
 .IR n
-dB below (left of) the reference amplitude ratio.
+db during the next play period
+.RB ( ' ).
 .TP
-.BI ) n
-Continuously increase amplitude ratio by
-.IR n
-db during the next play sequence.
-.TP
-.BI ( n
-Continuously decrease amplitude ratio by
-.IR n
-dB during the next play sequence.
-.TP
-.BI } n
-Continuously increase amplitude ratio by
+.BI "{ }" n
+Continuously lower/raise amplitude ratio by
 .IR n
 db per beat from now on.
 .TP
-.BI { n
-Continuously decrease amplitude ratio by
+.BI M n
+Set
+.IR n th
+mark at current position in time.
 .IR n
-dB per beat from now on.
+must be an integer between
+.IR 0 " and " 99 .
+.TP
+.BI W n
+Wind to
+.IR n th
+mark.
+.TP
+.BI P n " " n'
+Paste copy of sound between
+.IR n th
+and
+.IR n' th
+mark.
+.TP
+.BI R n " " n' " " n\(dq
+Repeat copy of sound between
+.IR n th
+and
+.IR n' th
+mark
+.IR n\(dq
+times.

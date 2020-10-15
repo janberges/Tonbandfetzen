@@ -18,8 +18,8 @@ contains
       character(*), parameter :: &
          numeral = '0123456789.:', &
          lexical = 'abcdefghijklmnopqrstuvwxyz', &
-         special = '~"`ABCDEFGNSZ=-+&?!%[]\/><()_^,;{}$*|@#''', &
-         initial = special(:22)
+         special = '~"`ABCDEFGNSZWPR=-+&?!%[]\/><()_^,;{}$*|@#M''', &
+         initial = special(:25)
 
       character(:), allocatable :: symbol, word ! special/lexical string
 
@@ -69,6 +69,10 @@ contains
       integer :: i ! arbitrary integer/index
 
       real(dp) :: s ! equivalent of a second
+
+      real(dp) :: marks(0:99) ! exact time marks
+      real(dp) :: x1, x2, dx
+      integer  :: t1, t2, dt, copies
 
       tones%rate = 44100.0_dp
       tones%channels = 2
@@ -135,6 +139,29 @@ contains
             case ('"', '`')
                x = x + sgn('`"') * n() * b
                t = nint(x)
+
+            case ('M')
+               marks(int(n())) = x
+
+            case ('W')
+               x = marks(int(n()))
+               t = nint(x)
+
+            case ('P', 'R')
+               x1 = marks(int(n()))
+               x2 = marks(int(n()))
+               dx = x2 - x1
+
+               if (symbol .eq. 'R') then
+                  copies = int(n())
+               else
+                  copies = 1
+               end if
+
+               do i = 1, copies
+                  x = x + dx
+                  t = nint(x)
+               end do
 
             case ('none')
                exit
@@ -270,6 +297,35 @@ contains
             case ('"', '`')
                x = x + sgn('`"`') * n() * b
                t = nint(x)
+
+            case ('M')
+               marks(int(n())) = x
+
+            case ('W')
+               x = marks(int(n()))
+               t = nint(x)
+
+            case ('P', 'R')
+               x1 = marks(int(n()))
+               x2 = marks(int(n()))
+               dx = x2 - x1
+
+               if (symbol .eq. 'R') then
+                  copies = int(n())
+               else
+                  copies = 1
+               end if
+
+               t1 = nint(x1)
+               t2 = nint(x2)
+               dt = t2 - t1
+
+               do i = 1, copies
+                  x = x + dx
+                  t = nint(x)
+                  mel(:, t - dt + 1:t) = mel(:, t - dt + 1:t) &
+                     + mel(:, t1 + 1:t2)
+               end do
 
             case ('none')
                exit

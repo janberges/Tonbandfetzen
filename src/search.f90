@@ -2,11 +2,11 @@ module search
    implicit none
    private
 
-   public :: focus, reset, next
+   public :: focus, reset, next, remember, revert
 
    character(:), allocatable :: sequence
 
-   integer, save :: first = 0, last = 0
+   integer, save :: last = 0, marks(0:99)
 
 contains
 
@@ -19,7 +19,6 @@ contains
       end subroutine focus
 
       subroutine reset
-         first = 0
          last = 0
       end subroutine reset
 
@@ -27,6 +26,8 @@ contains
          character(:), allocatable :: next
 
          character(*), intent(in) :: set
+
+         integer :: first
 
          first = scan(sequence(last + 1:), set)
 
@@ -47,4 +48,16 @@ contains
 
          next = sequence(first:last)
       end function next
+
+      subroutine remember(mark)
+         integer, intent(in) :: mark
+
+         marks(mark) = last
+      end subroutine remember
+
+      subroutine revert(mark)
+         integer, intent(in) :: mark
+
+         last = marks(mark)
+      end subroutine revert
 end module search

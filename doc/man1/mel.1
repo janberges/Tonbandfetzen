@@ -134,10 +134,12 @@ sqrt(1 - x\[S2]) for x in (-1, 0)
 .RE
 .TP
 .BI Z w " " n
-Choose release envelope. Arguments as above.
+Choose release envelope.
+Arguments as above.
 .TP
 .BI N w " " n
-Choose attack and release envelope at once. Arguments as above.
+Choose attack and release envelope at once.
+Arguments as above.
 .TP
 .BI $ n
 Set a sample rate of
@@ -276,7 +278,7 @@ dB per beat from now on.
 .BI M n
 Set
 .IR n th
-mark at current position in time.
+time mark.
 .IR n
 must be an integer between
 .BR 0 " and " 99 .
@@ -284,7 +286,7 @@ must be an integer between
 .BI W n
 Wind to
 .IR n th
-mark.
+time mark.
 .TP
 .BI P n " " n'
 Paste copy of sound between
@@ -300,4 +302,22 @@ and
 .IR n' th
 mark
 .IR n\(dq
+times.
+.TP
+.BI I n
+Set
+.IR n th
+text mark.
+.IR n
+must be an integer between
+.BR 0 " and " 99 .
+.TP
+.BI J n " " n'
+Jump to
+.IR n th
+text mark.
+Once the mark has been set with
+.BI I n ,
+this works
+.IR n'
 times.

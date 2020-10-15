@@ -19,8 +19,8 @@ contains
       character(*), parameter :: &
          numeral = '0123456789.:', &
          lexical = 'abcdefghijklmnopqrstuvwxyz', &
-         special = '~"`ABCDEFGNSZWPR=-+&?!%[]\/><()_^,;{}$*|@#M''', &
-         initial = special(:25)
+         special = '~"`ABCDEFGNSZWPRI=-+&?!%[]\/><()_^,;{}$*|@#MJ''', &
+         initial = special(:26)
 
       character(:), allocatable :: symbol, word ! special/lexical string
 
@@ -71,9 +71,15 @@ contains
 
       real(dp) :: s ! equivalent of a second
 
-      real(dp) :: marks(0:99) ! exact time marks
+      ! time marks
+      real(dp) :: marks(0:99)
       real(dp) :: x1, x2, dx
       integer  :: t1, t2, dt, copies
+
+      ! text marks
+      integer :: counter(0:99)
+
+      counter(:) = 0
 
       tones%rate = 44100.0_dp
       tones%channels = 2
@@ -163,6 +169,18 @@ contains
                   x = x + dx
                   t = nint(x)
                end do
+
+            case ('I')
+               i = int(n())
+               call remember(i)
+               counter(i) = 0
+
+            case ('J')
+               i = int(n())
+               if (counter(i) .lt. int(n())) then
+                  call revert(i)
+                  counter(i) = counter(i) + 1
+               end if
 
             case ('none')
                exit
@@ -332,6 +350,18 @@ contains
                   mel(:, t - dt + 1:t) = mel(:, t - dt + 1:t) &
                      + mel(:, t1 + 1:t2)
                end do
+
+            case ('I')
+               i = int(n())
+               call remember(i)
+               counter(i) = 0
+
+            case ('J')
+               i = int(n())
+               if (counter(i) .lt. int(n())) then
+                  call revert(i)
+                  counter(i) = counter(i) + 1
+               end if
 
             case ('none')
                exit

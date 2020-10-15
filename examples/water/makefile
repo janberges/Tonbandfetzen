@@ -6,7 +6,7 @@ clean:
 	git clean -Xdf
 
 %.wav: %.mel
-	mel $<
+	mel $< $@
 
 parts/fsh.wav: bass/fsh.wav melody/verse.wav
 	stack $^ $@

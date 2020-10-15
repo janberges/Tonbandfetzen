@@ -35,7 +35,7 @@ bin/fit: build/constants.o build/extended.o build/fit.o build/io.o build/paths.o
 bin/flange: build/constants.o build/extended.o build/flange.o build/io.o build/paths.o build/riff.o
 bin/harmonics: build/constants.o build/harmonics.o build/intervals.o build/io.o build/samples.o build/spectra.o
 bin/inspect: build/aiff.o build/constants.o build/extended.o build/inspect.o build/io.o build/riff.o
-bin/mel: build/constants.o build/extended.o build/interpreter.o build/intervals.o build/io.o build/mel.o build/paths.o build/rationals.o build/riff.o build/samples.o build/search.o
+bin/mel: build/constants.o build/extended.o build/interpreter.o build/intervals.o build/io.o build/mel.o build/rationals.o build/riff.o build/samples.o build/search.o
 bin/noise: build/constants.o build/extended.o build/io.o build/noise.o build/paths.o build/riff.o
 bin/repeat: build/constants.o build/extended.o build/io.o build/paths.o build/repeat.o build/riff.o
 bin/reverse: build/constants.o build/extended.o build/io.o build/paths.o build/reverse.o build/riff.o
@@ -52,7 +52,7 @@ build/harmonics.o: build/constants.o build/io.o build/samples.o build/spectra.o
 build/inspect.o: build/aiff.o build/constants.o build/io.o build/riff.o
 build/interpreter.o: build/constants.o build/rationals.o build/riff.o build/samples.o build/search.o
 build/intervals.o: build/constants.o
-build/mel.o: build/constants.o build/interpreter.o build/io.o build/paths.o build/riff.o
+build/mel.o: build/constants.o build/interpreter.o build/io.o build/riff.o
 build/noise.o: build/constants.o build/io.o build/paths.o build/riff.o
 build/rationals.o: build/constants.o
 build/repeat.o: build/constants.o build/io.o build/paths.o build/riff.o

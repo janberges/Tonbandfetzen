@@ -2,19 +2,11 @@ program mel
    use constants
    use interpreter
    use io
-   use paths
    use riff
    implicit none
 
-   integer :: i
-   character(:), allocatable :: path
    type(audio) :: music
 
-   do i = 1, command_argument_count()
-      path = command_argument(i)
-
-      call play(slurp(path), music)
-
-      call write_riff(stem(path) // '.wav', music)
-   end do
+   call play(slurp(command_argument(1)), music)
+   call write_riff(command_argument(2), music)
 end program mel

@@ -6,7 +6,7 @@ clean:
 	git clean -Xdf
 
 %.wav: %.mel
-	cd `dirname $<`; mel `basename $<`
+	cd `dirname $<`; mel `basename $<` `basename $@`
 
 %.wav: %.arg
 	noise $@ `cat $<`

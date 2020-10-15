@@ -6,7 +6,7 @@ clean:
 	git clean -Xdf
 
 %.wav: %.mel
-	mel $<
+	mel $< $@
 
 %.mel: %.gtr
 	guitar $< $@

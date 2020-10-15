@@ -6,7 +6,7 @@ clean:
 	git clean -Xdf
 
 %.wav: %.mel
-	mel $<
+	mel $< $@
 
 %.wav: %.txt
 	espeak -vde+f1 -s130 -f$^ -w$@

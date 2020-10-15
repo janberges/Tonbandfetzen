@@ -8,12 +8,6 @@ clean:
 %.wav: %.mel
 	mel $< $@
 
-%.wav: %.arg
-	noise $@ `cat $<`
-
-melody/melody.wav: melody/noise.wav melody/melody.mel
-	mel $^ $@
-
 parts/verse.wav: chords/a.wav chords/b.wav chords/b.wav chords/a.wav
 	stick $+ $@
 

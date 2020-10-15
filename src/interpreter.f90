@@ -19,7 +19,7 @@ contains
       character(*), parameter :: &
          numeral = '0123456789.:', &
          lexical = 'abcdefghijklmnopqrstuvwxyz', &
-         special = '~"`ABCDEFGNSZWPRI=-+&?!%[]\/><()_^,;{}$*|@#MJ''', &
+         special = '~"`ABCDEFGNSZWPRI=-+&?!%[]\/><()_^,;{}$*|@#MJX''', &
          initial = special(:26)
 
       character(:), allocatable :: symbol, word ! special/lexical string
@@ -78,6 +78,8 @@ contains
 
       ! text marks
       integer :: counter(0:99)
+
+      real(dp) :: random
 
       counter(:) = 0
 
@@ -266,6 +268,12 @@ contains
 
             case ('@')
                A4 = n() / s
+
+            case ('X')
+               call random_number(random)
+               random = 1.0_dp - 2.0_dp * random
+               A4 = A4 * 2.0_dp ** (random * n() / steps)
+               f0 = A4; fi = f0; f = fi
 
             case ('#')
                steps = nint(n())

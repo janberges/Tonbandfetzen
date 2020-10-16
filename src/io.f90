@@ -12,14 +12,15 @@ contains
       character(*), intent(in) :: file
 
       integer, parameter :: unit = 16
-      integer :: size
+      integer :: size, stat
 
-      open(unit,                  &
-         &    file=file,          &
-         &  action='read',        &
-         &  status='old',         &
-         &    form='unformatted', &
-         &  access='stream')
+      open(unit, file=file, action='read', status='old', &
+         form='unformatted', access='stream', iostat=stat)
+
+      if (stat .ne. 0) then
+         write (*, "('Error reading file ''', A, '''.')") file
+         stop
+      end if
 
       inquire(unit, size=size)
 
@@ -35,9 +36,14 @@ contains
 
       integer, intent(in) :: i
 
-      integer :: size
+      integer :: size, stat
 
-      call get_command_argument(i, length=size)
+      call get_command_argument(i, length=size, status=stat)
+
+      if (stat .ne. 0) then
+         write (*, "('Error: argument ', I0, ' missing.')") i
+         stop
+      end if
 
       allocate(character(size) :: argument)
 

@@ -24,7 +24,7 @@ parts/melody.wav: parts/fsh.wav parts/fsh.wav parts/fsh.wav parts/fsh.wav parts/
 	stick $+ $@
 
 pattern/patternx8.wav: pattern/pattern.wav
-	repeat $< 8 $@
+	repeat 8 $< $@
 
 parts/pattern.wav: pattern/break.wav pattern/patternx8.wav
 	stick $^ $@

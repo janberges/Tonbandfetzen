@@ -21,7 +21,13 @@ contains
       integer(i2) :: sampleSize
 
       open(unit, file=file, action='read', status='old', &
-         form='unformatted', access='stream', convert='big_endian')
+         form='unformatted', access='stream', iostat=stat, &
+         convert='big_endian')
+
+      if (stat .ne. 0) then
+         write (*, "('Error reading file ''', A, '''.')") file
+         stop
+      end if
 
       do
          read (unit, iostat=stat) ckID, ckSize
@@ -60,6 +66,7 @@ contains
       character(*), intent(in) :: file
       type(audio), intent(in) :: s
 
+      integer :: stat
       integer, parameter :: unit = 15
       integer(i4), parameter :: commSize = 18_i4, applSize = 10_i4
       integer(i4), parameter :: offset = 0_i4, blockSize = 0_i4
@@ -77,7 +84,13 @@ contains
       end if
 
       open(unit, file=file, action='write', status='replace', &
-         form='unformatted', access='stream', convert='big_endian')
+         form='unformatted', access='stream', iostat=stat, &
+         convert='big_endian')
+
+      if (stat .ne. 0) then
+         write (*, "('Error writing file ''', A, '''.')") file
+         stop
+      end if
 
       write (unit) 'FORM', formSize
       write (unit) 'AIFF'

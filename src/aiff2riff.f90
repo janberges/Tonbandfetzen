@@ -5,12 +5,14 @@ program aiff2riff
    use riff
    implicit none
 
-   character(:), allocatable :: aif, wav
    type(audio) :: s
 
-   aif = command_argument(1)
-   wav = command_argument(2)
+   if (command_argument_count() .ne. 2) then
+      write (*, "('Usage: aiff2riff <infile> <outfile>')")
+      write (*, "('See ''man aiff2riff'' for more information.')")
+      stop
+   end if
 
-   call read_aiff(aif, s)
-   call write_riff(wav, s)
+   call read_aiff(command_argument(1), s)
+   call write_riff(command_argument(2), s)
 end program aiff2riff

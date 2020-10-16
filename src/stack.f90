@@ -10,11 +10,18 @@ program stack
    type(audio), allocatable :: p(:)
    type(audio) :: s
 
-   s%channels = 1
-   s%points   = 0
-   s%rate     = 0.0_dp
+   s%channels  = 1
+   s%points    = 0
+   s%rate      = 1.0_dp
+   s%amplitude = 0.0_dp
 
    n = command_argument_count()
+
+   if (n .eq. 0) then
+      write (*, "('Usage: stack [<infile> ...] <outfile>')")
+      write (*, "('See ''man stack'' for more information.')")
+      stop
+   end if
 
    allocate(p(n - 1))
 
@@ -42,8 +49,10 @@ program stack
 
    sound(:, :) = sound / i2max
 
-   s%amplitude = maxval(abs(sound))
-   s%sound = nint(i2max / s%amplitude * sound, i2)
+   if (s%points .gt. 0) then
+      s%amplitude = maxval(abs(sound))
+      s%sound = nint(i2max / s%amplitude * sound, i2)
+   end if
 
    call write_riff(command_argument(n), s)
 end program stack

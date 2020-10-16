@@ -8,6 +8,12 @@ program inspect
    character(:), allocatable :: path
    type(audio) :: s
 
+   if (command_argument_count() .ne. 1) then
+      write (*, "('Usage: inspect <file>')")
+      write (*, "('See ''man inspect'' for more information.')")
+      stop
+   end if
+
    path = command_argument(1)
 
    if (path(len(path) - 3:) .eq. '.aif') then

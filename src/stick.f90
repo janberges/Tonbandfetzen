@@ -8,11 +8,18 @@ program stick
    type(audio), allocatable :: p(:)
    type(audio) :: s
 
-   s%channels = 2
-   s%points = 0
+   s%channels  = 2
+   s%points    = 0
+   s%rate      = 1.0_dp
    s%amplitude = 0.0_dp
 
    n = command_argument_count()
+
+   if (n .eq. 0) then
+      write (*, "('Usage: stick [<infile> ...] <outfile>')")
+      write (*, "('See ''man stick'' for more information.')")
+      stop
+   end if
 
    allocate(p(n - 1))
 
@@ -27,9 +34,8 @@ program stick
       s%points = s%points + p(i)%points
 
       s%amplitude = max(s%amplitude, p(i)%amplitude)
+      s%rate      = max(s%rate,      p(i)%rate)
    end do
-
-   s%rate = p(n - 1)%rate
 
    allocate(s%sound(s%channels, s%points))
 

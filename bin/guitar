@@ -3,6 +3,11 @@
 import re
 import sys
 
+if len(sys.argv) != 3:
+    print("Usage: guitar <infile> <outfile>")
+    print("See 'man guitar' for more information.")
+    raise SystemExit
+
 with open(sys.argv[1], 'r') as gtr, open(sys.argv[2], 'w') as mel:
     for line in gtr:
         if line.count('|') > 1:

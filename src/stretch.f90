@@ -9,6 +9,12 @@ program stretch
    real(dp) :: t1, dt, scaling, factor
    type(audio) :: s0, s
 
+   if (command_argument_count() .ne. 3) then
+      write (*, "('Usage: stretch <factor> <infile> <outfile>')")
+      write (*, "('See ''man stretch'' for more information.')")
+      stop
+   end if
+
    factor = rational(command_argument(1))
 
    call read_riff(command_argument(2), s0)

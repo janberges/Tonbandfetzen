@@ -6,14 +6,19 @@ program repeat
    implicit none
 
    integer :: i
-   character(:), allocatable :: path, n
+   character(:), allocatable :: n
    type(audio) :: s1
    type(audio) :: s
 
-   path = command_argument(1)
-   n    = command_argument(2)
+   if (command_argument_count() .ne. 3) then
+      write (*, "('Usage: repeat <count> <infile> <outfile>')")
+      write (*, "('See ''man repeat'' for more information.')")
+      stop
+   end if
 
-   call read_riff(path, s1)
+   n = command_argument(1)
+
+   call read_riff(command_argument(2), s1)
 
    read (n, *) s%points
 
@@ -28,5 +33,5 @@ program repeat
       s%sound(:, i:i + s1%points) = s1%sound
    end do
 
-   call write_riff(stem(path) // 'x' // n // '.wav', s)
+   call write_riff(command_argument(3), s)
 end program repeat

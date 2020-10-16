@@ -23,18 +23,6 @@ lyrics/verse3_fitted.wav: lyrics/verse3.wav lyrics/verse3_fitted.mel
 lyrics/outro_fitted.wav: lyrics/outro.wav lyrics/outro_fitted.mel
 	mel $^ $@
 
-melody/a_lo_flanged.wav: melody/a_lo.wav
-	flange $< 0.025
-
-melody/b_lo_flanged.wav: melody/b_lo.wav
-	flange $< 0.0125
-
-parts/a_lo.wav: melody/a_lo.wav melody/a_lo_flanged.wav
-	stack $^ $@
-
-parts/b_lo.wav: melody/b_lo.wav melody/b_lo_flanged.wav
-	stack $^ $@
-
 parts/b_hi.wav: melody/b_hi1.wav melody/b_hi1.wav melody/b_hi2.wav melody/b_hi1.wav
 	stick $+ $@
 
@@ -50,13 +38,13 @@ parts/a1.wav: drums/hihat.wav parts/chords_a.wav
 parts/a2.wav: parts/a1.wav drums/bass.wav
 	stack $^ $@
 
-parts/a3.wav: parts/a2.wav parts/a_lo.wav
+parts/a3.wav: parts/a2.wav melody/a_lo.wav
 	stack $^ $@
 
 parts/a4.wav: parts/a3.wav melody/a_mi.wav melody/a_hi.wav
 	stack $^ $@
 
-parts/b.wav: drums/bass.wav drums/hihat.wav chords/e.wav parts/b_lo.wav melody/b_mi.wav parts/b_hi.wav
+parts/b.wav: drums/bass.wav drums/hihat.wav chords/e.wav melody/b_lo.wav melody/b_mi.wav parts/b_hi.wav
 	stack $^ $@
 
 parts/c.wav: drums/bass.wav parts/chords_c.wav

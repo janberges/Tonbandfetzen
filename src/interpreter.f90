@@ -19,7 +19,7 @@ contains
       character(*), parameter :: &
          numeral = '0123456789.:', &
          lexical = 'abcdefghijklmnopqrstuvwxyz', &
-         special = '~"`ABCDEFGNSZWPR=-+&?!%[]\/><()_^,;{}$*|@#MIJX''', &
+         special = '~"`ABCDEFGNSZWPR=-+&?!%[]\/><()_^,;{}$*|@#MIJXL''', &
          initial = special(:25)
 
       character(:), allocatable :: symbol, word ! special/lexical string
@@ -28,6 +28,8 @@ contains
          wave(:),                 & !   I. samples
          rise(:), rho(:),         & !  II. segments (polar coordinates)
          fall(:), phi(:), mel(:, :) ! III. melody (channel-wise)
+
+      real(dp), allocatable :: work(:, :)
 
       logical :: todo(3) ! samples yet to be initialized?
 
@@ -79,7 +81,7 @@ contains
       ! text marks
       integer :: counter(0:99)
 
-      real(dp) :: random
+      real(dp) :: random, factor
 
       counter(:) = 0
 
@@ -373,6 +375,24 @@ contains
                   call revert(i)
                   counter(i) = counter(i) + 1
                end if
+
+            case ('L')
+               t1 = nint(marks(int(n())))
+               t2 = nint(marks(int(n())))
+               dx = n() * s
+
+               factor = n() * size(wave) / (t2 - t1 - 1)
+
+               allocate(work(tones%channels, t2 - t1))
+
+               do i = 0, t2 - t1 - 1
+                  work(:, 1 + i) = mel(:, t1 + 1 + i &
+                     + nint(dx * wave(modulo(nint(i * factor), size(wave)))))
+               end do
+
+               mel(:, t1 + 1:t2) = mel(:, t1 + 1:t2) + work
+
+               deallocate(work)
 
             case ('none')
                exit

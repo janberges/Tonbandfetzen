@@ -33,21 +33,22 @@ program stack
       s%rate     = max(s%rate,     p(i)%rate)
    end do
 
-   allocate(s%sound(0:s%channels - 1, 0:s%points - 1))
-   allocate(  sound(0:s%channels - 1, 0:s%points - 1))
+   allocate(s%sound(s%channels, s%points))
+   allocate(  sound(s%channels, s%points))
 
    sound(:, :) = 0.0_dp
 
    do i = 1, n - 1
       do c = 1, s%channels
          do t = 1, s%points
-            sound(c, t) = sound(c, t) + p(i)%amplitude &
-               * p(i)%sound(modulo(c, p(i)%channels), modulo(t, p(i)%points))
+            sound(c, t) = sound(c, t) + p(i)%amplitude * p(i)%sound( &
+               1_i2 + modulo(c - 1_i2, p(i)%channels), &
+               1_i2 + modulo(t - 1_i2, p(i)%points))
          end do
       end do
    end do
 
-   sound(:, :) = sound / i2max
+   sound = sound / i2max
 
    if (s%points .gt. 0) then
       s%amplitude = maxval(abs(sound))

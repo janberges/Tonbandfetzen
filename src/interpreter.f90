@@ -272,8 +272,11 @@ contains
             case ('X')
                call random_number(random)
                random = 1.0_dp - 2.0_dp * random
-               A4 = A4 * 2.0_dp ** (random * n() / steps)
-               f0 = A4; fi = f0; f = fi
+               random = 2.0_dp ** (random * n() / steps)
+               A4 = A4 * random
+               f0 = f0 * random
+               fi = fi * random
+               f  = f  * random
 
             case ('#')
                steps = nint(n())

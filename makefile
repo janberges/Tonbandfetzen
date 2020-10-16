@@ -34,7 +34,7 @@ bin/aiff2riff: build/aiff.o build/aiff2riff.o build/constants.o build/extended.o
 bin/harmonics: build/constants.o build/harmonics.o build/intervals.o build/io.o build/samples.o build/spectra.o
 bin/inspect: build/aiff.o build/constants.o build/extended.o build/inspect.o build/io.o build/riff.o
 bin/mel: build/constants.o build/extended.o build/interpreter.o build/intervals.o build/io.o build/mel.o build/rationals.o build/riff.o build/samples.o build/search.o
-bin/repeat: build/constants.o build/extended.o build/io.o build/paths.o build/repeat.o build/riff.o
+bin/repeat: build/constants.o build/extended.o build/io.o build/paths.o build/rationals.o build/repeat.o build/riff.o
 bin/riff2aiff: build/aiff.o build/constants.o build/extended.o build/io.o build/riff.o build/riff2aiff.o
 bin/stack: build/constants.o build/extended.o build/io.o build/riff.o build/stack.o
 bin/stick: build/constants.o build/extended.o build/io.o build/riff.o build/stick.o
@@ -49,7 +49,7 @@ build/interpreter.o: build/constants.o build/io.o build/rationals.o build/riff.o
 build/intervals.o: build/constants.o
 build/mel.o: build/constants.o build/interpreter.o build/io.o build/riff.o
 build/rationals.o: build/constants.o
-build/repeat.o: build/constants.o build/io.o build/paths.o build/riff.o
+build/repeat.o: build/constants.o build/io.o build/paths.o build/rationals.o build/riff.o
 build/riff.o: build/constants.o build/extended.o
 build/riff2aiff.o: build/aiff.o build/constants.o build/io.o build/riff.o
 build/samples.o: build/constants.o build/intervals.o

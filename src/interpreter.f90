@@ -19,8 +19,8 @@ contains
       character(*), parameter :: &
          numeral = '0123456789.:', &
          lexical = 'abcdefghijklmnopqrstuvwxyz', &
-         special = '~"`ABCDEFGNSZWPRI=-+&?!%[]\/><()_^,;{}$*|@#MJX''', &
-         initial = special(:26)
+         special = '~"`ABCDEFGNSZWPR=-+&?!%[]\/><()_^,;{}$*|@#MIJX''', &
+         initial = special(:25)
 
       character(:), allocatable :: symbol, word ! special/lexical string
 

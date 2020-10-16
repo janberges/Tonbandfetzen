@@ -13,7 +13,7 @@ contains
       character(*), intent(in) :: what, how
 
       select case (what)
-         case ('loop')
+         case ('wave')
             select case (how)
                case ('harmonic')
                   call interval(x, 0.0_dp, 2.0_dp * pi, 1)
@@ -50,6 +50,11 @@ contains
                case ('random')
                   call random_number(x)
                   x = 2.0_dp * x - 1.0_dp
+
+               case default
+                  write (*, "('Error: unknown wave sample ''', A, '''.')") how
+                  write (*, "('See ''man mel'' for list of samples.')")
+                  stop
             end select
 
          case ('fade')
@@ -84,6 +89,11 @@ contains
                case ('cubic')
                   call interval(x, 0.0_dp, 1.0_dp, 0)
                   x = 3.0_dp * x ** 2 - 2.0_dp * x ** 2
+
+               case default
+                  write (*, "('Error: unknown fade sample ''', A, '''.')") how
+                  write (*, "('See ''man mel'' for list of samples.')")
+                  stop
             end select
       end select
    end subroutine sample

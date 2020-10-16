@@ -109,7 +109,7 @@ contains
 
       s = tones%rate
 
-      if (todo(1)) call load(wave, 'loop', 'circular', nint(1.0_dp * s))
+      if (todo(1)) call load(wave, 'wave', 'circular', nint(1.0_dp * s))
       if (todo(2)) call load(rise, 'fade', 'circular', nint(0.1_dp * s))
       if (todo(3)) call load(fall, 'fade', 'circular', nint(0.1_dp * s))
 
@@ -258,7 +258,7 @@ contains
                end if
 
                select case (symbol)
-                  case ('~'); call load(wave, 'loop', word, i)
+                  case ('~'); call load(wave, 'wave', word, i)
                   case ('S'); call load(rise, 'fade', word, i)
                   case ('Z'); call load(fall, 'fade', word, i)
                   case ('N'); call load(rise, 'fade', word, i)

@@ -83,8 +83,6 @@ contains
 
       real(dp) :: random, factor
 
-      counter(:) = 0
-
       tones%rate = 44100.0_dp
       tones%channels = 2
 
@@ -125,6 +123,8 @@ contains
       cmax = c
 
       call reset
+      marks = 0
+      counter = 0
 
       do
          symbol = next(special)
@@ -216,6 +216,8 @@ contains
       c = 0
 
       call reset
+      marks = 0
+      counter = 0
 
       do
          symbol = next(special)

@@ -6,7 +6,7 @@ module search
 
    character(:), allocatable :: sequence
 
-   integer, save :: last = 0, marks(0:99)
+   integer, save :: last = 0, marks(0:99) = 0
 
 contains
 
@@ -20,6 +20,7 @@ contains
 
       subroutine reset
          last = 0
+         marks = 0
       end subroutine reset
 
       function next(set)

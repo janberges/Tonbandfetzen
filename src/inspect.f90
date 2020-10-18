@@ -2,6 +2,7 @@ program inspect
    use aiff
    use constants
    use io
+   use paths
    use riff
    implicit none
 
@@ -16,11 +17,17 @@ program inspect
 
    path = command_argument(1)
 
-   if (path(len(path) - 3:) .eq. '.aif') then
-      call read_aiff(path, s)
-   else
-      call read_riff(path, s)
-   end if
+   select case(extension(path))
+      case ('aiff', 'aif')
+         call read_aiff(path, s)
+
+      case ('wave', 'wav')
+         call read_riff(path, s)
+
+      case default
+         write (*, "('Error: unknown filename extension.')")
+         stop
+   end select
 
    write (*, "('number of channels: ', I0)") s%channels
    write (*, "('number of sample points: ', I0)") s%points

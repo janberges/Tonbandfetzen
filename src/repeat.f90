@@ -1,7 +1,6 @@
 program repeat
    use constants
    use io
-   use paths
    use rationals
    use riff
    implicit none

@@ -2,12 +2,12 @@ module paths
    implicit none
    private
 
-   public :: stem
+   public :: extension
 
 contains
 
-   function stem(path)
-      character(:), allocatable :: stem
+   function extension(path)
+      character(:), allocatable :: extension
 
       character(*), intent(in) :: path
 
@@ -17,9 +17,9 @@ contains
       slash = scan(path, '/\:', back=.true.)
 
       if (dot .gt. slash) then
-         stem = path(:dot - 1)
+         extension = path(dot + 1:)
       else
-         stem = path
+         extension = ''
       end if
-   end function stem
+   end function extension
 end module paths

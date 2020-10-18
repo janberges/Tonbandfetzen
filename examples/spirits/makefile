@@ -1,4 +1,5 @@
 .PHONY: all clean
+.PRECIOUS: %.mel
 
 all: spirits.wav
 

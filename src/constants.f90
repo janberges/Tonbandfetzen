@@ -1,12 +1,12 @@
 module constants
-   use, intrinsic :: iso_fortran_env, only: int16, int32, iostat_end
+   use, intrinsic :: iso_fortran_env, only: int8, int16, int32, iostat_end
    implicit none
    private
 
-   public :: dp, i2, i4, i2max, eof, pi, audio
+   public :: dp, i1, i2, i4, i2max, eof, pi, audio
 
    integer, parameter :: dp = selected_real_kind(14, 300)
-   integer, parameter :: i2 = int16, i4 = int32
+   integer, parameter :: i1 = int8, i2 = int16, i4 = int32
    integer, parameter :: i2max = 2 ** 15 - 1
    integer, parameter :: eof = iostat_end
 

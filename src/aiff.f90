@@ -6,6 +6,10 @@ module aiff
 
    public :: read_aiff, write_aiff
 
+   interface re
+      module procedure reverse_bytes_i2, reverse_bytes_i4
+   end interface re
+
 contains
 
    subroutine read_aiff(file, s)
@@ -21,8 +25,7 @@ contains
       integer(i2) :: sampleSize
 
       open(unit, file=file, action='read', status='old', &
-         form='unformatted', access='stream', iostat=stat, &
-         convert='big_endian')
+         form='unformatted', access='stream', iostat=stat)
 
       if (stat .ne. 0) then
          write (*, "('Error reading file ''', A, '''.')") file
@@ -33,13 +36,19 @@ contains
          read (unit, iostat=stat) ckID, ckSize
          if (stat .eq. eof) exit
 
+         ckSize = re(ckSize)
+
          select case (ckID)
             case ('FORM')
                read (unit) formType
 
             case ('COMM')
                read (unit) s%channels, s%points, sampleSize, extended
-               s%rate = decode(extended)
+
+               s%channels = re(s%channels)
+               s%points   = re(s%points)
+               sampleSize = re(sampleSize)
+               s%rate     = decode(extended)
 
                if (sampleSize .ne. 16_i2) then
                   write (*, "('Error: only 16 bits supported')")
@@ -49,6 +58,10 @@ contains
             case ('SSND')
                allocate(s%sound(s%channels, s%points))
                read (unit) offset, blockSize, s%sound
+
+               offset    = re(offset)
+               blockSize = re(blockSize)
+               s%sound   = re(s%sound)
 
             case ('APPL')
                read (unit) extended
@@ -84,26 +97,45 @@ contains
       end if
 
       open(unit, file=file, action='write', status='replace', &
-         form='unformatted', access='stream', iostat=stat, &
-         convert='big_endian')
+         form='unformatted', access='stream', iostat=stat)
 
       if (stat .ne. 0) then
          write (*, "('Error writing file ''', A, '''.')") file
          stop
       end if
 
-      write (unit) 'FORM', formSize
+      write (unit) 'FORM', re(formSize)
       write (unit) 'AIFF'
-      write (unit) 'COMM', commSize
-      write (unit) s%channels, s%points, sampleSize, encode(s%rate)
-      write (unit) 'SSND', ssndSize
-      write (unit) offset, blockSize, s%sound
+      write (unit) 'COMM', re(commSize)
+      write (unit) re(s%channels), re(s%points), re(sampleSize), encode(s%rate)
+      write (unit) 'SSND', re(ssndSize)
+      write (unit) re(offset), re(blockSize), re(s%sound)
 
       if (s%amplitude .ne. 1.0_dp) then
-         write (unit) 'APPL', applSize
+         write (unit) 'APPL', re(applSize)
          write (unit) encode(s%amplitude)
       end if
 
       close(unit)
    end subroutine write_aiff
+
+   elemental function reverse_bytes_i2(original) result(reversed)
+      integer(i2), intent(in) :: original
+      integer(i2) :: reversed
+      integer(i1) :: bytes(2)
+
+      bytes = transfer(original, bytes)
+      bytes = bytes(2:1:-1)
+      reversed = transfer(bytes, reversed)
+   end function reverse_bytes_i2
+
+   elemental function reverse_bytes_i4(original) result(reversed)
+      integer(i4), intent(in) :: original
+      integer(i4) :: reversed
+      integer(i1) :: bytes(4)
+
+      bytes = transfer(original, bytes)
+      bytes = bytes(4:1:-1)
+      reversed = transfer(bytes, reversed)
+   end function reverse_bytes_i4
 end module aiff

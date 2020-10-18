@@ -5,6 +5,7 @@ program stick
    implicit none
 
    integer :: i, n, offset
+   integer(i2) :: c
    type(audio), allocatable :: p(:)
    type(audio) :: s
 
@@ -26,13 +27,9 @@ program stick
    do i = 1, n - 1
       call read_riff(command_argument(i), p(i))
 
-      if (p(i)%channels .ne. 2) then
-         write (*, "('ERROR: only two channels supported')")
-         stop
-      end if
-
       s%points = s%points + p(i)%points
 
+      s%channels  = max(s%channels,  p(i)%channels)
       s%amplitude = max(s%amplitude, p(i)%amplitude)
       s%rate      = max(s%rate,      p(i)%rate)
    end do
@@ -46,7 +43,10 @@ program stick
          p(i)%sound = int(p(i)%sound * p(i)%amplitude / s%amplitude, i2)
       end if
 
-      s%sound(:, offset + 1:offset + p(i)%points) = p(i)%sound
+      do c = 1, s%channels
+         s%sound(c, offset + 1:offset + p(i)%points) &
+            = p(i)%sound(1_i2 + modulo(c - 1_i2, p(i)%channels), :)
+      end do
 
       offset = offset + p(i)%points
    end do

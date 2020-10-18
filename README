@@ -1,18 +1,45 @@
-T o n b a n d f e t z e n
+# Tonbandfetzen
 
 Tonbandfetzen is a collection of command-line tools that allow you to compose
 music based on audio fragments generated from plain text input.
 
-
-I n s t a l l a t i o n
-
-Simply run 'make' and add bin/ to your PATH. You need a recent version of the
-GNU Fortran compiler.
-
-
-U s a g e
+## Usage
 
 Different task are spread across separate executables, which communicate via
 files in the Waveform Audio File Format (.wav). Hence, the composition process
 can be controlled using build-automation software, allowing for partial updates
 and parallel execution (-j).
+
+## Installation
+
+You will need a recent version of the GNU Fortran compiler. For some parts,
+Python (guitar tablatures) and eSpeak (example) are required additionally.
+Using APT, these prerequisites be installed as follows:
+
+    sudo apt install gfortran python3 espeak
+
+To compile the binaries, you can use the provided makefile:
+
+    cd /path/to/tonbandfetzen
+    make
+
+To make the tools accessible, add the following line to your .bashrc:
+
+    export PATH=/path/to/tonbandfetzen/bin:$PATH
+
+## Documentation
+
+Please have a look at the examples. For example:
+
+    cd examples/freedom
+    make -j 2
+    aplay freedom.wav
+
+There is also a man page for each tool. For example:
+
+    man doc/man1/mel.1
+
+To make the documentation accessible, add the following lines to your .bashrc:
+
+    export MANPATH=/path/to/tonbandfetzen/doc:$MANPATH
+    export MANPATH=/path/to/tonbandfetzen/doc/man1:$MANPATH

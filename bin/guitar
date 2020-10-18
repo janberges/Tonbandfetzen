@@ -8,19 +8,39 @@ if len(sys.argv) != 3:
     print("See 'man guitar' for more information.")
     raise SystemExit
 
+first = True
+
 with open(sys.argv[1], 'r') as gtr, open(sys.argv[2], 'w') as mel:
     for line in gtr:
         if line.count('|') > 1:
-            for block in line.split('|'):
-                block = re.sub(r' +', '', block)
-                block = re.sub(r'(^|-|~)([\d.:]+)(?=$|-|~)', lambda match:
-                    match.group(1) + '+' +
-                    match.group(2) + '~' * len(match.group(2)), block)
+            if first:
+                mel.write('M0')
+                first = False
+            else:
+                mel.write('W0')
+
+            blocks = line.split('|')
+
+            mel.write(blocks[0])
+
+            for block in blocks[1:-1]:
+                block = re.sub(r'[^-~]+', lambda match:
+                    match.group() + '~' * len(match.group()), block)
+
+                block = re.sub(r'(^|-|~)([\d.:]+)', lambda match:
+                    '+'.join(match.groups()), block)
+
                 beats = block.count('-') + block.count('~')
+
                 block = re.sub(r'-+', lambda match:
                     '"%d:%d' % (len(match.group()), beats), block)
+
                 block = re.sub(r'~+', lambda match:
                     "'%d:%d" % (len(match.group()), beats), block)
+
                 mel.write(block)
+
+            mel.write(blocks[-1])
         else:
             mel.write(line)
+            first = True

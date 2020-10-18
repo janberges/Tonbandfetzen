@@ -1,7 +1,18 @@
 # Tonbandfetzen
 
 Tonbandfetzen is a collection of command-line tools that allow you to compose
-music based on audio fragments generated from plain text input.
+music based on audio fragments generated from plain text input. It contains:
+
+* `mel` - generate sound fragments from plain text
+* `guitar` - read guitar tablature
+* `stick` - concatenate audio data
+* `stack` - superimpose audio data
+* `stretch` - rescale audio data
+* `repeat` - loop audio data
+* `harmonics` - show spectra of wave samples
+* `inspect` - show information on audio file
+* `riff2aiff` - convert .wav(e) into .aif(f) files
+* `aiff2riff` - convert .aif(f) into .wav(e) files
 
 ## Usage
 

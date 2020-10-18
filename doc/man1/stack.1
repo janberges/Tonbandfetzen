@@ -1,0 +1,16 @@
+.\" Man page for the command stack of the Tonbandfetzen tool box
+.TH STACK 1 2020 "Jan Berges" "Tonbandfetzen Manual"
+.SH NAME
+stack \- superimpose audio data
+.SH SYNOPSIS
+.BI stack
+.RI [ infile " ...]"
+.IR outfile
+.SH DESCRIPTION
+.PP
+Superimpose the audio data from the given
+.IR infile s
+and store the result in
+.IR outfile .
+Shorter data (with respect to both the number of channels and sample points) is periodically repeated.
+All files must be in the WAVE format.

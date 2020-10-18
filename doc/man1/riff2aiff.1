@@ -1,0 +1,15 @@
+.\" Man page for the command riff2aiff of the Tonbandfetzen tool box
+.TH RIFF2AIFF 1 2020 "Jan Berges" "Tonbandfetzen Manual"
+.SH NAME
+riff2aiff \- convert .wav(e) into .aif(f) files
+.SH SYNOPSIS
+.BI riff2aiff
+.IR infile
+.IR outfile
+.SH DESCRIPTION
+.PP
+Convert
+.IR infile
+in the Waveform Audio File Format (RIFF/WAVE, developed by IBM and Microsoft) into
+.IR outfile
+in the Audio Interchange File Format (AIFF, developed by Apple). Both store uncompressed audio data in a chunk-based container format. The main difference is that WAVE and AIFF employ the little-endian and big-endian byte order, respectively.

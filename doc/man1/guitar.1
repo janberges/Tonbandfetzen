@@ -1,0 +1,47 @@
+.\" Man page for the command guitar of the Tonbandfetzen tool box
+.TH GUITAR 1 2020 "Jan Berges" "Tonbandfetzen Manual"
+.SH NAME
+guitar \- read guitar tablature
+.SH SYNOPSIS
+.BI guitar
+.IR infile
+.IR outfile
+.SH DESCRIPTION
+.PP
+Preprocess input for the program
+.BR mel
+to allow for guitar tablatures.
+.SH SYNTAX
+The syntax of
+.IR infile
+is as described in
+.BR mel (1),
+with the following exceptions:
+If a line of contains more than one vertical bar
+.RB ( | ),
+it is interpreted as guitar tablature.
+Then, everything between two
+.BR | s
+represents one bar/measure.
+Here, the commands
+.BR | \fIn\fR,
+.BR - \fIn\fR,
+and
+.BI ~ n
+cannot be applied as usual and the plus
+.RB ( + )
+of the
+.BI + n
+command can be omitted.
+The bar duration, defined beforehand via the
+.BI | n
+command, is evenly distributed among the enclosed characters.
+The hyphen-minus
+.RB ( - )
+represents a string at rest (a pause), all other characters, in particular the tilde
+.RB ( ~ ),
+represent a vibrating string (sound is played), in addition to their actual meanings.
+Tablature lines that are not separated by an empty line start at the same position in time.
+This is realized via the
+.BR M0
+mark, which shall not be used manually.

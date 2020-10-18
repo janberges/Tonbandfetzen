@@ -1,0 +1,23 @@
+.\" Man page for the command repeat of the Tonbandfetzen tool box
+.TH REPEAT 1 2020 "Jan Berges" "Tonbandfetzen Manual"
+.SH NAME
+repeat \- loop audio data
+.SH SYNOPSIS
+.BI repeat
+.IR count
+.IR infile
+.IR outfile
+.SH DESCRIPTION
+.PP
+Repeat the audio data in
+.IR infile
+.IR count
+times and store the result in
+.IR outfile .
+Fractional
+.IR count s
+are permitted.
+In this case, negative
+.IR count s
+put the incomplete part in the beginning.
+All files must be in the WAVE format.

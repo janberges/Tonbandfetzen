@@ -12,7 +12,7 @@ program harmonics
    complex(dp) :: spectrum(nmax)
 
    if (command_argument_count() .ne. 1) then
-      write (*, "('Usage: harmonics <sample>')")
+      write (*, "('Usage: harmonics <label>')")
       write (*, "('See ''man harmonics'' for more information.')")
       stop
    end if

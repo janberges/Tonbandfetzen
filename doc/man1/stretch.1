@@ -1,0 +1,22 @@
+.\" Man page for the command stretch of the Tonbandfetzen tool box
+.TH STRETCH 1 2020 "Jan Berges" "Tonbandfetzen Manual"
+.SH NAME
+stretch \- rescale audio data
+.SH SYNOPSIS
+.BI stretch
+.IR factor
+.IR infile
+.IR outfile
+.SH DESCRIPTION
+.PP
+Speed up the audio data in
+.IR infile
+by the given
+.IR factor
+and store the result in
+.IR outfile .
+Fractional and negative
+.IR count s
+are permitted.
+In the latter case, the audio data is reversed.
+All files must be in the WAVE format.

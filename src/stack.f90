@@ -17,16 +17,10 @@ program stack
 
    n = command_argument_count()
 
-   if (n .eq. 0) then
-      write (*, "('Usage: stack [<infile> ...] <outfile>')")
-      write (*, "('See ''man stack'' for more information.')")
-      stop
-   end if
-
    allocate(p(n - 1))
 
    do i = 1, n - 1
-      call read_riff(command_argument(i), p(i))
+      call read_riff(command_argument(i, '/dev/stdin'), p(i))
 
       s%channels = max(s%channels, p(i)%channels)
       s%points   = max(s%points,   p(i)%points)
@@ -55,5 +49,5 @@ program stack
       s%sound = nint(i2max / s%amplitude * sound, i2)
    end if
 
-   call write_riff(command_argument(n), s)
+   call write_riff(command_argument(-1, '/dev/stdout'), s)
 end program stack

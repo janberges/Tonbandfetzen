@@ -444,7 +444,7 @@ contains
             stop
          end if
 
-         call read_riff(command_argument(i), s)
+         call read_riff(command_argument(i, '/dev/stdin'), s)
 
          allocate(x(0:s%points - 1))
 

@@ -4,9 +4,9 @@
 repeat \- loop audio data
 .SH SYNOPSIS
 .BI repeat
-.IR count
-.IR infile
-.IR outfile
+.RI [ count
+.RI [ infile
+.RI [ outfile ]]]
 .SH DESCRIPTION
 .PP
 Repeat the audio data in
@@ -26,3 +26,17 @@ Negative fractional
 .IR count s
 put the incomplete part in the beginning.
 All files must be in the WAVE format.
+.IR count
+defaults to
+.BR 2 .
+.IR infile
+and
+.IR outfile
+default to
+.BR /dev/stdin
+and
+.BR /dev/stdout ,
+respectively.
+The dash
+.RB ( - )
+is a shorthand for the default value.

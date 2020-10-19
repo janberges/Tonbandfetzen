@@ -4,13 +4,15 @@
 inspect \- show information on audio file
 .SH SYNOPSIS
 .BI inspect
-.IR file
+.RI [ file ]
 .SH DESCRIPTION
 .PP
 Show basic information about
-.IR file .
+.IR file ,
+which defaults to
+.BR /dev/stdin .
 Only WAVE and AIFF files are supported.
 The format is inferred from the extension
-.RB ( .wav / .wave
+.RB ( .wav / .wave / none
 or
 .BR .aif / .aiff ).

@@ -9,15 +9,9 @@ program stretch
    real(dp) :: t1, dt, scaling, factor
    type(audio) :: s0, s
 
-   if (command_argument_count() .ne. 3) then
-      write (*, "('Usage: stretch <factor> <infile> <outfile>')")
-      write (*, "('See ''man stretch'' for more information.')")
-      stop
-   end if
+   factor = rational(command_argument(1, '-1'))
 
-   factor = rational(command_argument(1))
-
-   call read_riff(command_argument(2), s0)
+   call read_riff(command_argument(2, '/dev/stdin'), s0)
 
    s%channels  = s0%channels
    s%points    = nint(abs(factor) * s0%points)
@@ -42,5 +36,5 @@ program stretch
 
    if (factor .lt. 0.0_dp) s%sound(:, :) = s%sound(:, s%points:1:-1)
 
-   call write_riff(command_argument(3), s)
+   call write_riff(command_argument(3, '/dev/stdout'), s)
 end program stretch

@@ -4,9 +4,9 @@
 stretch \- rescale audio data
 .SH SYNOPSIS
 .BI stretch
-.IR factor
-.IR infile
-.IR outfile
+.RI [ factor
+.RI [ infile
+.RI [ outfile ]]]
 .SH DESCRIPTION
 .PP
 Speed up the audio data in
@@ -27,3 +27,17 @@ For negative
 .IR factor s,
 the audio data is reversed.
 All files must be in the WAVE format.
+.IR factor
+defaults to
+.BR -1 .
+.IR infile
+and
+.IR outfile
+default to
+.BR /dev/stdin
+and
+.BR /dev/stdout ,
+respectively.
+The dash
+.RB ( - )
+is a shorthand for the default value.

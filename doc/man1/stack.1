@@ -4,8 +4,8 @@
 stack \- superimpose audio data
 .SH SYNOPSIS
 .BI stack
-.RI [ infile " ...]"
-.IR outfile
+.RI [[ infile " ...]"
+.IR outfile ]
 .SH DESCRIPTION
 .PP
 Superimpose the audio data from the given
@@ -14,3 +14,15 @@ and store the result in
 .IR outfile .
 Shorter data (with respect to both the number of channels and sample points) is periodically repeated.
 All files must be in the WAVE format.
+The
+.IR infile s
+and
+.IR outfile
+default to
+.BR /dev/stdin
+and
+.BR /dev/stdout ,
+respectively.
+The dash
+.RB ( - )
+is a shorthand for the default value.

@@ -4,12 +4,25 @@
 aiff2riff \- convert .aif(f) into .wav(e) files
 .SH SYNOPSIS
 .BI aiff2riff
-.IR infile
-.IR outfile
+.RI [[ infile ]
+.IR outfile ]
 .SH DESCRIPTION
 .PP
 Convert
 .IR infile
 in the Audio Interchange File Format (AIFF, developed by Apple) into
 .IR outfile
-in the Waveform Audio File Format (RIFF/WAVE, developed by IBM and Microsoft). Both store uncompressed audio data in a chunk-based container format. The main difference is that AIFF and WAVE employ the big-endian and little-endian byte order, respectively.
+in the Waveform Audio File Format (RIFF/WAVE, developed by IBM and Microsoft).
+Both store uncompressed audio data in a chunk-based container format.
+The main difference is that AIFF and WAVE employ the big-endian and little-endian byte order, respectively.
+.IR infile
+and
+.IR outfile
+default to
+.BR /dev/stdin
+and
+.BR /dev/stdout ,
+respectively.
+The dash
+.RB ( - )
+is a shorthand for the default value.

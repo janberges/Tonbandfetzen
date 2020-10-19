@@ -36,22 +36,29 @@ contains
       close(unit)
    end function slurp
 
-   function command_argument(i) result(argument)
-      character(:), allocatable :: argument
+   function command_argument(num, def) result(arg)
+      character(:), allocatable :: arg
 
-      integer, intent(in) :: i
+      integer, intent(in) :: num
+      character(*), intent(in) :: def
 
-      integer :: size, stat
+      integer :: i, n, size
 
-      call get_command_argument(i, length=size, status=stat)
+      i = num
+      n = command_argument_count()
 
-      if (stat .ne. 0) then
-         write (stderr, "('Error: argument ', I0, ' missing.')") i
-         stop
+      if (i .lt. 0) i = n + i + 1
+
+      if (i .lt. 1 .or. i .gt. n) then
+         arg = def
+      else
+         call get_command_argument(i, length=size)
+
+         allocate(character(size) :: arg)
+
+         call get_command_argument(i, value=arg)
+
+         if (arg .eq. '-') arg = def
       end if
-
-      allocate(character(size) :: argument)
-
-      call get_command_argument(i, value=argument)
    end function command_argument
 end module io

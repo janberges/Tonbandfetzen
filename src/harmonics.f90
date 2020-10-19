@@ -11,13 +11,7 @@ program harmonics
    real(dp) :: wave(2 * nmax), amplitude, phase
    complex(dp) :: spectrum(nmax)
 
-   if (command_argument_count() .ne. 1) then
-      write (*, "('Usage: harmonics <label>')")
-      write (*, "('See ''man harmonics'' for more information.')")
-      stop
-   end if
-
-   call sample(wave, 'wave', command_argument(1))
+   call sample(wave, 'wave', command_argument(1, 'circular'))
 
    call fourier(wave, spectrum)
 

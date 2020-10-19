@@ -16,16 +16,10 @@ program stick
 
    n = command_argument_count()
 
-   if (n .eq. 0) then
-      write (*, "('Usage: stick [<infile> ...] <outfile>')")
-      write (*, "('See ''man stick'' for more information.')")
-      stop
-   end if
-
    allocate(p(n - 1))
 
    do i = 1, n - 1
-      call read_riff(command_argument(i), p(i))
+      call read_riff(command_argument(i, '/dev/stdin'), p(i))
 
       s%points = s%points + p(i)%points
 
@@ -51,5 +45,5 @@ program stick
       offset = offset + p(i)%points
    end do
 
-   call write_riff(command_argument(n), s)
+   call write_riff(command_argument(-1, '/dev/stdout'), s)
 end program stick

@@ -9,19 +9,13 @@ program inspect
    character(:), allocatable :: path
    type(audio) :: s
 
-   if (command_argument_count() .ne. 1) then
-      write (*, "('Usage: inspect <file>')")
-      write (*, "('See ''man inspect'' for more information.')")
-      stop
-   end if
-
-   path = command_argument(1)
+   path = command_argument(1, '/dev/stdin')
 
    select case(extension(path))
       case ('aiff', 'aif')
          call read_aiff(path, s)
 
-      case ('wave', 'wav')
+      case ('wave', 'wav', '')
          call read_riff(path, s)
 
       case default

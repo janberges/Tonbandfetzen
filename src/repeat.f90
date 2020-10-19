@@ -10,15 +10,9 @@ program repeat
    type(audio) :: s1
    type(audio) :: s
 
-   if (command_argument_count() .ne. 3) then
-      write (*, "('Usage: repeat <count> <infile> <outfile>')")
-      write (*, "('See ''man repeat'' for more information.')")
-      stop
-   end if
+   factor = rational(command_argument(1, '2'))
 
-   factor = rational(command_argument(1))
-
-   call read_riff(command_argument(2), s1)
+   call read_riff(command_argument(2, '/dev/stdin'), s1)
 
    s%channels  = s1%channels
    s%points    = nint(abs(factor) * s1%points)
@@ -38,5 +32,5 @@ program repeat
       end do
    end if
 
-   call write_riff(command_argument(3), s)
+   call write_riff(command_argument(3, '/dev/stdout'), s)
 end program repeat

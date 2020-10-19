@@ -21,6 +21,10 @@ files in the Waveform Audio File Format (.wav). Hence, the composition process
 can be controlled using build-automation software, allowing for partial updates
 and parallel execution (-j).
 
+At the heart of this toolbox, the program `mel` converts text into audio:
+
+    echo "M0C4'1W0+4'1W0+7'1" | mel | aplay
+
 ## Installation
 
 You will need a recent version of the GNU Fortran compiler. For some parts,

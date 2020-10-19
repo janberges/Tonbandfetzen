@@ -15,8 +15,15 @@ by the given
 .IR factor
 and store the result in
 .IR outfile .
-Fractional and negative
-.IR count s
+Fractional
+.IR factor s
+like
+.BR 0.5 ,
+.BR 1/3 ,
+or
+.BR 1:4
 are permitted.
-In the latter case, the audio data is reversed.
+For negative
+.IR factor s,
+the audio data is reversed.
 All files must be in the WAVE format.

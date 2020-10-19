@@ -4,13 +4,24 @@
 guitar \- read guitar tablature
 .SH SYNOPSIS
 .BI guitar
-.IR infile
-.IR outfile
+.RI [ infile
+.RI [ outfile ]]
 .SH DESCRIPTION
 .PP
 Preprocess input for the program
 .BR mel
 to allow for guitar tablatures.
+.IR infile
+and
+.IR outfile
+default to
+.BR /dev/stdin
+and
+.BR /dev/stdout ,
+respectively.
+The dash
+.RB ( - )
+is a shorthand for the default value.
 .SH SYNTAX
 The syntax of
 .IR infile

@@ -3,14 +3,23 @@
 import re
 import sys
 
-if len(sys.argv) != 3:
-    print("Usage: guitar <infile> <outfile>")
-    print("See 'man guitar' for more information.")
-    raise SystemExit
+def arg(number, default):
+    try:
+        argument = sys.argv[number]
+    except:
+        argument = '-'
+
+    if argument == '-':
+        argument = default
+
+    return argument
 
 first = True
 
-with open(sys.argv[1], 'r') as gtr, open(sys.argv[2], 'w') as mel:
+infile  = arg(1, '/dev/stdin')
+outfile = arg(2, '/dev/stdout')
+
+with open(infile, 'r') as gtr, open(outfile, 'w') as mel:
     for line in gtr:
         if line.count('|') > 1:
             if first:

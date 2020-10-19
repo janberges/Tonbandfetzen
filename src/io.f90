@@ -13,7 +13,7 @@ contains
       character(*), intent(in) :: file
 
       integer, parameter :: unit = 16
-      integer :: size, stat
+      integer :: i, stat
 
       open(unit, file=file, action='read', status='old', &
          form='unformatted', access='stream', iostat=stat)
@@ -23,11 +23,15 @@ contains
          stop
       end if
 
-      inquire(unit, size=size)
+      allocate(character(1048576) :: content)
 
-      allocate(character(size) :: content)
-
-      read (unit) content
+      do i = 1, len(content)
+         read (unit, iostat=stat) content(i:i)
+         if (stat .eq. eof) then
+            content = content(1:i - 1)
+            exit
+         end if
+      end do
 
       close(unit)
    end function slurp

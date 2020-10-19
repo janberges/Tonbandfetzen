@@ -1,4 +1,5 @@
 module io
+   use constants
    implicit none
    private
 
@@ -18,7 +19,7 @@ contains
          form='unformatted', access='stream', iostat=stat)
 
       if (stat .ne. 0) then
-         write (*, "('Error reading file ''', A, '''.')") file
+         write (stderr, "('Error reading file ''', A, '''.')") file
          stop
       end if
 
@@ -41,7 +42,7 @@ contains
       call get_command_argument(i, length=size, status=stat)
 
       if (stat .ne. 0) then
-         write (*, "('Error: argument ', I0, ' missing.')") i
+         write (stderr, "('Error: argument ', I0, ' missing.')") i
          stop
       end if
 

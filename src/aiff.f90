@@ -28,7 +28,7 @@ contains
          form='unformatted', access='stream', iostat=stat)
 
       if (stat .ne. 0) then
-         write (*, "('Error reading file ''', A, '''.')") file
+         write (stderr, "('Error reading file ''', A, '''.')") file
          stop
       end if
 
@@ -51,7 +51,7 @@ contains
                s%rate     = decode(extended)
 
                if (sampleSize .ne. 16_i2) then
-                  write (*, "('Error: only 16 bits supported')")
+                  write (stderr, "('Error: only 16 bits supported')")
                   stop
                end if
 
@@ -100,7 +100,7 @@ contains
          form='unformatted', access='stream', iostat=stat)
 
       if (stat .ne. 0) then
-         write (*, "('Error writing file ''', A, '''.')") file
+         write (stderr, "('Error writing file ''', A, '''.')") file
          stop
       end if
 

@@ -439,6 +439,11 @@ contains
       type(audio) :: s
 
       if (how .eq. 'file') then
+         if (i .gt. command_argument_count() - 2) then
+            write (stderr, "('Error: file ', I0, ' missing.')") i
+            stop
+         end if
+
          call read_riff(command_argument(i), s)
 
          allocate(x(0:s%points - 1))

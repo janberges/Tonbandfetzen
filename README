@@ -32,7 +32,7 @@ Using APT, these prerequisites be installed as follows:
 To compile the binaries, you can use the provided makefile:
 
     cd /path/to/tonbandfetzen
-    make
+    make FC=gfortran FFLAGS=-O3
 
 To make the tools accessible, add the following line to your .bashrc:
 

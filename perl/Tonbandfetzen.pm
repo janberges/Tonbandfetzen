@@ -2,182 +2,62 @@
 
 # Tonbandfetzen
 # Jan Berges
-# August 15, 2013
+# October 20, 2013
 
-$| = 1;
+package Tonbandfetzen;
 
-$s   = 44100;    # second/sampleRate
-$c   = 2;        # numChannels
-$b   = 16;       # sampleSize
-$T   = $s / 2;   # beat duration
-$A4  = 440 / $s; # standard pitch
+use strict;
+use warnings;
 
-$pi  = 4 * atan2 1, 1;
-
-@p = samp("cub");              # single wave
-@a = samp("cubfade", $s / 20); # attack envelope
-@z = @a;                       # reversed release envelope
-
-sub mel {
-	print "mel";
-	die "\nerror: \@p is empty\n" unless @p;
-
-	my @i = (); # two-channel audio data
-	my %i = (); # attack indices
-
-	my $t = $T; # duration
-	my $p = 0;  # phase
-
-	my $F  = $A4; # frequency
-	my $Y  = 1;   # amplitude
-	my $X  = 1;   # r/l amplitudes quotient
-
-	my $f0 = $A4; # reference
-
-	my $F0 = $A4;
-	my $Y0 = 1; # attack values
-	my $X0 = 1;
-
-	my $ft = 1;
-	my $yt = 1; # duration-related growth factors
-	my $xt = 1;
-
-	my $fs = 1;
-	my $ys = 1; # second-related growth factors
-	my $xs = 1;
-
-	for (map /\S+/g, @_) { # separate command sequence
-		print " $_";
-
-		if (/~|[A-G]|-|\+|\?|!|\[|\]|=|\*/) { # attack
-			$F = $F0;
-			$Y = $Y0;
-			$X = $X0;
-			$i{$#i} = 1;
-			}
-
-		/([\d.]+):?([\d.]*)/;
-		my $n = $1 / ($2 or 1); # calculate fractional number
-
-		if (/~/) { # frequency declared explicitly
-			$F = $F0 = $f0 = $n / $s;
-			}
-		elsif (/([A-G])/) { # frequency declared via scientific pitch notation
-			$F = $F0 = $f0 = $A4 * 2 ** ($n - 4 + ({
-				C => -9,
-				D => -7,
-				E => -5,
-				F => -4,
-				G => -2,
-				A => 0,
-				B => 2,
-				}->{$1} + /\x23/) / 12);
-			}
-		# signed commands with numerical values in half tones or dB:
-		elsif ( /(-|\+)/) { $F  = $F0 = $f0 * 2 ** ({"-"  => -1, "+" => 1}->{$1} * $n / 12) }
-		elsif (/(\\|\/)/) { $ft =             2 ** ({"\\" => -1, "/" => 1}->{$1} * $n / 12) }
-		elsif ( /(_|\^)/) { $fs =             2 ** ({"_"  => -1, "^" => 1}->{$1} * $n / 12) }
-		elsif (/(\?|!)/ ) { $Y  = $Y0 =      10 ** ({"?"  => -1, "!" => 1}->{$1} * $n / 10) }
-		elsif ( /(>|<)/ ) { $yt =            10 ** ({">"  => -1, "<" => 1}->{$1} * $n / 10) }
-		elsif ( /(,|;)/ ) { $ys =            10 ** ({","  => -1, ";" => 1}->{$1} * $n / 10) }
-		elsif (/(\[|\])/) { $X  = $X0 =      10 ** ({"["  => -1, "]" => 1}->{$1} * $n / 10) }
-		elsif (/(\(|\))/) { $xt =            10 ** ({"("  => -1, ")" => 1}->{$1} * $n / 10) }
-		elsif (/(\{|\})/) { $xs =            10 ** ({"{"  => -1, "}" => 1}->{$1} * $n / 10) }
-		else { # create audio data
-			$t = round($n * $T) || $t;
-
-			print " (warning: non-integer duration rounded)" if $t != $n * $T;
-
-			if (/\*/) { # pause
-				push @i, 0, 0 for 1..$t;
-				}
-			else {
-				my $f = $ft ** (1 / $t) * $fs ** (1 / $s);
-				my $y = $yt ** (1 / $t) * $ys ** (1 / $s); # sampleFrame related growth factors
-				my $x = $xt ** (1 / $t) * $xs ** (1 / $s);
-
-				for (1..$t) {
-					my $r = $Y * $p[$p * @p % @p]; # displacement
-					my $R = atan2 $X, 1;           # angle
-
-					push @i, $r * cos $R, $r * sin $R; # l/r displacements
-
-					$p += $F;
-					$F *= $f;
-					$Y *= $y;
-					$X *= $x;
-					}
-				}
-			}
-		}
-
-	print "\n";
-	die "error: no data created\n" if !@i;
-
-	for my $j (keys %i) { # add attack and release envelopes
-		for my $c (0, 1) {
-			$i[($j + 2 * $_ + $c) % @i] *= $a[$_] for 0..$#a;
-			$i[($j - 2 * $_ + $c) % @i] *= $z[$_] for 0..$#z;
-			}
-		}
-
-	$c = 2;
-
-	\@i;
+BEGIN {
+	require Exporter;
+	our @ISA       = qw(Exporter);
+	our @EXPORT    = qw($b $c $s $T $A4 $pi @p @a @z take make mel stick stack fix fit cut in);
+	our @EXPORT_OK = qw(noise ext rex);
 	}
 
-sub stack {
-	print "stack\n";
+our $b  = 16;       # sampleSize
+our $c  = 2;        # numChannels
+our $s  = 44100;    # second/sampleRate
+our $T  = $s / 2;   # beat duration
+our $A4 = 440 / $s; # standard pitch
 
-	my $t = 0;
-	$t < $#$_ and $t = $#$_ for @_; # find maximum duration
+our $pi = 4 * atan2 1, 1;
 
-	my @i = ();
+our @p = map { $_ ** 3 - $_ }              in(-1, 1);          # single wave
+our @a = map { 3 * $_ ** 2 - 2 * $_ ** 3 } in( 0, 1, $s / 20); # attack envelope
+our @z = @a;                                                   # reversed release envelope
 
-	for my $i (grep @$_, @_) {
-		$i[$_] += $$i[$_ % @$i] for 0..$t; # superpose and repeat
-		}
+# export:
 
-	\@i;
-	}
+sub take {
+	status();
 
-sub stick {
-	print "stick\n";
+	my $n = shift;
+	my $i;
 
-	my @i = ();
-	push @i, @$_ for @_; # juxtapose
-
-	\@i;
-	}
-
-sub in {
-	my $n = shift; # name
-	my $i;         # data
-
-	print "in '$n'\n";
-
-	open D, $n or die "error: unable to read file\n";
+	open D, $n or warn "unable to read file\n" and return [];
 
 	seek D, 12, 0; # skip header
 
-	while (! eof D) { # chunkwise
+	while (! eof D) {
 		read D, my $C, 4; # ckID
 		read D, my $S, 4; # ckSize
 
 		$S = unpack "l>", $S;
 
-		if ($C eq "COMM") { # common chunk
+		if ($C eq "COMM") {
 			read D, $c, 2;  # numChannels
-			seek D, 4, 1;   # numSampleFrames
+			seek D, 4, 1;   # skip numSampleFrames
 			read D, $b, 2;  # sampleSize
 			read D, $s, 10; # sampleRate
 
-			$c = unpack "s>", $c;
 			$b = unpack "s>", $b;
+			$c = unpack "s>", $c;
 			$s = rex($s);
 			}
-		elsif ($C eq "SSND") {  # sound data chunk
-			seek D, 8, 1;       # skip offset and blockSize
+		elsif ($C eq "SSND") {
+			seek D, 8, 1;       # skip offset, blockSize
 			read D, $i, $S - 8; # soundData
 			}
 		else {
@@ -186,18 +66,17 @@ sub in {
 		}
 	close D;
 
-	[unpack $b > 16 ? "l>*" : $b > 8 ? "s>*" : "c*", $i]
+	[unpack $b > 16 ? "l>*" : $b > 8 ? "s>*" : "c*", $i];
 	}
 
-sub out {
-	my $n = shift; # name
-	my $i = shift; # data
+sub make {
+	status();
 
-	print "out '$n'\n";
-
+	my $n = shift;
+	my $i = shift;
 	my $j = pack $b > 16 ? "l>*" : $b > 8 ? "s>*" : "c*", @$i;
 
-	open D, ">", $n or die "error: unable to write file";
+	open D, ">", $n or warn "unable to write file\n" and return;
 	print D
 		"FORM", pack("l>", 76 + length $j), "AIFF",
 		"COMM", pack("(lsLs)>", 18, $c, @$i / $c, $b), ext($s),
@@ -205,34 +84,165 @@ sub out {
 	close D;
 	}
 
-sub fit {
-	print "fit\n";
+sub mel {
+	status();
 
-	my $i = shift; # data
-	my $t = shift; # desired duration
+	my $Fr = @p * $A4; # reference frequency
 
-	$t -= sgn($t) or return [map $$i[0], 1..$c];
+	my $F  = $Fr; # frequency
+	my $Y  = 1;   # amplitude
+	my $R  = 1;   # r/l amplitudes quotient
+
+	my $F0 = $F;
+	my $Y0 = $Y; # initial values
+	my $R0 = $R;
+
+	my $ft = 1;
+	my $yt = 1; # growth factors per $t
+	my $rt = 1;
+
+	my $fT = 1;
+	my $yT = 1; # growth factors per $s
+	my $rT = 1;
+
+	my %i = (); # attack indices
+
+	my $dt = 0; # duration error
+	my $p  = 0; # phase
+
+	my @y  = (); # displacements
+	my @r  = (); # r/l amplitudes quotients
+
+	for (map /\S+/g, @_) {
+		if (/~|[A-G]|-|\+|\?|!|\[|\]|=|\*/) {
+			$F = $F0;
+			$Y = $Y0;
+			$R = $R0;
+
+			$i{$#y} = 1;
+			}
+
+		/([\d.]+):?([\d.]*)/;
+		my $n = ($1 or 0) / ($2 or 1);
+
+		if (/~/) {
+			$F = $F0 = $Fr = @p * $n / $s || 1;
+			}
+		elsif (/([A-G])/) {
+			$F = $F0 = $Fr = @p * $A4 * 2 ** ($n - 4 + ({
+				C => -9,
+				D => -7,
+				E => -5,
+				F => -4,
+				G => -2,
+				A => 0,
+				B => 2,
+				}->{$1} + /#/) / 12);
+			}
+		elsif ( /(-|\+)/) { $F  = $F0 = $Fr * 2 ** ({"-"  => -1, "+" => 1}->{$1} * $n / 12) }
+		elsif (/(\\|\/)/) { $ft =             2 ** ({"\\" => -1, "/" => 1}->{$1} * $n / 12) }
+		elsif ( /(_|\^)/) { $fT =             2 ** ({"_"  => -1, "^" => 1}->{$1} * $n / 12) }
+		elsif (/(\?|!)/ ) { $Y  = $Y0 =      10 ** ({"?"  => -1, "!" => 1}->{$1} * $n / 10) }
+		elsif ( /(>|<)/ ) { $yt =            10 ** ({">"  => -1, "<" => 1}->{$1} * $n / 10) }
+		elsif ( /(,|;)/ ) { $yT =            10 ** ({","  => -1, ";" => 1}->{$1} * $n / 10) }
+		elsif (/(\[|\])/) { $R  = $R0 =      10 ** ({"["  => -1, "]" => 1}->{$1} * $n / 10) }
+		elsif (/(\(|\))/) { $rt =            10 ** ({"("  => -1, ")" => 1}->{$1} * $n / 10) }
+		elsif (/(\{|\})/) { $rT =            10 ** ({"{"  => -1, "}" => 1}->{$1} * $n / 10) }
+		elsif (! /=/) {
+			my $d = $n * $T + $dt; # exact duration
+			my $t = int $d + .5;   # rounded duration
+			  $dt = $d - $t;
+
+			$t and $T or next;
+
+			if (/\*/) {
+				for (1..$t) {
+					push @y, 0;
+					push @r, $R;
+					}
+				}
+			else {
+				my $f = $ft ** (1 / $t) * $fT ** (1 / $T);
+				my $y = $yt ** (1 / $t) * $yT ** (1 / $T); # growth factors per sampleFrame
+				my $r = $rt ** (1 / $t) * $rT ** (1 / $T);
+
+				$ft = $yt = $rt = 1;
+
+				for (1..$t) {
+					push @y, $Y * $p[$p % @p];
+					push @r, $R;
+
+					$p += $F;
+					$F *= $f;
+					$Y *= $y;
+					$R *= $r;
+					}
+				}
+			}
+		}
+
+	$dt and warn "output ", abs $dt / $s, " seconds too ", $dt > 0 ? "short" : "long", "\n";
+
+	@y or return \@y;
+
+	for my $i (keys %i) {
+		$y[($i + $_) % @y] *= $a[$_] for 0..$#a;
+		$y[($i - $_) % @y] *= $z[$_] for 0..$#z;
+		}
+
+	$c == 1 and return \@y;
 
 	my @i = ();
 
-	for ($t > 0 ? 0..$t : $t..0) {
-		my $j = floor($_ / $t * $#$i, $c);
-		push @i, $$i[$j++] for 1..$c;
+	my @e = map $_ / ($c - 1), 0..$c - 1;
+
+	for my $i (0..$#y) {
+		my @c = map $r[$i] ** $_, @e;
+
+		my $n = 0;
+		   $n += $_ ** 2 for @c;
+
+		$n and $y[$i] /= sqrt $n;
+
+		push @i, map $y[$i] * $_, @c;
+		}
+
+	\@i;
+	}
+
+sub stick {
+	status();
+
+	my @i = ();
+	push @i, @$_ for @_;
+
+	\@i;
+	}
+
+sub stack {
+	status();
+
+	my $t = 0;
+	$t < $#$_ and $t = $#$_ for @_;
+
+	my @i = ();
+	for my $i (grep @$_, @_) {
+		$i[$_] += $$i[$_ % @$i] for 0..$t;
 		}
 
 	\@i;
 	}
 
 sub fix {
-	print "fix\n";
+	status();
 
-	my $i = shift;                                                    # data
-	my $x = shift || ($b > 16 ? 0x7fffffff : $b > 8 ? 0x7fff : 0x7f); # desired displacement
+	my $i = shift;
+	my $x = shift || ($b > 16 ? 0x7fffffff : $b > 8 ? 0x7fff : 0x7f);
 
 	my $e = 0;
-	$e < abs and $e = abs for @$i; # find old maximum displacement
+	$e < abs and $e = abs for @$i;
 
-	die "error: all data zero\n" if !$e;
+	$e or return $i;
 
 	my $q = $x / $e;
 	$_ *= $q for @$i;
@@ -240,48 +250,73 @@ sub fix {
 	$i;
 	}
 
+sub fit {
+	status();
+
+	my  $i = shift;
+	my  $d = shift || 0;
+	my  $t = int $d + ($d <=> 0) / 2;
+	my $dt = abs($d) - abs($t);
+
+	$dt and warn "output ", abs $dt / $s, " seconds too ", $dt > 1 ? "short" : "long", "\n";
+
+	$t or return [];
+
+	my @i = ();
+	my $q = int(@$i / $c - 1) / ($t - ($t <=> 0) or 1);
+
+	for ($t > 0 ? 0..$t - 1 : $t + 1..0) {
+		my $j = $c * int $q * $_ + .5;
+		push @i, $$i[$j++] for 1..$c;
+		}
+
+	\@i;
+	}
+
 sub cut {
-	print "cut\n";
+	status();
 
-	my $i = shift; # data
-
+	my $i = shift;
 	my $j = 0;
 	my $k = $#$i;
 
-	$j++ while !$$i[$j] and $j < $k;
-	$k-- while !$$i[$k] and $j < $k;
+	$j++ while ! $$i[$j] and $j < $k;
+	$k-- while ! $$i[$k] and $j < $k;
 
-	[@$i[floor($j, $c)..ceil($k, $c)]];
+	[@$i[$c * int($j / $c)..$c * int($k / $c + 1) - 1]];
 	}
 
-sub samp {
-	my %t = (
-		har     => sub { sin(2 * $pi * shift) },
-		har3    => sub { sin(2 * $pi * shift) ** 3 },
-		lin     => sub { 2 / $pi * arcsin(sin(2 * $pi * shift)) },
-		cub     => sub { my $x = shift; (12 * $x ** 3 - 18 * $x ** 2 + 6 * $x) * sqrt(3) },
-		circ    => sub { my $x = 1 - 2 * shift; sgn($x) * sqrt(abs($x) - $x ** 2) },
-		noise   => sub { 1 - rand(2) },
-		linfade => sub { shift },
-		sinfade => sub { sin($pi / 2 * shift) },
-		harfade => sub { sin($pi / 2 * shift) ** 2 },
-		cubfade => sub { my $x = shift; 3 * $x ** 2 - 2 * $x ** 3 },
-		);
-
-	my $n =       shift  || return keys %t;
-	my $t = round(shift) || $s;
-
-	my @i = map $t{$n}($_ / $t), 0..$t;
-
-	wantarray ? @i : \@i;
-	}
-
-sub range {
-	my $a = shift;
-	my $b = shift;
-	my $n = int shift || $s;
+sub in {
+	my $a = shift || 0;
+	my $b = shift || 0;
+	my $n = shift || $s || return();
 	my $d = ($b - $a) / $n;
 	map $a + $d * $_, 1..$n;
+	}
+
+# export ok:
+
+sub noise {
+	status();
+
+	my $f = shift || 220;
+	my $i = shift || 12;
+	my $n = shift || 100;
+	my $d = shift || $s;
+	my $t = int $d + .5;
+
+	$d != $t and warn "output ", abs($d - $t) / $s, " seconds too ", $d > $t ? "short" : "long", "\n";
+
+	my @i = ();
+
+	for (1..$n) {
+		my $p = rand 2 * $pi;
+		my $w = 2 * $pi * $f * 2 ** ($i * (.5 - rand) / 12) / $s;
+		$i[$_] +=           $_  * sin($w *       $_  + $p)
+		       +  ($t - 1 - $_) * sin($w * ($t + $_) + $p) for 0..$t - 1;
+		}
+
+	fix(\@i, 1);
 	}
 
 sub ext {
@@ -321,54 +356,17 @@ sub rex {
 	$m * 2 ** $e * (pop @b ? -1 : 1);
 	}
 
-sub ceil {
-	my $n = shift || 0;
-	my $f = shift || 1;
-	$f * int $n / $f + ($n / $f > int $n / $f);
-	}
+# no export:
 
-sub round {
-	my $n = shift || 0;
-	my $f = shift || 1;
-	$f * int $n / $f + sgn($n) / 2;
-	}
+sub status {
+	my $l = 0;
+	my @f = ();
 
-sub floor {
-	my $n = shift || 0;
-	my $f = shift || 1;
-	$f * int $n / $f - ($n / $f < int $n / $f);
-	}
+	unshift @f, (caller ++$l)[3] =~ /(\w+)$/ while caller $l + 1;
 
-sub tan {
-	eval { sin($_[0]) / cos($_[0]) };
-	}
+	print "line ", join (" > ", (caller $l)[2], @f, @_), "\n";
 
-sub cot {
-	eval { cos($_[0]) / sin($_[0]) };
-	}
-
-sub arctan {
-	atan2($_[0], 1);
-	}
-
-sub arccot {
-	$pi / 2 - atan2($_[0], 1);
-	}
-
-sub arcsin {
-	sgn($_[0]) * atan2(abs($_[0]), sqrt(1 - $_[0] ** 2));
-	}
-
-sub arccos {
-	$pi / 2 - sgn($_[0]) * atan2(abs($_[0]), sqrt(1 - $_[0] ** 2));
-	}
-
-sub sgn {
-	$_[0] <=> 0;
-	}
-
-sub hea {
-	$_[0] >= 0;
+	$c and $s and @p or warn "global value missing\n" and exit;
 	}
 
 1;

@@ -9,20 +9,20 @@ $ms = $s / 1000;
 
 # bass drum
 
-@p = samp "circ";
-@a = samp "harfade", $ms / 3;
+@p = map { ($_ <=> 0) * sqrt(abs($_) - $_ ** 2) } in -1, 1;
+@a = map { sin($_) ** 2 } in 0, $pi / 2, $ms / 3;
 @z = @a;
 
 $bd = mel q(
-	!1 F3 \30 ,0 1:2 \0 ,100 1:2
+	!1 F3 \30 ,0 1:2 \0 ,50 1:2
 	);
 
 $bd2 = mel q(
-	!1 A3 \30 ,0 1:6 \0 ,100 1:6
+	!1 A3 \30 ,0 1:6 \0 ,50 1:6
 	);
 
 $bd3 = mel q(
-	!1 A3 \30 ,0 1:5 \0 ,100 1:5
+	!1 A3 \30 ,0 1:5 \0 ,50 1:5
 	);
 
 # hihat
@@ -31,20 +31,20 @@ $bd3 = mel q(
 @a = ();
 @z = @a;
 
-$hh = mel '*3 ?5 [21 }7 ,8 3 ;10 3';
+$hh = mel '*3 ?5 [21 }7 ,4 3 ;5 3';
 $_ *= (1 - 2 * rand) for @$hh;
 
 # melody
 
-@p = samp "circ";
-@a = samp "harfade", 25 * $ms;
+@p = map { ($_ <=> 0) * sqrt(abs($_) - $_ ** 2) } in -1, 1;
+@a = map { sin($_) ** 2 } in 0, $pi / 2, 25 * $ms;
 @z = @a;
 
 # chords
 
-@p = samp "circ";
-@a = samp "cubfade", 50 * $ms;
-@z = samp "cubfade", 100 * $ms;
+@p = map { ($_ <=> 0) * sqrt(abs($_) - $_ ** 2) } in -1, 1;
+@a = map { 3 * $_ ** 2 - 2 * $_ ** 3 } in 0, 1, 50 * $ms;
+@z = map { 3 * $_ ** 2 - 2 * $_ ** 3 } in 0, 1, 100 * $ms;
 
 #$F    = stack mel('F3  3'), mel('A3  3'), mel('C3  3');
 #$Em   = stack mel('E3  3'), mel('G3  3'), mel('B3  3');
@@ -71,7 +71,7 @@ $tief   = mel 'D3 1.5 /8 1.5 /0 1.5 \6 1.5 \0 1.5 \2 1.5 \0 1.5 /5 1.5 /0 1.5 /2
 $mittel = mel 'F3 1.5 \3 1.5 \0 1.5 /5 1.5 /0 1.5 \2 1.5 \0 1.5 /5 1.5 /0 1.5 /2 1.5 /0 3';
 $hoch   = mel 'A3 1.5 \4 1.5 \0 1.5 /5 1.5 /0 1.5 \1 1.5 \0 1.5 \7 1.5 \0 1.5 /2 1.5 /0 3';
 
-@p = samp "har3";
+@p = map { sin($_) ** 3 } in 0, 2 * $pi;
 
 #$melA = mel '!3 ,50 A3 1.5 A3 0.5 A3 1 B3 1.5 B3 0.5 B3 1';
 #$melC = mel '?10 F6 1.5 E6 0.5 D6 1 G6 3 G6 1.5 F6 0.5 E6 1 F6 1.5 E6 0.5 D6 1 A#5 3 C6 1.5 A#5 0.5 A5 1';
@@ -89,6 +89,6 @@ $mus = stack $hh, $tief, $mittel, $hoch, $melC;
 $drum = stack $hh, $bd, $bd2;
 $both = stack $hh, $bd, $bd2, $tief, $mittel, $hoch;
 
-out "wanderer.aif", fix stick $mus, $drum, $both, $both, $mus;
+make "wanderer.aif", fix stick $mus, $drum, $both, $both, $mus;
 
 # 08/08/2013

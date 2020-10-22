@@ -3,6 +3,9 @@
 
 *.aif
 *.aiff
+*.aux
 *.db
+*.log
+*.pdf
 *.wav
 *.wave

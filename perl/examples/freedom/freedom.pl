@@ -1,56 +1,97 @@
 #!/usr/bin/perl
 
-$0 =~ /(.+)\//;
-chdir $1;
+BEGIN { chdir $0 =~ s|[^/]*$||r }
 
-require Tonbandfetzen;
+use Tonbandfetzen;
 
 $T = $s / 4;
+$ms = $s / 1000;
 
-$a = 2 * $ms;
-@y = map sin $_, in(0, 2 * $pi, $s / 2);
-@bd = mel('E3 !25 \30 ~ ,100 \0 ~2 B3 ,0 \30 ~1 ,100 \0 ~ G3 ,0 \30 ~ ,100 \0 ~2');
+# bass drum
 
-$a = 5 * $ms;
-@y = (1);
-@hh = mel('*1 !3 ,100 ~ !8 ~ !13 ~');
-$_ *= (1 - 2 * rand) for @hh;
+@p = samp "har";
+@a = samp "harfade", $ms;
+@z = @a;
 
-$a = 50 * $ms;
-@y = map sgn($_) * sqrt(abs($_) - $_ ** 2), in(-1, 1, $s / 2);
+$bd = mel q(
+	!25
+	E3 \30 ,0 1 \0 ,100 2
+	B3 \30 ,0 1 \0 ,100 1
+	G3 \30 ,0 1 \0 ,100 2
+	);
 
-@a1 = mel('!20 [00 (00 E2 ~ E2 ~ E2 ~ E2 ~ E2 ~ E2 ~ E2 ~ E2 ~ E2 ~ E2 ~ E2 ~ E2 ~ E2 ~ E2 ~ E2 ~ E2 ~ G2 ~ G2 ~ G2 ~ G2 ~ G2 ~ G2 ~ G2 ~ G2 ~ A2 ~ A2 ~ A2 ~ A2 ~ A2 ~ A2 ~ A2 ~ A2 ~');
-@a2 = mel('!20 ]20 (40 E3 ~ G3 ~ D3 ~ F#3 ~ D4 ~ C4 ~ B3 ~ A3 ~ G3 ~ C4 ~ F#3 ~ B3 ~ E3 ~ G3 ~ D3 ~ F#3 ~ G3 ~ F#3 ~ B3 ~ F#3 ~ G3 ~ F#3 ~ D4 ~ F#3 ~ A3 ~ G3 ~ F#3 ~ G3 ~ A3 ~ G3 ~ F#3 ~ B3 ~');
-@a3 = mel('!20 [20 )40 E4 ~ G4 ~ E4 ~ B3 ~ E4 ~ G4 ~ E4 ~ B3 ~ E4 ~ F#4 ~ E4 ~ B3 ~ E4 ~ F#4 ~ E4 ~ D4 ~ B3 ~ C4 ~ B3 ~ D4 ~ B3 ~ C4 ~ B3 ~ D4 ~ B3 ~ C4 ~ B3 ~ D4 ~ B3 ~ C4 ~ B3 ~ D4 ~');
+# hihat
 
-@b1 = mel('!20 [00 (00 C3 ~ C3 ~ C3 ~ C3 ~ C3 ~ C3 ~ D3 ~ C3 ~ E3 ~ E3 ~ E3 ~ E3 ~ E3 ~ E3 ~ A2 ~ B2 ~');
-@b2 = mel('!20 ]20 (40 E3 ~ G3 ~ C4 ~ D4 ~ C4 ~ A3 ~ B3 ~ G3 ~ E3 ~ B3 ~ G3 ~ F#3 ~ E3 ~ D3 ~ E3 ~ G3 ~');
-@b3 = mel('!20 [20 )40 G4 ~ E4 ~ D4 ~ E4 ~ G4 ~ E4 ~ D4 ~ E4 ~');
-@b4 = mel('!20 [20 )40 A4 ~ E4 ~ D4 ~ E4 ~ A4 ~ E4 ~ D4 ~ E4 ~');
+@p = samp "noise";
+@a = samp "harfade", 2.5 * $ms;
+@z = @a;
 
-$a = 50 * $ms;
-@y = map $_ ** 3 - $_, in(0, 1, $s / 2);
-@G_D = mix([mel('D5 (20 <25 ~8')], [mel('G5 (00 <25 ~8')], [mel('B5 )20 <25 ~8')]);
-@A_C = mix([mel('C5 (20 <25 ~8')], [mel('E5 (00 <25 ~8')], [mel('A5 )20 <25 ~8')]);
-@E_G = mix([mel('G5 (20 <25 ~8')], [mel('B5 (00 <25 ~8')], [mel('E6 )20 <25 ~8')]);
+$hh = mel '!3 ,100 1 !8 1 !13 1';
 
-@a1m = map $a1[$_ + $s / 40 * sin(2 * $pi * $_ / $#a1) ** 2], 0..$#a1;
-@b1m = map $b1[$_ + $s / 80 * sin(2 * $pi * $_ / $#b1) ** 2], 0..$#b1;
+# melody
+
+@p = samp "circ";
+@a = samp "harfade", 25 * $ms;
+@z = @a;
+
+$A_lo = mel '!20 [00 {000 E2 1 E2 1 E2 1 E2  1 E2 1 E2 1 E2 1 E2 1 E2 1 E2  1 E2  1 E2 1 E2 1 E2  1 E2 1 E2  1 G2 1 G2  1 G2 1 G2  1 G2 1 G2  1 G2 1 G2  1 A2 1 A2 1 A2  1 A2 1 A2 1 A2 1 A2  1 A2 1';
+$A_mi = mel '!20 ]20 {160 E3 1 G3 1 D3 1 F#3 1 D4 1 C4 1 B3 1 A3 1 G3 1 C4  1 F#3 1 B3 1 E3 1 G3  1 D3 1 F#3 1 G3 1 F#3 1 B3 1 F#3 1 G3 1 F#3 1 D4 1 F#3 1 A3 1 G3 1 F#3 1 G3 1 A3 1 G3 1 F#3 1 B3 1';
+$A_hi = mel '!20 [20 }160 E4 1 G4 1 E4 1 B3  1 E4 1 G4 1 E4 1 B3 1 E4 1 F#4 1 E4  1 B3 1 E4 1 F#4 1 E4 1 D4  1 B3 1 C4  1 B3 1 D4  1 B3 1 C4  1 B3 1 D4  1 B3 1 C4 1 B3  1 D4 1 B3 1 C4 1 B3  1 D4 1';
+
+$B_lo  = mel '!20 [00 {000 C3 1 C3 1 C3 1 C3 1 C3 1 C3 1 D3 1 C3 1 E3 1 E3 1 E3 1 E3  1 E3 1 E3 1 A2 1 B2 1';
+$B_mi  = mel '!20 ]20 {160 E3 1 G3 1 C4 1 D4 1 C4 1 A3 1 B3 1 G3 1 E3 1 B3 1 G3 1 F#3 1 E3 1 D3 1 E3 1 G3 1';
+$B_hi1 = mel '!20 [20 }160 G4 1 E4 1 D4 1 E4 1 G4 1 E4 1 D4 1 E4 1';
+$B_hi2 = mel '!20 [20 }160 A4 1 E4 1 D4 1 E4 1 A4 1 E4 1 D4 1 E4 1';
+
+$B_hi = stick $B_hi1, $B_hi1, $B_hi2, $B_hi1;
+
+$A_lo = stack $A_lo, [map $$A_lo[$_ + $s / 40 * sin(2 * $pi * $_ / $#$A_lo) ** 2], 0..$#$A_lo];
+$B_lo = stack $B_lo, [map $$B_lo[$_ + $s / 80 * sin(2 * $pi * $_ / $#$B_lo) ** 2], 0..$#$B_lo];
+
+# chords
+
+@p = samp "cub";
+@a = samp "harfade", 25 * $ms;
+@z = @a;
+
+$G  = stack mel('D5 (20 <25 8'), mel('G5 (00 <25 8'), mel('B5 )20 <25 8');
+$Am = stack mel('C5 (20 <25 8'), mel('E5 (00 <25 8'), mel('A5 )20 <25 8');
+$Em = stack mel('G5 (20 <25 8'), mel('B5 (00 <25 8'), mel('E6 )20 <25 8');
+
+# main parts
+
+$A1 = stack $hh, stick $G, $G, $G, $Am;
+$A2 = stack $A1, $bd;
+$A3 = stack $A2, $A_lo;
+$A4 = stack $A3, $A_mi, $A_hi;
+$B = stack $hh, $Em, $bd, $B_lo, $B_mi, $B_hi;
+$C = stack $bd, stick $Em, $Em, $Em, $Am;
+
+# vocals
 
 for (1..4) {
-	my @V = imp("freedom$_.aif");
-	$_ *= 75 for @V;
-	my $t = 2 * 4 * 8 * $T * int(.5 + @V / (2 * 4 * 8 * $T)) - 1;
-	shift @V while !@V[0];
-	pop @V while !@V[-1];
-	push @v, [map $V[$#V * $_ / $t], 0..$t];
+	my $V = cut fix in("freedom$_.aif"), 75;
+	push @V, fit $V, round(@$V / $c, $_ == 4 ? 2 * @$C / $c : @$A3 / $c);
 	}
 
-@A1 = mix([@G_D, @G_D, @G_D, @A_C]);
-@A2 = mix(\@A1, \@bd);
-@A3 = mix(\@A2, \@a1, \@a1m);
-@A4 = mix(\@A3, \@a2, \@a3);
-@B = mix([@b3, @b3, @b4, @b3], \@b2, \@b1, \@b1m, \@E_G, \@bd);
-@C = mix([@E_G, @E_G, @E_G, @A_C], \@bd);
+# putting all together
 
-rec("freedom.aif", mix([@A1, @A2, mix($v[0], \@A3), @A4, @A4, @B], \@hh), @C, mix([mix($v[1], \@A3), @A4, @A4, @B], \@hh), @C, mix([mix($v[2], \@A3), @A4, @A4, @B], \@hh), mix($v[3], \@C));
+$intro = stick $A1, $A2;
+$verse1 = stack $A3, $V[0];
+$chorus = stick $A4, $A4, $B;
+$brigde = $C;
+$verse2 = stack $A3, $V[1];
+$verse3 = stack $A3, $V[2];
+$outro  = stack $C, $V[3];
+
+$song = stick $intro, $verse1, $chorus, $brigde, $verse2, $chorus, $brigde, $verse3, $chorus, $outro;
+
+out "freedom.aif", fix $song;
+
+sub round {
+	my $n = shift || 0;
+	my $f = shift || 1;
+	$f * int $n / $f + ($n <=> 0) / 2;
+	}
+
+# 08/08/2013

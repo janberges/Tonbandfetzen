@@ -2,7 +2,7 @@
 
 # Tonbandfetzen
 # Jan Berges
-# October 20, 2013
+# January 7, 2014
 
 package Tonbandfetzen;
 
@@ -12,15 +12,16 @@ use warnings;
 BEGIN {
 	require Exporter;
 	our @ISA       = qw(Exporter);
-	our @EXPORT    = qw($b $c $s $T $A4 $pi @p @a @z take make mel stick stack fix fit cut in);
+	our @EXPORT    = qw($B $C $s $T $A4 $N $pi @p @a @z take make mel stick stack fix fit cut in);
 	our @EXPORT_OK = qw(noise ext rex);
 	}
 
-our $b  = 16;       # sampleSize
-our $c  = 2;        # numChannels
+our $B  = 16;       # sampleSize
+our $C  = 2;        # numChannels
 our $s  = 44100;    # second/sampleRate
 our $T  = $s / 2;   # beat duration
 our $A4 = 440 / $s; # standard pitch
+our $N  = 12;       # equal steps per octave
 
 our $pi = 4 * atan2 1, 1;
 
@@ -31,8 +32,6 @@ our @z = @a;                                                   # reversed releas
 # export:
 
 sub take {
-	status();
-
 	my $n = shift;
 	my $i;
 
@@ -47,13 +46,13 @@ sub take {
 		$S = unpack "l>", $S;
 
 		if ($C eq "COMM") {
-			read D, $c, 2;  # numChannels
+			read D, $C, 2;  # numChannels
 			seek D, 4, 1;   # skip numSampleFrames
-			read D, $b, 2;  # sampleSize
+			read D, $B, 2;  # sampleSize
 			read D, $s, 10; # sampleRate
 
-			$b = unpack "s>", $b;
-			$c = unpack "s>", $c;
+			$B = unpack "s>", $B;
+			$C = unpack "s>", $C;
 			$s = rex($s);
 			}
 		elsif ($C eq "SSND") {
@@ -66,27 +65,23 @@ sub take {
 		}
 	close D;
 
-	[unpack $b > 16 ? "l>*" : $b > 8 ? "s>*" : "c*", $i];
+	[unpack $B > 16 ? "l>*" : $B > 8 ? "s>*" : "c*", $i];
 	}
 
 sub make {
-	status();
-
 	my $n = shift;
 	my $i = shift;
-	my $j = pack $b > 16 ? "l>*" : $b > 8 ? "s>*" : "c*", @$i;
+	my $j = pack $B > 16 ? "l>*" : $B > 8 ? "s>*" : "c*", @$i;
 
 	open D, ">", $n or warn "unable to write file\n" and return;
 	print D
 		"FORM", pack("l>", 76 + length $j), "AIFF",
-		"COMM", pack("(lsLs)>", 18, $c, @$i / $c, $b), ext($s),
+		"COMM", pack("(lsLs)>", 18, $C, @$i / $C, $B), ext($s),
 		"SSND", pack("(lLL)>", 8 + length $j, 0, 0), $j;
 	close D;
 	}
 
 sub mel {
-	status();
-
 	my $Fr = @p * $A4; # reference frequency
 
 	my $F  = $Fr; # frequency
@@ -102,7 +97,7 @@ sub mel {
 	my $rt = 1;
 
 	my $fT = 1;
-	my $yT = 1; # growth factors per $s
+	my $yT = 1; # growth factors per $T
 	my $rT = 1;
 
 	my %i = (); # attack indices
@@ -139,9 +134,9 @@ sub mel {
 				B => 2,
 				}->{$1} + /#/) / 12);
 			}
-		elsif ( /(-|\+)/) { $F  = $F0 = $Fr * 2 ** ({"-"  => -1, "+" => 1}->{$1} * $n / 12) }
-		elsif (/(\\|\/)/) { $ft =             2 ** ({"\\" => -1, "/" => 1}->{$1} * $n / 12) }
-		elsif ( /(_|\^)/) { $fT =             2 ** ({"_"  => -1, "^" => 1}->{$1} * $n / 12) }
+		elsif ( /(-|\+)/) { $F  = $F0 = $Fr * 2 ** ({"-"  => -1, "+" => 1}->{$1} * $n / $N) }
+		elsif (/(\\|\/)/) { $ft =             2 ** ({"\\" => -1, "/" => 1}->{$1} * $n / $N) }
+		elsif ( /(_|\^)/) { $fT =             2 ** ({"_"  => -1, "^" => 1}->{$1} * $n / $N) }
 		elsif (/(\?|!)/ ) { $Y  = $Y0 =      10 ** ({"?"  => -1, "!" => 1}->{$1} * $n / 10) }
 		elsif ( /(>|<)/ ) { $yt =            10 ** ({">"  => -1, "<" => 1}->{$1} * $n / 10) }
 		elsif ( /(,|;)/ ) { $yT =            10 ** ({","  => -1, ";" => 1}->{$1} * $n / 10) }
@@ -190,11 +185,11 @@ sub mel {
 		$y[($i - $_) % @y] *= $z[$_] for 0..$#z;
 		}
 
-	$c == 1 and return \@y;
+	$C == 1 and return \@y;
 
 	my @i = ();
 
-	my @e = map $_ / ($c - 1), 0..$c - 1;
+	my @e = map $_ / ($C - 1), 0..$C - 1;
 
 	for my $i (0..$#y) {
 		my @c = map $r[$i] ** $_, @e;
@@ -211,8 +206,6 @@ sub mel {
 	}
 
 sub stick {
-	status();
-
 	my @i = ();
 	push @i, @$_ for @_;
 
@@ -220,8 +213,6 @@ sub stick {
 	}
 
 sub stack {
-	status();
-
 	my $t = 0;
 	$t < $#$_ and $t = $#$_ for @_;
 
@@ -234,10 +225,8 @@ sub stack {
 	}
 
 sub fix {
-	status();
-
 	my $i = shift;
-	my $x = shift || ($b > 16 ? 0x7fffffff : $b > 8 ? 0x7fff : 0x7f);
+	my $x = shift || ($B > 16 ? 0x7fffffff : $B > 8 ? 0x7fff : 0x7f);
 
 	my $e = 0;
 	$e < abs and $e = abs for @$i;
@@ -251,10 +240,8 @@ sub fix {
 	}
 
 sub fit {
-	status();
-
 	my  $i = shift;
-	my  $d = shift || 0;
+	my  $d = shift || $T;
 	my  $t = int $d + ($d <=> 0) / 2;
 	my $dt = abs($d) - abs($t);
 
@@ -263,19 +250,17 @@ sub fit {
 	$t or return [];
 
 	my @i = ();
-	my $q = int(@$i / $c - 1) / ($t - ($t <=> 0) or 1);
+	my $q = int(@$i / $C - 1) / ($t - ($t <=> 0) or 1);
 
 	for ($t > 0 ? 0..$t - 1 : $t + 1..0) {
-		my $j = $c * int $q * $_ + .5;
-		push @i, $$i[$j++] for 1..$c;
+		my $j = $C * int $q * $_ + .5;
+		push @i, $$i[$j++] for 1..$C;
 		}
 
 	\@i;
 	}
 
 sub cut {
-	status();
-
 	my $i = shift;
 	my $j = 0;
 	my $k = $#$i;
@@ -283,7 +268,7 @@ sub cut {
 	$j++ while ! $$i[$j] and $j < $k;
 	$k-- while ! $$i[$k] and $j < $k;
 
-	[@$i[$c * int($j / $c)..$c * int($k / $c + 1) - 1]];
+	[@$i[$C * int($j / $C)..$C * int($k / $C + 1) - 1]];
 	}
 
 sub in {
@@ -297,8 +282,6 @@ sub in {
 # export ok:
 
 sub noise {
-	status();
-
 	my $f = shift || 220;
 	my $i = shift || 12;
 	my $n = shift || 100;
@@ -354,19 +337,6 @@ sub rex {
 	$e += 2 ** $_ * pop @b for 0..14;
 
 	$m * 2 ** $e * (pop @b ? -1 : 1);
-	}
-
-# no export:
-
-sub status {
-	my $l = 0;
-	my @f = ();
-
-	unshift @f, (caller ++$l)[3] =~ /(\w+)$/ while caller $l + 1;
-
-	print "line ", join (" > ", (caller $l)[2], @f, @_), "\n";
-
-	$c and $s and @p or warn "global value missing\n" and exit;
 	}
 
 1;

@@ -78,10 +78,10 @@ $hoch   = mel 'A3 1.5 \4 1.5 \0 1.5 /5 1.5 /0 1.5 \1 1.5 \0 1.5 \7 1.5 \0 1.5 /2
 
 $melC = mel 'F4 1.3 \1 0.2 \0 0.3 \2 0.2 \0 0.8 /5 0.2 /0 4.3 \2 0.2 \0 0.3 \1 0.2 \0 0.8 /1 0.2 /0 1.3 \1 0.2 \0 0.3 \2 0.2 \0 0.8 \4 0.2 \0 2.8 /2 0.2 /0 1.3 \2 0.2 \0 0.3 \1 0.2 \0 1';
 
-#$A = stack $bassA, stick $F, $Em, $Am, $Bmb5;
-#$B = stack $bassB, stick $Dm, $G, $Am, $Em;
-#$C = stack $bassC, $melC, stick $Dm, $AIS, $Emb5, $Dm, $Gm, $Am;
-#$verse = stick $A, $B, $B, $A, $C, $C;
+#$a = stack $bassA, stick $F, $Em, $Am, $Bmb5;
+#$b = stack $bassB, stick $Dm, $G, $Am, $Em;
+#$c = stack $bassC, $melC, stick $Dm, $AIS, $Emb5, $Dm, $Gm, $Am;
+#$verse = stick $a, $b, $b, $a, $c, $c;
 
 #$verse = stack $verse;
 

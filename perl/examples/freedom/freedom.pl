@@ -65,25 +65,25 @@ $A1 = stack $hh, stick $G, $G, $G, $Am;
 $A2 = stack $A1, $bd;
 $A3 = stack $A2, $A_lo;
 $A4 = stack $A3, $A_mi, $A_hi;
-$B = stack $hh, $Em, $bd, $B_lo, $B_mi, $B_hi;
-$C = stack $bd, stick $Em, $Em, $Em, $Am;
+$B1 = stack $hh, $Em, $bd, $B_lo, $B_mi, $B_hi;
+$C1 = stack $bd, stick $Em, $Em, $Em, $Am;
 
 # vocals
 
 for (1..4) {
 	my $V = cut fix take("freedom$_.aif"), 75;
-	push @V, fit $V, round(@$V / $c, $_ == 4 ? 2 * @$C / $c : @$A3 / $c);
+	push @V, fit $V, round(@$V / $C, $_ == 4 ? 2 * @$C1 / $C : @$A3 / $C);
 	}
 
 # putting all together
 
 $intro = stick $A1, $A2;
 $verse1 = stack $A3, $V[0];
-$chorus = stick $A4, $A4, $B;
-$brigde = $C;
+$chorus = stick $A4, $A4, $B1;
+$brigde = $C1;
 $verse2 = stack $A3, $V[1];
 $verse3 = stack $A3, $V[2];
-$outro  = stack $C, $V[3];
+$outro  = stack $C1, $V[3];
 
 $song = stick $intro, $verse1, $chorus, $brigde, $verse2, $chorus, $brigde, $verse3, $chorus, $outro;
 

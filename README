@@ -49,12 +49,12 @@ lines to your .bashrc:
 
 ## Documentation
 
-Please have a look at the examples. For example:
+Please have a look at the examples:
 
     cd examples/freedom
     make -j 2
     aplay freedom.wav
 
-There is also a man page for each tool. For example:
+There is also a man page for each tool:
 
-    man doc/man1/mel.1
+    man mel

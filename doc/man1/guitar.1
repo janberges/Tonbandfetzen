@@ -27,12 +27,13 @@ The syntax of
 .IR infile
 is as described in
 .BR mel (1),
-with the following exceptions:
-If a line of contains more than one vertical bar
-.RB ( | ),
-it is interpreted as guitar tablature.
-Then, everything between two
+with the following exception:
+Text between two
 .BR | s
+that contains at least one hyphen-minus
+.RB ( - )
+or tilde
+.RB ( ~ ),
 represents one bar/measure.
 Here, the commands
 .BR | \fIn\fR,
@@ -52,7 +53,7 @@ The hyphen-minus
 represents a string at rest (a pause), all other characters, in particular the tilde
 .RB ( ~ ),
 represent a vibrating string (sound is played), in addition to their actual meanings.
-Tablature lines that are not separated by an empty line start at the same position in time.
+Lines with tablature that are not separated by an empty line start at the same point in time.
 This is realized via the
 .BR M0
 mark, which shall not be used manually.

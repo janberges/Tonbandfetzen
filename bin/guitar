@@ -28,28 +28,23 @@ with open(infile, 'r') as gtr, open(outfile, 'w') as mel:
             else:
                 mel.write('W0')
 
-            blocks = line.split('|')
+            for block in line.split('|'):
+                if re.search(r'[-~]', block):
+                    block = re.sub(r'[^-~]+', lambda match:
+                        match.group() + '~' * len(match.group()), block)
 
-            mel.write(blocks[0])
+                    block = re.sub(r'(^|-|~)([\d.:]+)', lambda match:
+                        '+'.join(match.groups()), block)
 
-            for block in blocks[1:-1]:
-                block = re.sub(r'[^-~]+', lambda match:
-                    match.group() + '~' * len(match.group()), block)
+                    beats = block.count('-') + block.count('~')
 
-                block = re.sub(r'(^|-|~)([\d.:]+)', lambda match:
-                    '+'.join(match.groups()), block)
+                    block = re.sub(r'-+', lambda match:
+                        '"%d:%d' % (len(match.group()), beats), block)
 
-                beats = block.count('-') + block.count('~')
+                    block = re.sub(r'~+', lambda match:
+                        "'%d:%d" % (len(match.group()), beats), block)
 
-                block = re.sub(r'-+', lambda match:
-                    '"%d:%d' % (len(match.group()), beats), block)
-
-                block = re.sub(r'~+', lambda match:
-                    "'%d:%d" % (len(match.group()), beats), block)
-
-                mel.write(block)
-
-            mel.write(blocks[-1])
+                mel.write(block.strip(' '))
         else:
             if not line.strip():
                 first = True

@@ -47,6 +47,11 @@ lines to your .bashrc:
     export MANPATH=$REPO/doc:$MANPATH
     export MANPATH=$REPO/doc/man1:$MANPATH
 
+You might also want to use the Vim syntax file:
+
+    ln -s /path/to/tonbandfetzen/vim/mel.vim ~/.vim/syntax/mel.vim
+    ln -s /path/to/tonbandfetzen/vim/mel.vim ~/.vim/syntax/gtr.vim
+
 ## Documentation
 
 Please have a look at the examples:

@@ -8,7 +8,7 @@ module search
    character(:), allocatable :: sequence
    integer(i2), allocatable :: info(:)
 
-   integer, save :: last = 0, marks(0:99) = 0
+   integer, save :: last, marks(0:99)
 
 contains
 

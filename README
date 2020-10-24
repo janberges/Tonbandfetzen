@@ -47,10 +47,13 @@ lines to your .bashrc:
     export MANPATH=$REPO/doc:$MANPATH
     export MANPATH=$REPO/doc/man1:$MANPATH
 
-You might also want to use the Vim syntax file:
+You might also want to copy the Vim syntax file to the appropriate location:
 
     ln -s /path/to/tonbandfetzen/vim/mel.vim ~/.vim/syntax/mel.vim
-    ln -s /path/to/tonbandfetzen/vim/mel.vim ~/.vim/syntax/gtr.vim
+
+To have Vim detect the corresponding file types, add this line to your .vimrc:
+
+    au BufRead,BufNewFile *.mel,*.gtr set filetype=mel
 
 ## Documentation
 

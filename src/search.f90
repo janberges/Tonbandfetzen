@@ -1,10 +1,12 @@
 module search
+   use constants
    implicit none
    private
 
-   public :: focus, reset, next, remember, revert
+   public :: focus, reset, next, remember, revert, set, get
 
    character(:), allocatable :: sequence
+   integer(i2), allocatable :: info(:)
 
    integer, save :: last = 0, marks(0:99) = 0
 
@@ -15,12 +17,15 @@ contains
 
          sequence = it
 
+         allocate(info(len(sequence)))
+
          call reset
       end subroutine focus
 
       subroutine reset
          last = 0
          marks = 0
+         info = 0
       end subroutine reset
 
       function next(set)
@@ -61,4 +66,16 @@ contains
 
          last = marks(mark)
       end subroutine revert
+
+      subroutine set(i)
+         integer, intent(in) :: i
+
+         info(last) = int(i, i2)
+      end subroutine set
+
+      subroutine get(i)
+         integer, intent(out) :: i
+
+         i = info(last)
+      end subroutine get
 end module search

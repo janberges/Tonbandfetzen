@@ -79,7 +79,7 @@ contains
       integer  :: t1, t2, dt, copies
 
       ! text marks
-      integer :: counter(0:99)
+      integer :: mark, count, info
 
       real(dp) :: random, factor
 
@@ -124,7 +124,6 @@ contains
 
       call reset
       marks = 0
-      counter = 0
 
       do
          symbol = next(special)
@@ -175,15 +174,19 @@ contains
                end do
 
             case ('I')
-               i = int(n())
-               call remember(i)
-               counter(i) = 0
+               call remember(int(n()))
 
             case ('J')
-               i = int(n())
-               if (counter(i) .lt. int(n())) then
-                  call revert(i)
-                  counter(i) = counter(i) + 1
+               mark = int(n())
+               count = int(n())
+
+               call get(info)
+
+               if (info .lt. count) then
+                  call set(info + 1)
+                  call revert(mark)
+               else
+                  call set(0)
                end if
 
             case ('none')
@@ -217,7 +220,6 @@ contains
 
       call reset
       marks = 0
-      counter = 0
 
       do
          symbol = next(special)
@@ -367,15 +369,19 @@ contains
                end do
 
             case ('I')
-               i = int(n())
-               call remember(i)
-               counter(i) = 0
+               call remember(int(n()))
 
             case ('J')
-               i = int(n())
-               if (counter(i) .lt. int(n())) then
-                  call revert(i)
-                  counter(i) = counter(i) + 1
+               mark = int(n())
+               count = int(n())
+
+               call get(info)
+
+               if (info .lt. count) then
+                  call set(info + 1)
+                  call revert(mark)
+               else
+                  call set(0)
                end if
 
             case ('L')

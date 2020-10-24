@@ -56,6 +56,7 @@ build/repeat.o: build/constants.o build/io.o build/rationals.o build/riff.o
 build/riff.o: build/constants.o build/extended.o
 build/riff2aiff.o: build/aiff.o build/constants.o build/io.o build/riff.o
 build/samples.o: build/constants.o build/intervals.o
+build/search.o: build/constants.o
 build/spectra.o: build/constants.o
 build/stack.o: build/constants.o build/io.o build/riff.o
 build/stick.o: build/constants.o build/io.o build/riff.o

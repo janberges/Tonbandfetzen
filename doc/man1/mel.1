@@ -42,6 +42,9 @@ and a dividing colon
 and commands (other ASCII characters).
 Commands are followed by words and/or numbers as arguments, as listed below.
 The input is processed linearly, whereby unexpected characters, including whitespace, act as separators and are otherwise ignored.
+The asterisk
+.RB ( * )
+starts a line comment.
 .TP
 .BI ~ w " " n
 Choose wave sample of shape
@@ -157,7 +160,7 @@ The default is
 samples per second.
 This setting holds globally and is ignored after first note played.
 .TP
-.BI * n
+.BI # n
 Set number of channels to
 .IR n .
 The default is
@@ -182,7 +185,7 @@ The default is
 .BR 440
 Hz.
 .TP
-.BI # n
+.BI O n
 Divide one octave into
 .IR n
 halftones.

@@ -10,10 +10,12 @@ module constants
    implicit none
    private
 
-   public :: dp, i1, i2, i4, i2max, eof, stdin, stdout, stderr, pi, audio
+   public :: dp, i1, i2, i4, i2max, eof, eol, stdin, stdout, stderr, pi, audio
 
    integer, parameter :: dp = selected_real_kind(14, 300)
    integer, parameter :: i2max = 2 ** 15 - 1
+
+   character(*), parameter :: eol = char(10) // char(13)
 
    real(dp), parameter :: pi = 4.0_dp * atan(1.0_dp)
 

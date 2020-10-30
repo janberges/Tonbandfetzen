@@ -13,8 +13,8 @@ module search
 
    character(*), parameter :: &
       numeral = '0123456789.:', &
-      lexical = 'abcdefghijklmnopqrstuvwxyz', &
-      special = '~"`ABCDEFGNSZWPR=-+&?!%[]\/><()_^,;{}$*|@#MIJXLVOT'''
+      lexical = 'abcdefghijklmnopqrstuvwxyz#', &
+      special = '~"`ABCDEFGNSZWPR=-+&?!%[]\/><()_^,;{}$*|@MIJXLVOT'''
 
 contains
 

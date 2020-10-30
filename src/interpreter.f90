@@ -68,7 +68,7 @@ contains
 
       real(dp) :: phase ! turn = 1
 
-      integer :: i ! arbitrary integer/index
+      integer :: i, j ! arbitrary integers/indices
 
       real(dp) :: s ! equivalent of a second
 
@@ -292,8 +292,20 @@ contains
             case ('TET')
                steps = nint(n())
 
-            case ('C','C#','D','D#','E','F','F#','G','G#','A','A#','B')
-               i = index('C#D#EF#G#A#B', symbol) + len(symbol) - 11
+            case ('C', 'D', 'E', 'F', 'G', 'A', 'B')
+               i = index('C#D#EF#G#A#B', symbol) - 10
+
+               word = next(lexical, '')
+
+               do j = 1, len(word)
+                  select case(word(j:j))
+                     case ('b')
+                        i = i - 1
+                     case ('#')
+                        i = i + 1
+                  end select
+               end do
+
                f0 = A4 * 2.0_dp ** (n() - 4.0_dp + i / 12.0_dp)
                fi = f0; f = fi
 

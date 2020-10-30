@@ -16,11 +16,7 @@ contains
       character(*), intent(in) :: notes
       type(audio), intent(out) :: tones
 
-      character(*), parameter :: &
-         numeral = '0123456789.:', &
-         lexical = 'abcdefghijklmnopqrstuvwxyz', &
-         special = '~"`ABCDEFGNSZWPR=-+&?!%[]\/><()_^,;{}$*|@#MIJXLVOT''', &
-         initial = special(:25)
+      character(*), parameter :: initial = '~"`ABCDEFGNSZWPR=-+&?!%[]'
 
       character(:), allocatable :: symbol, word ! special/lexical string
 
@@ -144,13 +140,13 @@ contains
                b = n() * s
 
             case ("'")
-               x = x + n() * b
+               x = x + rational(next(numeral, '1')) * b
                d = nint(x) - t
                c = c + d
                t = t + d
 
             case ('"', '`')
-               x = x + sgn('`"') * n() * b
+               x = x + sgn('`"') * rational(next(numeral, '1')) * b
                t = nint(x)
 
             case ('M')
@@ -326,7 +322,8 @@ contains
                r = ri
 
             case ("'")
-               x = x + n() * b
+               x = x + rational(next(numeral, '1')) * b
+               write(stderr, *) x
                d = nint(x) - t
 
                f1 = fd ** (1.0_dp / d) * fb ** (1.0_dp / b); fd = 1.0_dp
@@ -351,7 +348,7 @@ contains
                t = t + d
 
             case ('"', '`')
-               x = x + sgn('`"`') * n() * b
+               x = x + sgn('`"`') * rational(next(numeral, '1')) * b
                t = nint(x)
 
             case ('M')

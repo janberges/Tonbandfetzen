@@ -3,12 +3,18 @@ module search
    implicit none
    private
 
-   public :: focus, reset, next, remember, revert, set, get
+   public :: focus, reset, next, remember, revert, set, get, &
+      numeral, lexical, special
 
    character(:), allocatable :: sequence
    integer(i2), allocatable :: info(:)
 
    integer, save :: last, marks(0:99)
+
+   character(*), parameter :: &
+      numeral = '0123456789.:', &
+      lexical = 'abcdefghijklmnopqrstuvwxyz', &
+      special = '~"`ABCDEFGNSZWPR=-+&?!%[]\/><()_^,;{}$*|@#MIJXLVOT'''
 
 contains
 
@@ -28,14 +34,29 @@ contains
          info = 0
       end subroutine reset
 
-      function next(set)
+      function next(set, def)
          character(:), allocatable :: next
 
          character(*), intent(in) :: set
+         character(*), intent(in), optional :: def
 
-         integer :: first
+         integer :: first, firstn, firstl, firsts
 
          first = scan(sequence(last + 1:), set)
+
+         if (present(def)) then
+            firstn = scan(sequence(last + 1:), numeral)
+            firstl = scan(sequence(last + 1:), lexical)
+            firsts = scan(sequence(last + 1:), special)
+
+            if (first .eq. 0 &
+               .or. first .gt. firstn .and. firstn .ne. 0 &
+               .or. first .gt. firstl .and. firstl .ne. 0 &
+               .or. first .gt. firsts .and. firsts .ne. 0 ) then
+               next = def
+               return
+            end if
+         end if
 
          if (first .eq. 0) then
             next = 'none'

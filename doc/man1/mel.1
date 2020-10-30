@@ -160,9 +160,14 @@ The default is
 samples per second.
 This setting holds globally and is ignored after first note played.
 .TP
-.BI # n
+.BI O n
 Set number of channels to
 .IR n .
+Allowed values are
+.BR 1
+(mono) and
+.BR 2
+(stereo).
 The default is
 .BR 2 .
 This setting holds globally and is ignored after first note played.
@@ -185,13 +190,13 @@ The default is
 .BR 440
 Hz.
 .TP
-.BI O n
+.BI TET n
 Divide one octave into
 .IR n
-halftones.
+halftones/steps of equal frequency ratio.
 The default is
 .BR 12
-halftones.
+halftones (twelve-tone equal temperament).
 .TP
 .BI = n
 Set reference frequency to

@@ -19,7 +19,7 @@ contains
       character(*), parameter :: &
          numeral = '0123456789.:', &
          lexical = 'abcdefghijklmnopqrstuvwxyz', &
-         special = '~"`ABCDEFGNSZWPR=-+&?!%[]\/><()_^,;{}$*|@#MIJXLVO''', &
+         special = '~"`ABCDEFGNSZWPR=-+&?!%[]\/><()_^,;{}$*|@#MIJXLVOT''', &
          initial = special(:25)
 
       character(:), allocatable :: symbol, word ! special/lexical string
@@ -96,7 +96,7 @@ contains
       do
          select case (next(special))
             case ('$'); tones%rate = n()
-            case ('#'); tones%channels = int(n(), i2)
+            case ('O'); tones%channels = int(n(), i2)
 
             case ('~'); todo( 1 ) = .false.
             case ('S'); todo( 2 ) = .false.
@@ -293,7 +293,7 @@ contains
                fi = fi * random
                f  = f  * random
 
-            case ('O')
+            case ('TET')
                steps = nint(n())
 
             case ('C','C#','D','D#','E','F','F#','G','G#','A','A#','B')

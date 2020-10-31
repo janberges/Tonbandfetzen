@@ -260,7 +260,7 @@ contains
             case ('~', 'S', 'Z', 'N')
                word = next(lexical)
 
-               if (word .eq. 'file') then
+               if (word .eq. '#') then
                   i = int(n())
                else
                   i = nint(n() * s)
@@ -471,7 +471,7 @@ contains
       integer, intent(in) :: i
       type(audio) :: s
 
-      if (how .eq. 'file') then
+      if (how .eq. '#') then
          if (i .gt. command_argument_count() - 2) then
             write (stderr, "('Error: file ', I0, ' missing.')") i
             stop

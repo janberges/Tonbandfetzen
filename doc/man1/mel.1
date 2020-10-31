@@ -190,6 +190,20 @@ The default is
 .BR 440
 Hz.
 .TP
+.BI T w
+Choose tuning from the below options.
+.RS
+.TP
+.BR equal
+Equal temperament.
+.TP
+.BR fifth
+Pythagorean tuning. All notes are reached combining fifths and octaves.
+.TP
+.BR just
+Just intonation. All notes are reached combining thirds, -1 to 2 fifths from keynote, and octaves.
+.RE
+.TP
 .BI H n
 Divide one octave into
 .IR n
@@ -219,7 +233,7 @@ Set reference amplitude ratio R:L between right and left channel to
 The default is
 .BR 1 .
 .TP
-.RI "\fBC D E F G A B\fR[" w ] n
+.RI "\fBC D E F G A B\fR[" w ][ n ]
 Set reference frequency via scientific pitch notation.
 .IR w
 marks accidentals and can be
@@ -230,6 +244,7 @@ marks accidentals and can be
 and so on.
 .IR n
 is the octave number.
+If omitted, set the keynote.
 .BI A4
 is the concert pitch.
 .TP

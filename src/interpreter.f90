@@ -82,6 +82,18 @@ contains
 
       real(dp) :: random, factor
 
+      ! tuning
+      character(:), allocatable :: tuning
+
+      real(dp), parameter :: equal_fifth = 2.0_dp ** (7.0_dp / 12.0_dp)
+      real(dp), parameter :: just_fifth = 1.5_dp
+      real(dp), parameter :: syntonic_comma = 1.0125_dp
+
+      integer :: keynote
+
+      tuning = 'equal'
+      keynote = -3 ! C
+
       tones%rate = 44100.0_dp
       tones%channels = 2
 
@@ -289,25 +301,54 @@ contains
                fi = fi * random
                f  = f  * random
 
+            case ('T')
+               tuning = next(lexical)
+
             case ('H')
                steps = nint(n())
 
             case ('C', 'D', 'E', 'F', 'G', 'A', 'B')
-               i = index('C#D#EF#G#A#B', symbol) - 10
+               i = index('FCGDAEB', symbol) - 5
 
                word = next(lexical, '')
 
                do j = 1, len(word)
                   select case(word(j:j))
                      case ('b')
-                        i = i - 1
+                        i = i - 7
                      case ('#')
-                        i = i + 1
+                        i = i + 7
                   end select
                end do
 
-               f0 = A4 * 2.0_dp ** (n() - 4.0_dp + i / 12.0_dp)
-               fi = f0; f = fi
+               select case(tuning)
+                  case ('equal')
+                     f0 = A4 * equal_fifth ** i
+
+                  case ('fifth', 'just')
+                     f0 = A4 * just_fifth ** i
+               end select
+
+               ! fold back to first octave:
+               j = 4 * i + 5
+               j = (j - modulo(j, 7)) / 7
+               f0 = f0 / 2.0_dp ** j
+
+               if (tuning .eq. 'just') then
+                  j = i + modulo(1 - keynote, 4)
+                  j = (j - modulo(j, 4)) / 4
+                  f0 = f0 / syntonic_comma ** j
+               end if
+
+               j = nint(rational(next(numeral, '-1')))
+
+               if (j .lt. 0.0_dp) then
+                  keynote = i
+               else
+                  f0 = f0 * 2.0_dp ** (j - 4.0_dp)
+
+                  fi = f0; f = fi
+               end if
 
             case ('='); f0 = n() / s; fi = f0; f = fi
             case ('&'); a0 = n();     ai = a0; a = ai
@@ -335,7 +376,6 @@ contains
 
             case ("'")
                x = x + rational(next(numeral, '1')) * b
-               write(stderr, *) x
                d = nint(x) - t
 
                f1 = fd ** (1.0_dp / d) * fb ** (1.0_dp / b); fd = 1.0_dp

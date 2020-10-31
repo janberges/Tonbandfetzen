@@ -318,6 +318,8 @@ contains
                         i = i - 7
                      case ('#')
                         i = i + 7
+                     case ('x')
+                        i = i + 14
                   end select
                end do
 

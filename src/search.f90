@@ -14,7 +14,7 @@ module search
    character(*), parameter :: &
       numeral = '0123456789.:', &
       lexical = 'abcdefghijklmnopqrstuvwxyz#', &
-      special = '~"`ABCDEFGNSZWPR=-+&?!%[]\/><()_^,;{}$*|@MIJXLVOT'''
+      special = '~"`ABCDEFGNSZWPR=-+&?!%[]\/><()_^,;{}$*|@MIJXLVOH'''
 
 contains
 
@@ -34,11 +34,12 @@ contains
          info = 0
       end subroutine reset
 
-      function next(set, def)
+      function next(set, def, length)
          character(:), allocatable :: next
 
          character(*), intent(in) :: set
          character(*), intent(in), optional :: def
+         integer, intent(in), optional :: length
 
          integer :: first, firstn, firstl, firsts
 
@@ -65,12 +66,16 @@ contains
 
          first = first + last
 
-         last = verify(sequence(first + 1:), set)
-
-         if (last .eq. 0) then
-            last = len(sequence)
+         if (present(length)) then
+            last = first + length - 1
          else
-            last = last + first - 1
+            last = verify(sequence(first + 1:), set)
+
+            if (last .eq. 0) then
+               last = len(sequence)
+            else
+               last = last + first - 1
+            end if
          end if
 
          next = sequence(first:last)

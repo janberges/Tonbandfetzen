@@ -90,7 +90,7 @@ contains
       call focus(notes)
 
       do
-         select case (next(special))
+         select case (next(special, length=1))
             case ('$'); tones%rate = n()
             case ('O'); tones%channels = int(n(), i2)
 
@@ -125,7 +125,7 @@ contains
       marks = 0
 
       do
-         symbol = next(special)
+         symbol = next(special, length=1)
 
          tmin = min(tmin, t)
          tmax = max(tmax, t)
@@ -188,11 +188,11 @@ contains
                   call set(0)
                end if
 
+            case ('*')
+               symbol = next('*', length=1)
+
             case ('none')
                exit
-
-            case default
-               if (index(symbol, '*') .ne. 0) symbol = next(eol)
          end select
       end do
 
@@ -227,7 +227,7 @@ contains
       marks = 0
 
       do
-         symbol = next(special)
+         symbol = next(special, length=1)
 
          if (done()) then
             f = fi
@@ -289,7 +289,7 @@ contains
                fi = fi * random
                f  = f  * random
 
-            case ('TET')
+            case ('H')
                steps = nint(n())
 
             case ('C', 'D', 'E', 'F', 'G', 'A', 'B')
@@ -426,11 +426,11 @@ contains
 
                deallocate(work)
 
+            case ('*')
+               symbol = next('*', length=1)
+
             case ('none')
                exit
-
-            case default
-               if (index(symbol, '*') .ne. 0) symbol = next(eol)
          end select
       end do
 

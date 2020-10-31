@@ -39,12 +39,9 @@ decimal points
 .BR . ,
 and a dividing colon
 .BR : ),
-and commands (other ASCII characters).
+and commands (other single ASCII characters).
 Commands are followed by words and/or numbers as arguments, as listed below.
 The input is processed linearly, whereby unexpected characters, including whitespace, act as separators and are otherwise ignored.
-The asterisk
-.RB ( * )
-starts a line comment.
 .TP
 .BI ~ w " " n
 Choose wave sample of shape
@@ -151,6 +148,9 @@ Arguments as above.
 Choose attack and release envelope at once.
 Arguments as above.
 .TP
+.BI *
+Start/end a comment.
+.TP
 .BI $ n
 Set a sample rate of
 .IR n
@@ -190,7 +190,7 @@ The default is
 .BR 440
 Hz.
 .TP
-.BI TET n
+.BI H n
 Divide one octave into
 .IR n
 halftones/steps of equal frequency ratio.

@@ -16,7 +16,7 @@ contains
       character(*), intent(in) :: notes
       type(audio), intent(out) :: tones
 
-      character(*), parameter :: initial = '~"`ABCDEFGNSZWPR=-+&?!%[]'
+      character(*), parameter :: initial = '!"%&+-=?ABCDEFGNPRSWZ[]`~'
 
       character(:), allocatable :: symbol, word ! special/lexical string
 

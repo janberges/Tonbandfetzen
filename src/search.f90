@@ -12,9 +12,9 @@ module search
    integer, save :: last, marks(0:99)
 
    character(*), parameter :: &
-      numeral = '0123456789.:', &
+      numeral = '.0123456789:', &
       lexical = 'abcdefghijklmnopqrstuvwxyz#', &
-      special = '~"`ABCDEFGNSZWPR=-+&?!%[]\/><()_^,;{}$*|@MIJXLVOHT'''
+      special = '!"$%&''()*+,-/;<=>?@ABCDEFGHIJLMNOPRSTVWXZ[\]^_`{|}~'
 
 contains
 

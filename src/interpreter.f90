@@ -327,20 +327,26 @@ contains
                   case ('equal')
                      f0 = A4 * equal_fifth ** i
 
-                  case ('fifth', 'just')
+                  case ('fifth')
                      f0 = A4 * just_fifth ** i
+
+                  case ('just')
+                     f0 = A4 * just_fifth ** i
+                     j = i + modulo(1 - keynote, 4)
+                     j = (j - modulo(j, 4)) / 4
+                     f0 = f0 / syntonic_comma ** j
+
+                  case ('close')
+                     f0 = A4 * just_fifth ** i
+                     j = i + modulo(5 - keynote, 11)
+                     j = (j - modulo(j, 11)) / 11
+                     f0 = f0 / syntonic_comma ** j
                end select
 
                ! fold back to first octave:
                j = 4 * i + 5
                j = (j - modulo(j, 7)) / 7
                f0 = f0 / 2.0_dp ** j
-
-               if (tuning .eq. 'just') then
-                  j = i + modulo(1 - keynote, 4)
-                  j = (j - modulo(j, 4)) / 4
-                  f0 = f0 / syntonic_comma ** j
-               end if
 
                j = nint(rational(next(numeral, '-1')))
 

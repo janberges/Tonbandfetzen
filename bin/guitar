@@ -34,7 +34,7 @@ with open(infile, 'r') as gtr, open(outfile, 'w') as mel:
                         match.group() + '~' * len(match.group()), block)
 
                     block = re.sub(r'(^|-|~)([\d.:]+)', lambda match:
-                        '+'.join(match.groups()), block)
+                        'U'.join(match.groups()), block)
 
                     beats = block.count('-') + block.count('~')
 

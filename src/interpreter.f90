@@ -16,7 +16,7 @@ contains
       character(*), intent(in) :: notes
       type(audio), intent(out) :: tones
 
-      character(*), parameter :: initial = '!"%&+-=?ABCDEFGNPQSWZ[]`~'
+      character(*), parameter :: initial = '!"%&+-=?ABCDEFGNPQRSUWZ[]`~'
 
       character(:), allocatable :: symbol, word ! special/lexical string
 
@@ -89,9 +89,10 @@ contains
       real(dp), parameter :: just_fifth = 1.5_dp
       real(dp), parameter :: syntonic_comma = 1.0125_dp
 
-      integer :: keynote
+      integer :: keynote, tone, newtone
 
       tuning = 'equal'
+      tone = 0
       keynote = -3 ! C
 
       tones%rate = 44100.0_dp
@@ -301,21 +302,26 @@ contains
             case ('H')
                steps = nint(n())
 
-            case ('C', 'D', 'E', 'F', 'G', 'A', 'B')
-               i = index('FCGDAEB', symbol) - 5
+            case ('C', 'D', 'E', 'F', 'G', 'A', 'B', 'R', 'U')
+               if (index('RU', symbol) .ne. 0) then
+                  newtone = tone + sgn('RU') * int(n())
+                  i = keynote - 5 + modulo(newtone * 7 - keynote + 5, 12)
+               else
+                  i = index('FCGDAEB', symbol) - 5
 
-               word = next(lexical, '')
+                  word = next(lexical, '')
 
-               do j = 1, len(word)
-                  select case(word(j:j))
-                     case ('b')
-                        i = i - 7
-                     case ('#')
-                        i = i + 7
-                     case ('x')
-                        i = i + 14
-                  end select
-               end do
+                  do j = 1, len(word)
+                     select case(word(j:j))
+                        case ('b')
+                           i = i - 7
+                        case ('#')
+                           i = i + 7
+                        case ('x')
+                           i = i + 14
+                     end select
+                  end do
+               end if
 
                select case(tuning)
                   case ('equal')
@@ -342,15 +348,29 @@ contains
                j = (j - modulo(j, 7)) / 7
                f0 = f0 / 2.0_dp ** j
 
-               j = nint(rational(next(numeral, '-1')))
+               ! position on twelve-tone scale:
+               j = i * 7 - 12 * j
 
-               if (j .lt. 0.0_dp) then
-                  keynote = i
+               if (index('RU', symbol) .ne. 0) then
+                  j = (newtone - j) / 12
                else
-                  f0 = f0 * 2.0_dp ** (j - 4.0_dp)
+                  word = next(numeral, 'none')
 
-                  fi = f0; f = fi
+                  tone = j
+
+                  if (word .eq. 'none') then
+                     j = 4
+                     keynote = i
+                  else
+                     j = nint(rational(word))
+                  end if
+
+                  tone = tone + 12 * j
                end if
+
+               f0 = f0 * 2.0_dp ** (j - 4.0_dp)
+
+               fi = f0; f = fi
 
             case ('='); f0 = n() / s; fi = f0; f = fi
             case ('&'); a0 = n();     ai = a0; a = ai

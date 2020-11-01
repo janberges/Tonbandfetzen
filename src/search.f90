@@ -14,7 +14,7 @@ module search
    character(*), parameter :: &
       numeral = '.0123456789:', &
       lexical = 'abcdefghijklmnopqrstuvwxyz#', &
-      special = '!"$%&''()*+,-/;<=>?@ABCDEFGHIJLMNOPQSTVWXZ[\]^_`{|}~' ! KRUY
+      special = '!"$%&''()*+,-/;<=>?@ABCDEFGHIJLMNOPQRSTUVWXZ[\]^_`{|}~' ! KY
 
 contains
 

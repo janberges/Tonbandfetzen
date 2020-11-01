@@ -246,8 +246,9 @@ marks accidentals and can be
 .BR bb ,
 and so on.
 .IR n
-is the octave number.
-If omitted, set the keynote.
+is the octave number and defaults to
+.BR 4 .
+If omitted, also set the keynote.
 .BI A4
 is the concert pitch.
 .TP
@@ -280,6 +281,11 @@ defaults to
 Set frequency to
 .IR n
 times the reference frequency.
+.TP
+.BI "R U" n
+Set frequency to
+.IR n
+chromatic steps below/above the reference.
 .TP
 .BI "- +" n
 Set frequency to

@@ -16,7 +16,7 @@ contains
       character(*), intent(in) :: notes
       type(audio), intent(out) :: tones
 
-      character(*), parameter :: initial = '!"%&+-=?ABCDEFGNPSWZ[]`~'
+      character(*), parameter :: initial = '!"%&+-=?ABCDEFGNPQSWZ[]`~'
 
       character(:), allocatable :: symbol, word ! special/lexical string
 
@@ -360,6 +360,9 @@ contains
                v = n() / s
                f1 = 2 * pi * n() / s
                v1 = cmplx(cos(f1), sin(f1), dp)
+
+            case ('Q')
+               fi = n() * f0; f = fi
 
             case ('_', '^'); fb = 2.0_dp ** (sgn('_^') * n() / steps)
             case ('\', '/'); fd = 2.0_dp ** (sgn('\/') * n() / steps)

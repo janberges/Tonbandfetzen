@@ -23,7 +23,7 @@ and parallel execution (-j).
 
 At the heart of this toolbox, the program `mel` converts text into audio:
 
-    echo "M0C4'1W0+4'1W0+7'1" | mel | aplay
+    echo "MC4'WE4'WG4'" | mel | aplay
 
 ## Installation
 

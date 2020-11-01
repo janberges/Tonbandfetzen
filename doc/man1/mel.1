@@ -43,7 +43,7 @@ and commands (other single ASCII characters).
 Commands are followed by words and/or numbers as arguments, as listed below.
 The input is processed linearly, whereby unexpected characters, including whitespace, act as separators and are otherwise ignored.
 .TP
-.BI ~ w " " n
+.RI \fB~\fR w [ n ]
 Choose wave sample of shape
 .IR w
 and duration
@@ -64,6 +64,9 @@ the first channel of the
 .IR n th
 .IR wavefile
 given on the command line is loaded instead.
+.IR n
+defaults to
+.BR 1 .
 The default is a
 .BR circular
 wave that lasts
@@ -99,12 +102,9 @@ sgn(x) sqrt(2|x| - x\[S2]) for x in (-2, 2]
 white noise
 .RE
 .TP
-.BI S w " " n
-Choose attack envelope of shape
-.IR w
-and duration
-.IR n
-in seconds.
+.RI \fBS\fR w [ n ]
+Choose attack envelope.
+Arguments as above.
 Predefined values for
 .IR w
 are listed below.
@@ -140,11 +140,11 @@ sqrt(1 - x\[S2]) for x in (-1, 0)
 3x\[S2] - 2x\[S2] for x in (0, 1)
 .RE
 .TP
-.BI Z w " " n
+.RI \fBZ\fR w [ n ]
 Choose release envelope.
 Arguments as above.
 .TP
-.BI N w " " n
+.RI \fBN\fR w [ n ]
 Choose attack and release envelope at once.
 Arguments as above.
 .TP
@@ -324,50 +324,57 @@ Continuously lower/raise amplitude ratio by
 .IR n
 dB per beat from now on.
 .TP
-.BI M n
+.RI \fBM\fR[ n ]
 Set
 .IR n th
 time mark.
 .IR n
 must be an integer between
-.BR 0 " and " 99 .
+.BR 0 " and " 99
+and defaults to
+.BR 0 .
 .TP
-.BI W n
+.RI \fBW\fR[ n ]
 Wind back to
 .IR n th
 time mark.
+.IR n
+defaults to
+.BR 0 .
 .TP
-.BI P n " " n'
+.RI \fBP\fR n " " n' [ n\(dq ]
 Paste copy of sound between
-.IR n th
-and
-.IR n' th
-time mark.
-.TP
-.BI R n " " n' " " n\(dq
-Repeat copy of sound between
 .IR n th
 and
 .IR n' th
 time mark
 .IR n\(dq
 times.
+.IR n\(dq
+defaults to
+.BR 1 .
 .TP
-.BI I n
+.RI \fBI\fR[ n ]
 Set
 .IR n th
 text mark.
 .IR n
 must be an integer between
-.BR 0 " and " 99 .
+.BR 0 " and " 99
+and defaults to
+.BR 0 .
 .TP
-.BI J n " " n'
+.RI \fBJ\fR[ n [ n' ]]
 Jump back to
 .IR n th
 text mark.
 This works
 .IR n'
 times in a row.
+.IR n " and " n'
+default to
+.BR 0 " and " 1 ,
+respectively.
 .TP
 .BI X n
 Randomly detune frequency, including concert pitch

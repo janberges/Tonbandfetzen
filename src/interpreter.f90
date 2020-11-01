@@ -16,7 +16,7 @@ contains
       character(*), intent(in) :: notes
       type(audio), intent(out) :: tones
 
-      character(*), parameter :: initial = '!"%&+-=?ABCDEFGNPRSWZ[]`~'
+      character(*), parameter :: initial = '!"%&+-=?ABCDEFGNPSWZ[]`~'
 
       character(:), allocatable :: symbol, word ! special/lexical string
 
@@ -75,7 +75,7 @@ contains
       ! time marks
       real(dp) :: marks(0:99)
       real(dp) :: x1, x2, dx
-      integer  :: t1, t2, dt, copies
+      integer  :: t1, t2, dt
 
       ! text marks
       integer :: mark, count, info
@@ -162,34 +162,28 @@ contains
                t = nint(x)
 
             case ('M')
-               marks(int(n())) = x
+               marks(int(rational(next(numeral, '0')))) = x
 
             case ('W')
-               x = marks(int(n()))
+               x = marks(int(rational(next(numeral, '0'))))
                t = nint(x)
 
-            case ('P', 'R')
+            case ('P')
                x1 = marks(int(n()))
                x2 = marks(int(n()))
                dx = x2 - x1
 
-               if (symbol .eq. 'R') then
-                  copies = int(n())
-               else
-                  copies = 1
-               end if
-
-               do i = 1, copies
+               do i = 1, int(rational(next(numeral, '1')))
                   x = x + dx
                   t = nint(x)
                end do
 
             case ('I')
-               call remember(int(n()))
+               call remember(int(rational(next(numeral, '0'))))
 
             case ('J')
-               mark = int(n())
-               count = int(n())
+               mark = int(rational(next(numeral, '0')))
+               count = int(rational(next(numeral, '1')))
 
                call get(info)
 
@@ -273,9 +267,9 @@ contains
                word = next(lexical)
 
                if (word .eq. '#') then
-                  i = int(n())
+                  i = int(rational(next(numeral, '1')))
                else
-                  i = nint(n() * s)
+                  i = nint(rational(next(numeral, '1')) * s)
                end if
 
                select case (symbol)
@@ -408,32 +402,26 @@ contains
                t = t + d
 
             case ('"', '`')
-               x = x + sgn('`"`') * rational(next(numeral, '1')) * b
+               x = x + sgn('`"') * rational(next(numeral, '1')) * b
                t = nint(x)
 
             case ('M')
-               marks(int(n())) = x
+               marks(int(rational(next(numeral, '0')))) = x
 
             case ('W')
-               x = marks(int(n()))
+               x = marks(int(rational(next(numeral, '0'))))
                t = nint(x)
 
-            case ('P', 'R')
+            case ('P')
                x1 = marks(int(n()))
                x2 = marks(int(n()))
                dx = x2 - x1
-
-               if (symbol .eq. 'R') then
-                  copies = int(n())
-               else
-                  copies = 1
-               end if
 
                t1 = nint(x1)
                t2 = nint(x2)
                dt = t2 - t1
 
-               do i = 1, copies
+               do i = 1, int(rational(next(numeral, '1')))
                   x = x + dx
                   t = nint(x)
                   mel(:, t - dt + 1:t) = mel(:, t - dt + 1:t) &
@@ -441,11 +429,11 @@ contains
                end do
 
             case ('I')
-               call remember(int(n()))
+               call remember(int(rational(next(numeral, '0'))))
 
             case ('J')
-               mark = int(n())
-               count = int(n())
+               mark = int(rational(next(numeral, '0')))
+               count = int(rational(next(numeral, '1')))
 
                call get(info)
 

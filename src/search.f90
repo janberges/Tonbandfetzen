@@ -3,7 +3,7 @@ module search
    implicit none
    private
 
-   public :: focus, reset, next, remember, revert, known, set, get, &
+   public :: focus, reset, next, remember, forget, revert, known, set, get, &
       numeral, lexical, special
 
    character(:), allocatable :: sequence
@@ -14,7 +14,7 @@ module search
    character(*), parameter :: &
       numeral = '.0123456789:', &
       lexical = 'abcdefghijklmnopqrstuvwxyz#', &
-      special = '!"$%&''()*+,-/;<=>?@ABCDEFGHIJLMNOPQSTUVWXYZ[\]^_`{|}~' ! KR
+      special = '!"$%&''()*+,-/;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`{|}~'
 
 contains
 
@@ -86,6 +86,12 @@ contains
 
          marks(mark) = last
       end subroutine remember
+
+      subroutine forget(mark)
+         integer, intent(in) :: mark
+
+         marks(mark) = -1
+      end subroutine forget
 
       subroutine revert(mark)
          integer, intent(in) :: mark

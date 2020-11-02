@@ -16,7 +16,7 @@ contains
       character(*), intent(in) :: notes
       type(audio), intent(out) :: tones
 
-      character(*), parameter :: initial = '!"%&+-=?ABCDEFGNPQRSUWZ[]`~'
+      character(*), parameter :: initial = '!"%&+-=?ABCDEFGNPQSUVWZ[]`~'
 
       character(:), allocatable :: symbol, word ! special/lexical string
 
@@ -302,9 +302,9 @@ contains
             case ('H')
                steps = nint(n())
 
-            case ('C', 'D', 'E', 'F', 'G', 'A', 'B', 'R', 'U')
-               if (index('RU', symbol) .ne. 0) then
-                  newtone = tone + sgn('RU') * int(n())
+            case ('C', 'D', 'E', 'F', 'G', 'A', 'B', 'U', 'V')
+               if (index('UV', symbol) .ne. 0) then
+                  newtone = tone + sgn('VU') * int(n())
                   i = keynote - 5 + modulo(newtone * 7 - keynote + 5, 12)
                else
                   i = index('FCGDAEB', symbol) - 5
@@ -351,7 +351,7 @@ contains
                ! position on twelve-tone scale:
                j = i * 7 - 12 * j
 
-               if (index('RU', symbol) .ne. 0) then
+               if (index('UV', symbol) .ne. 0) then
                   j = (newtone - j) / 12
                else
                   word = next(numeral, 'none')
@@ -376,7 +376,7 @@ contains
             case ('&'); a0 = n();     ai = a0; a = ai
             case ('%'); r0 = n();     ri = r0; r = ri
 
-            case ('V')
+            case ('Y')
                v = n() / s
                f1 = 2 * pi * n() / s
                v1 = cmplx(cos(f1), sin(f1), dp)

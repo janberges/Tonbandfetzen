@@ -74,6 +74,7 @@ contains
 
       ! time marks
       real(dp) :: marks(0:99)
+      logical :: mark_set(0:99)
       real(dp) :: x1, x2, dx
       integer  :: t1, t2, dt
 
@@ -135,7 +136,7 @@ contains
       cmax = c
 
       call reset
-      marks = 0
+      mark_set = .false.
 
       do
          symbol = next(special, length=1)
@@ -163,36 +164,49 @@ contains
                t = nint(x)
 
             case ('M')
-               marks(int(rational(next(numeral, '0')))) = x
+               i = int(rational(next(numeral, '0')))
+               marks(i) = x
+               mark_set(i) = .true.
 
             case ('W')
-               x = marks(int(rational(next(numeral, '0'))))
-               t = nint(x)
+               i = int(rational(next(numeral, '0')))
+               if (mark_set(i)) then
+                  x = marks(i)
+                  t = nint(x)
+               end if
 
             case ('P')
-               x1 = marks(int(n()))
-               x2 = marks(int(n()))
-               dx = x2 - x1
+               i = int(n())
+               j = int(n())
 
-               do i = 1, int(rational(next(numeral, '1')))
-                  x = x + dx
-                  t = nint(x)
-               end do
+               if (mark_set(i) .and. mark_set(j)) then
+                  x1 = marks(i)
+                  x2 = marks(j)
+                  dx = x2 - x1
+
+                  do i = 1, int(rational(next(numeral, '1')))
+                     x = x + dx
+                     t = nint(x)
+                  end do
+               end if
 
             case ('I')
                call remember(int(rational(next(numeral, '0'))))
 
             case ('J')
                mark = int(rational(next(numeral, '0')))
-               count = int(rational(next(numeral, '1')))
 
-               call get(info)
+               if (known(mark)) then
+                  count = int(rational(next(numeral, '1')))
 
-               if (info .lt. count) then
-                  call set(info + 1)
-                  call revert(mark)
-               else
-                  call set(0)
+                  call get(info)
+
+                  if (info .lt. count) then
+                     call set(info + 1)
+                     call revert(mark)
+                  else
+                     call set(0)
+                  end if
                end if
 
             case ('*')
@@ -231,7 +245,7 @@ contains
       c = 0
 
       call reset
-      marks = 0
+      mark_set = .false.
 
       do
          symbol = next(special, length=1)
@@ -429,61 +443,80 @@ contains
                t = nint(x)
 
             case ('M')
-               marks(int(rational(next(numeral, '0')))) = x
+               i = int(rational(next(numeral, '0')))
+               marks(i) = x
+               mark_set(i) = .true.
 
             case ('W')
-               x = marks(int(rational(next(numeral, '0'))))
-               t = nint(x)
+               i = int(rational(next(numeral, '0')))
+               if (mark_set(i)) then
+                  x = marks(i)
+                  t = nint(x)
+               end if
 
             case ('P')
-               x1 = marks(int(n()))
-               x2 = marks(int(n()))
-               dx = x2 - x1
+               i = int(n())
+               j = int(n())
 
-               t1 = nint(x1)
-               t2 = nint(x2)
-               dt = t2 - t1
+               if (mark_set(i) .and. mark_set(j)) then
+                  x1 = marks(i)
+                  x2 = marks(j)
 
-               do i = 1, int(rational(next(numeral, '1')))
-                  x = x + dx
-                  t = nint(x)
-                  mel(:, t - dt + 1:t) = mel(:, t - dt + 1:t) &
-                     + mel(:, t1 + 1:t2)
-               end do
+                  dx = x2 - x1
+
+                  t1 = nint(x1)
+                  t2 = nint(x2)
+                  dt = t2 - t1
+
+                  do i = 1, int(rational(next(numeral, '1')))
+                     x = x + dx
+                     t = nint(x)
+                     mel(:, t - dt + 1:t) = mel(:, t - dt + 1:t) &
+                        + mel(:, t1 + 1:t2)
+                  end do
+               end if
 
             case ('I')
                call remember(int(rational(next(numeral, '0'))))
 
             case ('J')
                mark = int(rational(next(numeral, '0')))
-               count = int(rational(next(numeral, '1')))
 
-               call get(info)
+               if (known(mark)) then
+                  count = int(rational(next(numeral, '1')))
 
-               if (info .lt. count) then
-                  call set(info + 1)
-                  call revert(mark)
-               else
-                  call set(0)
+                  call get(info)
+
+                  if (info .lt. count) then
+                     call set(info + 1)
+                     call revert(mark)
+                  else
+                     call set(0)
+                  end if
                end if
 
             case ('L')
-               t1 = nint(marks(int(n())))
-               t2 = nint(marks(int(n())))
-               dx = n() * s
+               i = int(n())
+               j = int(n())
 
-               factor = n() * size(wave) / (t2 - t1 - 1)
+               if (mark_set(i) .and. mark_set(j)) then
+                  t1 = nint(marks(i))
+                  t2 = nint(marks(j))
+                  dx = n() * s
 
-               allocate(work(tones%channels, t2 - t1))
+                  factor = n() * size(wave) / (t2 - t1 - 1)
 
-               do i = 0, t2 - t1 - 1
-                  work(:, 1 + i) = mel(:, t1 + 1 + i &
-                     + nint(dx * wave(modulo(nint(i * factor), size(wave)))))
-               end do
+                  allocate(work(tones%channels, t2 - t1))
 
-               mel(:, t1 + 1:t2) = mel(:, t1 + 1:t2) + work
+                  do i = 0, t2 - t1 - 1
+                     work(:, 1 + i) = mel(:, t1 + 1 + i &
+                        + nint(dx * wave(modulo(nint(i * factor), size(wave)))))
+                  end do
 
-               deallocate(work)
+                  mel(:, t1 + 1:t2) = mel(:, t1 + 1:t2) + work
+
+                  deallocate(work)
+               end if
 
             case ('*')
                symbol = next('*', length=1)

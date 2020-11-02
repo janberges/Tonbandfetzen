@@ -3,7 +3,7 @@ module search
    implicit none
    private
 
-   public :: focus, reset, next, remember, revert, set, get, &
+   public :: focus, reset, next, remember, revert, known, set, get, &
       numeral, lexical, special
 
    character(:), allocatable :: sequence
@@ -30,7 +30,7 @@ contains
 
       subroutine reset
          last = 0
-         marks = 0
+         marks = -1
          info = 0
       end subroutine reset
 
@@ -90,8 +90,15 @@ contains
       subroutine revert(mark)
          integer, intent(in) :: mark
 
-         last = marks(mark)
+         if (known(mark)) last = marks(mark)
       end subroutine revert
+
+      function known(mark)
+         logical :: known
+         integer, intent(in) :: mark
+
+         known = marks(mark) .ne. -1
+      end function known
 
       subroutine set(i)
          integer, intent(in) :: i

@@ -1,4 +1,4 @@
-$44100 O2 |1:4 !17
+$44100 O2 |1:4 T just G !17
 
 ~ circular 1
 N smooth 25:1000

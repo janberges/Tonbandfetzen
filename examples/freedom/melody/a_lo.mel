@@ -1,14 +1,12 @@
-!17
-
-~ circular 1
+~ circular
 
 M1
-[00 {00
-E2 '1 E2 '1 E2 '1 E2 '1 E2 '1 E2 '1 E2 '1 E2 '1
-E2 '1 E2 '1 E2 '1 E2 '1 E2 '1 E2 '1 E2 '1 E2 '1
-G2 '1 G2 '1 G2 '1 G2 '1 G2 '1 G2 '1 G2 '1 G2 '1
-A2 '1 A2 '1 A2 '1 A2 '1 A2 '1 A2 '1 A2 '1 A2 '1
+!17 [00 {00
+E2 ' E2 ' E2 ' E2 ' E2 ' E2 ' E2 ' E2 '
+E2 ' E2 ' E2 ' E2 ' E2 ' E2 ' E2 ' E2 '
+G2 ' G2 ' G2 ' G2 ' G2 ' G2 ' G2 ' G2 '
+A2 ' A2 ' A2 ' A2 ' A2 ' A2 ' A2 ' A2 '
 M2
 
-~ harmonic 1
+~ harmonic
 L 1 2 0.0125 2

@@ -5,23 +5,14 @@ all: freedom.wav
 clean:
 	git clean -Xdf
 
-%.wav: %.mel
-	mel $< $@
+%.wav: def.mel %.mel
+	cat $^ | mel $@
+
+%_fitted.wav: def.mel %.fit %.wav
+	cat $< $*.fit | mel $*.wav - $@
 
 %.wav: %.txt
 	espeak -vde+f1 -s130 -f$^ -w$@
-
-lyrics/verse1_fitted.wav: lyrics/verse1.wav lyrics/verse1_fitted.mel
-	mel $^ $@
-
-lyrics/verse2_fitted.wav: lyrics/verse2.wav lyrics/verse2_fitted.mel
-	mel $^ $@
-
-lyrics/verse3_fitted.wav: lyrics/verse3.wav lyrics/verse3_fitted.mel
-	mel $^ $@
-
-lyrics/outro_fitted.wav: lyrics/outro.wav lyrics/outro_fitted.mel
-	mel $^ $@
 
 parts/b_hi.wav: melody/b_hi1.wav melody/b_hi1.wav melody/b_hi2.wav melody/b_hi1.wav
 	stick $+ $@

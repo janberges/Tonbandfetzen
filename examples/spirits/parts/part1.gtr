@@ -1,5 +1,7 @@
-~ constant 1
-N smooth 0
+T just C
+
+~ circular 1
+N smooth 0.001
 
 |12:7 ^24:7 ,120:7
 

@@ -363,7 +363,7 @@ contains
                   case ('equal')
                      f = f * equal_fifth ** i
 
-                  case ('fifth')
+                  case ('pyth')
                      f = f * just_fifth ** i
 
                   case ('just')

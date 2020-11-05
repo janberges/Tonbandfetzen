@@ -31,7 +31,7 @@ A4'` C5'` E5' `1:2 A4 +0'` +3'` +7' *submediant/tonic*
 B4'` D5'` F5' `1:2 B4 +0'` +3'` +6' *leading tone/supertonic*
 C5'` E5'` G5' `1:2 C5 +0'` +4'` +7' *tonic/mediant*
 
-T fifth *3-limit Pythagorean tuning*
+T pyth *3-limit Pythagorean tuning*
 
 *diatonic scale*
 C4' `1:2 C4 Q1:1'

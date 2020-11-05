@@ -1,0 +1,76 @@
+$44100 O1
+
+~ cubic
+N smooth 0.02
+
+,5
+
+=440' `1:2 A4' *concert pitch*
+
+C *use C as keynote to avoid # and b*
+
+T equal *12-tone equal temperament*
+
+*diatonic scale*
+C4' `1:2 C4 +0'
+D4' `1:2 C4 +2'
+E4' `1:2 C4 +4'
+F4' `1:2 C4 +5'
+G4' `1:2 C4 +7'
+A4' `1:2 C4 +9'
+B4' `1:2 C4 +11'
+C5' `1:2 C4 +12'
+
+*triads of C major/A minor scale*
+C4'` E4'` WG4' `1:2 C4 +0'` +4'` +7' *tonic/mediant*
+D4'` F4'` WA4' `1:2 D4 +0'` +3'` +7' *supertonic/subdominant*
+E4'` G4'` WB4' `1:2 E4 +0'` +3'` +7' *mediant/dominant*
+F4'` A4'` WC5' `1:2 F4 +0'` +4'` +7' *subdominant/submediant*
+G4'` B4'` WD5' `1:2 G4 +0'` +4'` +7' *dominant/subtonic*
+A4'` C5'` WE5' `1:2 A4 +0'` +3'` +7' *submediant/tonic*
+B4'` D5'` WF5' `1:2 B4 +0'` +3'` +6' *leading tone/supertonic*
+C5'` E5'` WG5' `1:2 C5 +0'` +4'` +7' *tonic/mediant*
+
+T fifth *3-limit Pythagorean tuning*
+
+*diatonic scale*
+C4' `1:2 C4 Q1:1'
+D4' `1:2 C4 Q9:8'
+E4' `1:2 C4 Q81:64'
+F4' `1:2 C4 Q4:3'
+G4' `1:2 C4 Q3:2'
+A4' `1:2 C4 Q27:16'
+B4' `1:2 C4 Q243:128'
+C5' `1:2 C4 Q2:1'
+
+*triads of C major/A minor scale*
+C4'` E4'` G4' `1:2 C4 Q1:1'` Q81:64'` Q3:2' *tonic/mediant*
+D4'` F4'` A4' `1:2 D4 Q1:1'` Q32:27'` Q3:2' *supertonic/subdominant*
+E4'` G4'` B4' `1:2 E4 Q1:1'` Q32:27'` Q3:2' *mediant/dominant*
+F4'` A4'` C5' `1:2 F4 Q1:1'` Q81:64'` Q3:2' *subdominant/submediant*
+G4'` B4'` D5' `1:2 G4 Q1:1'` Q81:64'` Q3:2' *dominant/subtonic*
+A4'` C5'` E5' `1:2 A4 Q1:1'` Q32:27'` Q3:2' *submediant/tonic*
+B4'` D5'` F5' `1:2 B4 Q1:1'` Q32:27'` Q1024:729' *leading tone/supertonic*
+C5'` E5'` G5' `1:2 C5 Q1:1'` Q81:64'` Q3:2' *tonic/mediant*
+
+T just *5-limit just intonation*
+
+*diatonic scale*
+C4' `1:2 C4 Q1:1'
+D4' `1:2 C4 Q9:8'
+E4' `1:2 C4 Q5:4'
+F4' `1:2 C4 Q4:3'
+G4' `1:2 C4 Q3:2'
+A4' `1:2 C4 Q5:3'
+B4' `1:2 C4 Q15:8'
+C5' `1:2 C4 Q2:1'
+
+*triads of C major/A minor scale*
+C4'`  E4'` G4' `1:2 C4  Q1:1'` Q5:4'` Q3:2' *tonic/mediant*
+Dv4'` F4'` A4' `1:2 Dv4 Q1:1'` Q6:5'` Q3:2' *supertonic/subdominant*
+E4'`  G4'` B4' `1:2 E4  Q1:1'` Q6:5'` Q3:2' *mediant/dominant*
+F4'`  A4'` C5' `1:2 F4  Q1:1'` Q5:4'` Q3:2' *subdominant/submediant*
+G4'`  B4'` D5' `1:2 G4  Q1:1'` Q5:4'` Q3:2' *dominant/subtonic*
+A4'`  C5'` E5' `1:2 A4  Q1:1'` Q6:5'` Q3:2' *submediant/tonic*
+B4'`  D5'` F5' `1:2 B4  Q1:1'` Q6:5'` Q64:45' *leading tone/supertonic*
+C5'`  E5'` G5' `1:2 C5  Q1:1'` Q5:4'` Q3:2' *tonic/mediant*

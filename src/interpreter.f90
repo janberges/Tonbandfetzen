@@ -88,7 +88,9 @@ contains
 
       real(dp), parameter :: equal_fifth = 2.0_dp ** (7.0_dp / 12.0_dp)
       real(dp), parameter :: just_fifth = 1.5_dp
+      real(dp), parameter :: Pyth_comma = 3.0_dp ** 12.0_dp / 2.0_dp ** 19.0_dp
       real(dp), parameter :: syntonic_comma = 1.0125_dp
+      real(dp), parameter :: septimal_comma = 0.984375_dp
 
       integer :: keynote, tone, newtone
 
@@ -323,41 +325,55 @@ contains
                steps = nint(n())
 
             case ('C', 'D', 'E', 'F', 'G', 'A', 'B', 'U', 'V')
+               f = A4
+
                if (index('UV', symbol) .ne. 0) then
                   newtone = tone + sgn('VU') * int(n())
                   i = keynote - 5 + modulo(newtone * 7 - keynote + 5, 12)
                else
                   i = index('FCGDAEB', symbol) - 5
-
-                  word = next(lexical, '')
-
-                  do j = 1, len(word)
-                     select case(word(j:j))
-                        case ('b')
-                           i = i - 7
-                        case ('#')
-                           i = i + 7
-                        case ('x')
-                           i = i + 14
-                     end select
-                  end do
                end if
+
+               word = next(lexical, '')
+
+               do j = 1, len(word)
+                  select case(word(j:j))
+                     case ('b')
+                        i = i - 7
+                     case ('#')
+                        i = i + 7
+                     case ('x')
+                        i = i + 14
+                     case ('v') ! "arrow down"
+                        f = f / syntonic_comma
+                     case ('u') ! "Up"
+                        f = f * syntonic_comma
+                     case ('z') ! "zurueck"
+                        f = f * septimal_comma
+                     case ('s') ! "Septimal"
+                        f = f / septimal_comma
+                     case ('d') ! "Ditonic comma Down"
+                        f = f / Pyth_comma
+                     case ('p') ! "Pythagorean comma Up"
+                        f = f * Pyth_comma
+                  end select
+               end do
 
                select case(tuning)
                   case ('equal')
-                     f = A4 * equal_fifth ** i
+                     f = f * equal_fifth ** i
 
                   case ('fifth')
-                     f = A4 * just_fifth ** i
+                     f = f * just_fifth ** i
 
                   case ('just')
-                     f = A4 * just_fifth ** i
+                     f = f * just_fifth ** i
                      j = i + modulo(1 - keynote, 4)
                      j = (j - modulo(j, 4)) / 4
                      f = f / syntonic_comma ** j
 
                   case ('close')
-                     f = A4 * just_fifth ** i
+                     f = f * just_fifth ** i
                      j = i + modulo(5 - keynote, 11)
                      j = (j - modulo(j, 11)) / 11
                      f = f / syntonic_comma ** j

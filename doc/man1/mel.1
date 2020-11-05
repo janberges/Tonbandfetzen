@@ -245,6 +245,13 @@ marks accidentals and can be
 .BR b ,
 .BR bb ,
 and so on.
+To raise and lower the frequency by a diatonic (septimal) [Pythagorean] comma 81:80 (64:63) [531441:524288], use
+.BR u " and " v
+.RB ( s " and " z )
+.RB [ p " and " d ],
+respectively.
+Please note that the note name already implies a certain number of diatonic commas for the tunings
+.BR just " and " best .
 .IR n
 is the octave number and defaults to
 .BR 4 .
@@ -282,10 +289,13 @@ Set frequency to
 .IR n
 times the reference frequency.
 .TP
-.BI "V U" n
+.RI "\fBV U\fR[" w ] n
 Set frequency to
 .IR n
 chromatic steps below/above the reference.
+You can use the same commas
+.IR w
+as with note names.
 The 12-tone scale is made of the -5 to 6th fifths from the keynote.
 .TP
 .BI "- +" n

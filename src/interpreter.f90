@@ -345,28 +345,28 @@ contains
 
                select case(tuning)
                   case ('equal')
-                     f0 = A4 * equal_fifth ** i
+                     f = A4 * equal_fifth ** i
 
                   case ('fifth')
-                     f0 = A4 * just_fifth ** i
+                     f = A4 * just_fifth ** i
 
                   case ('just')
-                     f0 = A4 * just_fifth ** i
+                     f = A4 * just_fifth ** i
                      j = i + modulo(1 - keynote, 4)
                      j = (j - modulo(j, 4)) / 4
-                     f0 = f0 / syntonic_comma ** j
+                     f = f / syntonic_comma ** j
 
                   case ('close')
-                     f0 = A4 * just_fifth ** i
+                     f = A4 * just_fifth ** i
                      j = i + modulo(5 - keynote, 11)
                      j = (j - modulo(j, 11)) / 11
-                     f0 = f0 / syntonic_comma ** j
+                     f = f / syntonic_comma ** j
                end select
 
                ! fold back to first octave:
                j = 4 * i + 5
                j = (j - modulo(j, 7)) / 7
-               f0 = f0 / 2.0_dp ** j
+               f = f / 2.0_dp ** j
 
                ! position on twelve-tone scale:
                j = i * 7 - 12 * j
@@ -388,9 +388,10 @@ contains
                   tone = tone + 12 * j
                end if
 
-               f0 = f0 * 2.0_dp ** (j - 4.0_dp)
+               f = f * 2.0_dp ** (j - 4.0_dp)
+               fi = f
 
-               fi = f0; f = fi
+               if (index('UV', symbol) .eq. 0) f0 = f
 
             case ('='); f0 = n() / s; fi = f0; f = fi
             case ('&'); a0 = n();     ai = a0; a = ai

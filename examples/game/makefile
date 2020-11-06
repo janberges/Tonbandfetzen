@@ -6,8 +6,11 @@ all: game.wav
 clean:
 	git clean -Xdf
 
-%.wav: %.mel
-	mel $< $@
+%.wav: def.mel %.mel
+	cat $^ | mel $@
 
 %.mel: %.gtr
 	guitar $< $@
+
+game.wav: parts/part1.wav parts/part2.wav parts/part3.wav parts/part3.wav parts/part4.wav
+	stick $+ $@

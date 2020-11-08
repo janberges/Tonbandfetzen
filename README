@@ -14,6 +14,8 @@ music based on audio fragments generated from plain text input. It contains:
 * `riff2aiff` - convert .wav(e) into .aif(f) files
 * `aiff2riff` - convert .aif(f) into .wav(e) files
 
+`mel` also supports misotanni's [Functional Just System](https://misotanni.github.io) for just intonation.
+
 ## Usage
 
 Different task are spread across separate executables, which communicate via

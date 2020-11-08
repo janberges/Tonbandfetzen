@@ -1,10 +1,21 @@
+*adapted from https://misotanni.github.io/fjs/en/examples.html*
+
 $44100 O1
 
-~ cubic
+~ harmonic
 N smooth 0.02
 
 T pyth
 
-M A2 '8
+@675 *C4 = 400 Hz*
 
-W ,5 A2 ' A3 ' E4 ' A4 ' C#v5 ' E5 ' Gz5 ' A5 '
+M C2 '64 W
+
+C2'     C3'     G3'     C4'     E4 5'   G4'     Bb4 7'  C5'
+D5'     E5 5'   F5 11'  G5'     Ab5 13' Bb5 7'  B5 5'   C6'
+Db6 17' D6'     Eb6 19' E6 5'   F6 7'   F6 11'  F#6 23' G6'
+G#6 25' Ab6 13' A6'     Bb6 7'  Bb6 29' B6 5'   B6 31'  C7'
+C7 11'  Db7 17' D7 35'  D7'     D7 37'  Eb7 19' Eb7 13' E7 5'
+E7 41'  F7 7'   F7 43'  F7 11'  F#7 5'  F#7 23' G7 47'  G7'
+Ab7 49' G#7 25' Ab7 17' Ab7 13' A7 53'  A7'     A7 55'  Bb7 7'
+Bb7 19' Bb7 29' B7 59'  B7 5'   B7 61'  B7 31'  C8 7'   C8'

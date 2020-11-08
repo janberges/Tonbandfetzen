@@ -352,6 +352,10 @@ contains
                         f = f * comma(7)
                      case ('s') ! septimal comma up
                         f = f * comma(-7)
+                     case ('j') ! 11-comma down
+                        f = f * comma(-11)
+                     case ('i') ! 11-comma up
+                        f = f * comma(11)
                      case ('d') ! ditonic comma down
                         f = f * comma(-3)
                      case ('p') ! Pythagorean comma up

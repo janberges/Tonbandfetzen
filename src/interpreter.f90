@@ -1,5 +1,6 @@
 module interpreter
    use constants
+   use fjs
    use io
    use rationals
    use riff
@@ -88,11 +89,10 @@ contains
 
       real(dp), parameter :: equal_fifth = 2.0_dp ** (7.0_dp / 12.0_dp)
       real(dp), parameter :: just_fifth = 1.5_dp
-      real(dp), parameter :: Pyth_comma = 3.0_dp ** 12.0_dp / 2.0_dp ** 19.0_dp
-      real(dp), parameter :: syntonic_comma = 1.0125_dp
-      real(dp), parameter :: septimal_comma = 0.984375_dp
 
       integer :: keynote, tone, newtone
+
+      integer, allocatable :: primes(:)
 
       tuning = 'equal'
       tone = 0
@@ -344,18 +344,18 @@ contains
                         i = i + 7
                      case ('x')
                         i = i + 14
-                     case ('v') ! "arrow down"
-                        f = f / syntonic_comma
-                     case ('u') ! "Up"
-                        f = f * syntonic_comma
-                     case ('z') ! "zurueck"
-                        f = f * septimal_comma
-                     case ('s') ! "Septimal"
-                        f = f / septimal_comma
-                     case ('d') ! "Ditonic comma Down"
-                        f = f / Pyth_comma
-                     case ('p') ! "Pythagorean comma Up"
-                        f = f * Pyth_comma
+                     case ('v') ! syntonic comma down
+                        f = f * comma(5)
+                     case ('u') ! syntonic comma up
+                        f = f * comma(-5)
+                     case ('z') ! septimal comma down
+                        f = f * comma(7)
+                     case ('s') ! septimal comma up
+                        f = f * comma(-7)
+                     case ('d') ! ditonic comma down
+                        f = f * comma(-3)
+                     case ('p') ! Pythagorean comma up
+                        f = f * comma(3)
                   end select
                end do
 
@@ -370,13 +370,13 @@ contains
                      f = f * just_fifth ** i
                      j = i + modulo(1 - keynote, 4)
                      j = (j - modulo(j, 4)) / 4
-                     f = f / syntonic_comma ** j
+                     f = f * comma(5) ** j
 
                   case ('close')
                      f = f * just_fifth ** i
                      j = i + modulo(5 - keynote, 11)
                      j = (j - modulo(j, 11)) / 11
-                     f = f / syntonic_comma ** j
+                     f = f * comma(5) ** j
                end select
 
                ! fold back to first octave:
@@ -406,6 +406,15 @@ contains
 
                f = f * 2.0_dp ** (j - 4.0_dp)
                fi = f
+
+               word = next(numeral, 'none')
+
+               if (word .ne. 'none') then
+                  primes = accidentals(word)
+                  do j = 1, size(primes)
+                     f = f * comma(primes(j))
+                  end do
+               end if
 
                if (index('UV', symbol) .eq. 0) f0 = f
 

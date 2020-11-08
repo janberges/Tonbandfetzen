@@ -236,7 +236,7 @@ Set reference amplitude ratio R:L between right and left channel to
 The default is
 .BR 1 .
 .TP
-.RI "\fBC D E F G A B\fR[" w ][ n ]
+.RI "\fBC D E F G A B\fR[" w ][ n ][ n' ]
 Set reference frequency via note name.
 .IR w
 marks accidentals and can be
@@ -256,6 +256,11 @@ Please note that the note name already implies a certain number of diatonic comm
 is the octave number and defaults to
 .BR 4 .
 If omitted, also set the keynote.
+.IR n'
+is an optional microtonal accidental as used in the Functional Just System (FJS) by misotanni
+.RI ( https://misotanni.github.io/fjs ).
+Here, compound accidentals must be written as a product and otonal and utonal accidentals are separated by a colon
+.RB ( : ).
 .BI A4
 is the concert pitch.
 .TP

@@ -14,24 +14,24 @@ music based on audio fragments generated from plain text input. It contains:
 * `riff2aiff` - convert .wav(e) into .aif(f) files
 * `aiff2riff` - convert .aif(f) into .wav(e) files
 
-`mel` also supports misotanni's [Functional Just System](https://misotanni.github.io) for just intonation.
-
 ## Usage
 
 Different task are spread across separate executables, which communicate via
 files in the Waveform Audio File Format (.wav). Hence, the composition process
 can be controlled using build-automation software, allowing for partial updates
-and parallel execution (-j).
+and parallel execution (`make -j`).
 
 At the heart of this toolbox, the program `mel` converts text into audio:
 
-    echo "MC4'WE4'WG4'" | mel | aplay
+    echo "T pyth M A2'8 W ,5 A2' A3' E4' A4' C#v5' E5' Gz5' A5'" | mel | aplay
+
+It partially supports misotanni's [Functional Just System](https://misotanni.github.io) for just intonation.
 
 ## Installation
 
-You will need a recent version of the GNU Fortran compiler. For some parts,
-Python (guitar tablatures) and eSpeak (example) are required additionally.
-Using APT, these prerequisites be installed as follows:
+You will need a recent Fortran compiler. For some features, Python (guitar
+tablatures) and eSpeak (example) are required additionally. Using APT, these
+prerequisites can be installed as follows:
 
     sudo apt install gfortran python3 espeak
 

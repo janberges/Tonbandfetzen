@@ -119,6 +119,9 @@ contains
             case ('Z'); todo( 3 ) = .false.
             case ('N'); todo(2:3) = .false.
 
+            case ('*')
+               symbol = next('*', length=1)
+
             case ("'", 'none')
                exit
          end select

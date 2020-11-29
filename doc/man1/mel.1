@@ -420,13 +420,25 @@ text mark.
 defaults to
 .BR 0 .
 .TP
-.BI X n
+.RI \fBX\fR w [...]
+Do something special.
+.RS
+.TP
+.BI report
+Print note counts (since last report) to standard output.
+Only notes defined via the commands
+.BR "C D E F G A B" " and " "U V"
+are counted.
+This is useful to, e.g., to determine the keynote of a piece of music.
+.TP
+.BI detune n
 Randomly detune frequency, including concert pitch
 .BR A4 ,
 by up to
 .IR n
 halftones.
 In combination with text and time marks, this is useful to generate non-white noise.
+.RE
 .TP
 .BI L n " " n' " " m " " m'
 Apply flanger to sound between

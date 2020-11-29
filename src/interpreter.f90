@@ -94,9 +94,13 @@ contains
 
       integer, allocatable :: primes(:)
 
+      integer :: keycount(-25:23)
+
       tuning = 'equal'
       tone = 0
       keynote = -3 ! C
+
+      keycount = 0
 
       tones%rate = 44100.0_dp
       tones%channels = 2
@@ -310,13 +314,34 @@ contains
                A4 = n() / s
 
             case ('X')
-               call random_number(random)
-               random = 1.0_dp - 2.0_dp * random
-               random = 2.0_dp ** (random * n() / steps)
-               A4 = A4 * random
-               f0 = f0 * random
-               fi = fi * random
-               f  = f  * random
+               select case(next(lexical))
+                  case('report')
+                     write (*, "('Note counts:')")
+
+                     do i = lbound(keycount, 1), ubound(keycount, 1)
+                        if (keycount(i) .gt. 0) then
+                           j = modulo(i + 4, 7) + 1
+                           write (*, "(A)", advance='no') 'FCGDAEB'(j:j)
+
+                           j = (i + 4 - (j - 1)) / 7
+                           if (j < 0) write (*, "(A)", advance='no') repeat('b', -j)
+                           if (j > 0) write (*, "(A)", advance='no') repeat('#', j)
+
+                           write (*, "(': ', I0)") keycount(i)
+                        end if
+                     end do
+
+                     keycount = 0
+
+                  case ('detune')
+                     call random_number(random)
+                     random = 1.0_dp - 2.0_dp * random
+                     random = 2.0_dp ** (random * n() / steps)
+                     A4 = A4 * random
+                     f0 = f0 * random
+                     fi = fi * random
+                     f  = f  * random
+               end select
 
             case ('T')
                tuning = next(lexical)
@@ -362,6 +387,8 @@ contains
                         f = f * comma(3)
                   end select
                end do
+
+               keycount(i) = keycount(i) + 1
 
                select case(tuning)
                   case ('equal')

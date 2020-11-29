@@ -1,0 +1,9 @@
+@880 O2 |3:2 D
+
+~ cubic
+N smooth 0.02
+,10
+
+%1:2 T pyth
+
+M99 I99

@@ -6,8 +6,8 @@ all: mute.wav
 clean:
 	git clean -Xdf
 
-%.wav: %.mel
-	mel $< $@
+%.wav: def.mel %.mel end.mel
+	cat $^ | mel $@
 
 %.mel: %.gtr
 	guitar $< $@

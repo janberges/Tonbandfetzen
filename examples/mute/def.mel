@@ -4,6 +4,6 @@
 N smooth 0.02
 ,10
 
-%1:2 T pyth
+*Y 1 14:3*
 
-M99 I99
+T pyth

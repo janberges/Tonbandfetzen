@@ -1,3 +1,5 @@
+![Tonbandfetzen logo](logo/logo.svg)
+
 # Tonbandfetzen
 
 Tonbandfetzen is a collection of command-line tools that allow you to compose

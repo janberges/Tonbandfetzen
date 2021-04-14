@@ -1,0 +1,10 @@
+<?xml version='1.0'?>
+<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 20 20'>
+<g draw='none'>
+<path fill='#000000' d='M12,19 C12,11,7,2,10,2 L9,2 C6,2,11,11,11,19 Z'/>
+<path fill='#bf8040' d='M1,3 L19,2.3 L19,2 L2,2 L3.3,1 L3,1 L1,2 Z'/>
+<path fill='#404040' d='M9,19 C9,11,13,2,10,2 L9,2 C12,2,8,11,8,19 Z'/>
+<path fill='#bfff00' d='M19,6 C20,5,20,3,19,2.3 Z'/>
+<path fill='#afdf00' d='M19,2.3 C18,3,18,5,19,6 Z'/>
+</g>
+</svg>

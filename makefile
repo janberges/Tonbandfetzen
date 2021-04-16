@@ -21,10 +21,10 @@ programs = bin/aiff2riff bin/harmonics bin/inspect bin/mel bin/repeat bin/riff2a
 all: $(programs)
 
 clean:
-	@rm -f $(needless) build/aiff.o build/aiff2riff.o build/constants.o build/extended.o build/fjs.o build/harmonics.o build/inspect.o build/interpreter.o build/intervals.o build/io.o build/mel.o build/paths.o build/rationals.o build/repeat.o build/riff.o build/riff2aiff.o build/samples.o build/search.o build/spectra.o build/stack.o build/stick.o build/stretch.o
+	rm -f $(needless) build/aiff.o build/aiff2riff.o build/constants.o build/extended.o build/fjs.o build/harmonics.o build/inspect.o build/interpreter.o build/intervals.o build/io.o build/mel.o build/paths.o build/rationals.o build/repeat.o build/riff.o build/riff2aiff.o build/samples.o build/search.o build/spectra.o build/stack.o build/stick.o build/stretch.o
 
 cleaner: clean
-	@rm -f $(programs)
+	rm -f $(programs)
 
 $(programs):
 	$(FC) -o $@ $^ $(LDLIBS)

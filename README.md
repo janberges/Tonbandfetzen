@@ -71,3 +71,8 @@ Please have a look at the examples:
 There is also a man page for each tool:
 
     man mel
+
+## Hear also
+
+The name Tonbandfetzen originates from the song Explosion by Tocotronic from
+their 2007 album Kapitulation.

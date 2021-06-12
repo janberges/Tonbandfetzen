@@ -8,5 +8,5 @@ clean:
 %.wav: %.mel
 	mel $< $@
 
-harmony.wav: parts/tunings.wav parts/series.wav
+harmony.wav: parts/tunings.wav parts/series.wav parts/chords.wav
 	stick $+ $@

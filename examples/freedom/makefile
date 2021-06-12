@@ -12,7 +12,7 @@ clean:
 	cat $< $*.fit | mel $*.wav - $@
 
 %.wav: %.txt
-	espeak -vde+f1 -s130 -f$^ -w$@
+	espeak-ng -vmb-de5 -s120 -f$^ -w$@
 
 parts/b_hi.wav: melody/b_hi1.wav melody/b_hi1.wav melody/b_hi2.wav melody/b_hi1.wav
 	stick $+ $@

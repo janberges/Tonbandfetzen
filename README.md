@@ -33,10 +33,10 @@ for just intonation invented by misotanni.
 ## Installation
 
 You will need a recent Fortran compiler. For some features, Python (guitar
-tablatures) and eSpeak (example) are required additionally. Using APT, these
-prerequisites can be installed as follows:
+tablatures) and eSpeak NG with MBROLA (example) are required additionally.
+Using APT, these prerequisites can be installed as follows:
 
-    sudo apt install gfortran python3 espeak
+    sudo apt install gfortran python3 espeak-ng mbrola-de5
 
 To compile the binaries, you can use the provided makefile:
 

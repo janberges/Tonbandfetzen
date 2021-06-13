@@ -23,7 +23,8 @@ files in the Waveform Audio File Format (.wav). Hence, the composition process
 can be controlled using build-automation software, allowing for partial updates
 and parallel execution (`make -j`).
 
-At the heart of this toolbox, the program `mel` converts text into audio:
+At the heart of this toolbox, the program `mel` converts text into audio
+(listen [here](https://janberges.github.io/Tonbandfetzen)):
 
     echo "T pyth M A2'8 W ,5 A2' A3' E4' A4' C#v5' E5' Gz5' A5'" | mel | aplay
 
@@ -68,8 +69,8 @@ Please have a look at the examples:
     make -j 2
     aplay freedom.wav
 
-The man pages can be viewed at <https://janberges.github.io/Tonbandfetzen> or
-in the terminal:
+The man pages can be viewed [here](https://janberges.github.io/Tonbandfetzen)
+or in the terminal:
 
     man mel
 

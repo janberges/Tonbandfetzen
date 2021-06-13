@@ -68,7 +68,8 @@ Please have a look at the examples:
     make -j 2
     aplay freedom.wav
 
-There is also a man page for each tool:
+The man pages can be viewed at <https://janberges.github.io/Tonbandfetzen> or
+in the terminal:
 
     man mel
 

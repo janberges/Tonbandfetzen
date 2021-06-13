@@ -5,8 +5,11 @@
 *.aiff
 *.aux
 *.db
+*.html
 *.log
 *.pdf
 *.png
 *.wav
 *.wave
+
+!index.html

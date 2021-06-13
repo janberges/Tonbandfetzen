@@ -43,7 +43,7 @@ and commands (other single ASCII characters).
 Commands are followed by words and/or numbers as arguments, as listed below.
 The input is processed linearly, whereby unexpected characters, including whitespace, act as separators and are otherwise ignored.
 .TP 6
-.BI ~ w \c
+.BI \(ti w \c
 .RI [ n ]
 Choose wave sample of shape
 .IR w
@@ -91,13 +91,13 @@ sgn(sin(x)) for x in (0, 2\[*p]]
 2/\[*p] arcsin(sin(x)) for x in (0, 2\[*p]]
 .TP
 .BR quadratic
-sgn(x) (2|x| - x\[S2]) for x in (-2, 2]
+sgn(x) (2|x| \- x\[S2]) for x in (\-2, 2]
 .TP
 .BR circular
-sgn(x) sqrt(2|x| - x\[S2]) for x in (-2, 2]
+sgn(x) sqrt(2|x| \- x\[S2]) for x in (\-2, 2]
 .TP
 .BR cubic
-3/2 sqrt(3) (x\[S3] - x) for x in (-1, 1]
+3/2 sqrt(3) (x\[S3] \- x) for x in (\-1, 1]
 .TP
 .BR random
 white noise
@@ -133,13 +133,13 @@ sin\[u2075](x) for x in (0, \[*p]/2)
 x for x in (0, 1)
 .TP
 .BR quadratic
-1 - x\[S2] for x in (-1, 0)
+1 \- x\[S2] for x in (\-1, 0)
 .TP
 .BR circular
-sqrt(1 - x\[S2]) for x in (-1, 0)
+sqrt(1 \- x\[S2]) for x in (\-1, 0)
 .TP
 .BR cubic
-3x\[S2] - 2x\[S2] for x in (0, 1)
+3x\[S2] \- 2x\[S2] for x in (0, 1)
 .RE
 .TP
 .BI Z w \c
@@ -205,7 +205,7 @@ Equal temperament.
 Pythagorean tuning. All notes are reached combining fifths and octaves.
 .TP
 .BR just
-Just intonation. All notes are reached combining thirds, -1 to 2 fifths from keynote, and octaves.
+Just intonation. All notes are reached combining thirds, \-1 to 2 fifths from keynote, and octaves.
 .TP
 .BR close
 Five-limit tuning closest to twelve-tone equal temperament.
@@ -270,7 +270,7 @@ Here, compound accidentals must be written as a product and otonal and utonal ac
 .BI A4
 is the concert pitch.
 .TP
-.BI ' \c
+.BI \(aq \c
 .RI [ n ]
 Play sound for a duration of
 .IR n
@@ -288,7 +288,7 @@ beats.
 defaults to
 .BR 1 .
 .TP
-.BI ` \c
+.BI \` \c
 .RI [ n ]
 Rewind by
 .IR n
@@ -311,9 +311,9 @@ chromatic steps below/above the reference.
 You can use the same commas
 .IR w
 as with note names.
-The 12-tone scale is made of the -5 to 6th fifths from the keynote.
+The 12-tone scale is made of the \-5 to 6th fifths from the keynote.
 .TP
-.BI "- +" n
+.BI "\- +" n
 Set frequency to
 .IR n
 halftones below/above the reference.
@@ -322,9 +322,9 @@ halftones below/above the reference.
 Continuously lower/raise frequency by
 .IR n
 halftones during the next play period
-.RB ( ' ).
+.RB ( \(aq ).
 .TP
-.BI "_ ^" n
+.BI "_ \(ha" n
 Continuously lower/raise frequency by
 .IR n
 halftones per beat from now on.
@@ -338,7 +338,7 @@ dB below/above the reference.
 Continuously lower/raise amplitude by
 .IR n
 dB during the next play period
-.RB ( ' ).
+.RB ( \(aq ).
 .TP
 .BI ", ;" n
 Continuously lower/raise amplitude by
@@ -354,7 +354,7 @@ dB below/above the reference.
 Continuously lower/raise amplitude ratio by
 .IR n
 dB during the next play period
-.RB ( ' ).
+.RB ( \(aq ).
 .TP
 .BI "{ }" n
 Continuously lower/raise amplitude ratio by

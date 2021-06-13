@@ -11,8 +11,8 @@ clean:
 %_fitted.wav: def.mel %.fit %.wav
 	cat $< $*.fit | mel $*.wav - $@
 
-%.wav: %.txt
-	espeak-ng -vmb-de5 -s120 -f$^ -w$@
+%.wav: %.txt %.speed
+	espeak-ng -vmb-de5 -s`cat $*.speed` -f$^ -w$@
 
 parts/b_hi.wav: melody/b_hi1.wav melody/b_hi1.wav melody/b_hi2.wav melody/b_hi1.wav
 	stick $+ $@

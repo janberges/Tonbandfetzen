@@ -41,25 +41,25 @@ Using APT, these prerequisites can be installed as follows:
 
 To compile the binaries, you can use the provided makefile:
 
-    cd /path/to/tonbandfetzen
+    cd /path/to/Tonbandfetzen
     make FC=gfortran FFLAGS=-O3
 
 To make the tools and documentation accessible, consider adding the following
 lines to your .bashrc:
 
-    REPO=/path/to/tonbandfetzen
+    REPO=/path/to/Tonbandfetzen
     export PATH=$REPO/bin:$PATH
     export PERL5LIB=$REPO/perl/lib:$PERL5LIB
     export MANPATH=$REPO/doc:$MANPATH
     export MANPATH=$REPO/doc/man1:$MANPATH
 
-You might also want to copy the Vim syntax file to the appropriate location:
+You might also want to link the Vim syntax file to the appropriate location:
 
-    ln -s /path/to/tonbandfetzen/vim/mel.vim ~/.vim/syntax/mel.vim
+    ln -s /path/to/Tonbandfetzen/vim/mel.vim ~/.vim/syntax/mel.vim
 
 To have Vim detect the corresponding file types, add this line to your .vimrc:
 
-    au BufRead,BufNewFile *.mel,*.gtr set filetype=mel
+    autocmd BufRead,BufNewFile *.mel,*.gtr setlocal filetype=mel
 
 ## Documentation
 

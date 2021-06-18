@@ -18,4 +18,4 @@ html/%.pdf: man1/%.1
 	mel $< $@
 
 %.html: %.mel
-	vim -c TOhtml -c "file $@" -c wqa! $<
+	vim -c TOhtml -c "file $@" -c xa! $<

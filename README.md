@@ -51,7 +51,6 @@ lines to your .bashrc:
     export PATH=$REPO/bin:$PATH
     export PERL5LIB=$REPO/perl/lib:$PERL5LIB
     export MANPATH=$REPO/doc:$MANPATH
-    export MANPATH=$REPO/doc/man1:$MANPATH
 
 You might also want to link the Vim syntax file to the appropriate location:
 

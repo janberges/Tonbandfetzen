@@ -2,7 +2,7 @@
 
 from itertools import permutations
 
-notes = '[6A4', '[3G4', '[0E4', ']3D4', ']6C4'
+notes = '[5A4', '[3G4', '[1F4', ']1E4', ']3D4', ']5C4'
 
 print('~major')
 print('Tpyth')

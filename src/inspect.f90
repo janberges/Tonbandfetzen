@@ -25,7 +25,7 @@ program inspect
 
    write (*, "('number of channels: ', I0)") s%channels
    write (*, "('number of sample points: ', I0)") s%points
-   write (*, "('sample rate: ', F0.1, 'Hz')") s%rate
-   write (*, "('duration: ', F0.1, 's')") s%points / s%rate
+   write (*, "('sample rate: ', F0.1, ' Hz')") s%rate
+   write (*, "('duration: ', F0.1, ' s')") s%points / s%rate
    write (*, "('amplitude: ', F0.1)") s%amplitude
 end program inspect

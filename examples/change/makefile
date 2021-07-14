@@ -1,6 +1,6 @@
 .PHONY: all clean
 
-all: changeringing.mp3
+all: change.mp3
 
 clean:
 	git clean -Xdf

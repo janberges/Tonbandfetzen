@@ -62,7 +62,8 @@ To have Vim detect the corresponding file types, add this line to your .vimrc:
 
 ## Documentation
 
-Please have a look at the examples:
+Please have a look at the examples (or listen to them
+[here](https://janberges.github.io/Tonbandfetzen)):
 
     cd examples/freedom
     make -j 2

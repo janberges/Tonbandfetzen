@@ -1,9 +1,13 @@
-.PHONY: all clean
+.PHONY: wav mp3 clean
 
-all: wanderer.wav
+wav: wanderer.wav
+mp3: wanderer.mp3
 
 clean:
 	git clean -Xdf
+
+%.mp3: %.wav
+	ffmpeg -y -i $< $@
 
 %.wav: %.mel
 	mel $< $@

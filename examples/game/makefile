@@ -1,10 +1,14 @@
-.PHONY: all clean
+.PHONY: wav mp3 clean
 .PRECIOUS: %.mel
 
-all: game.wav
+wav: game.wav
+mp3: game.mp3
 
 clean:
 	git clean -Xdf
+
+%.mp3: %.wav
+	ffmpeg -y -i $< $@
 
 %.wav: def.mel %.mel
 	cat $^ | mel $@

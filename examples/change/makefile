@@ -1,15 +1,16 @@
-.PHONY: all clean
+.PHONY: wav mp3 clean
 
-all: change.mp3
+wav: change.wav
+mp3: change.mp3
 
 clean:
 	git clean -Xdf
 
-%.mel: %.py
-	python3 $< > $@
+%.mp3: %.wav
+	ffmpeg -y -i $< $@
 
 %.wav: %.mel
 	mel $< $@
 
-%.mp3: %.wav
-	ffmpeg -i $< $@
+%.mel: %.py
+	python3 $< > $@

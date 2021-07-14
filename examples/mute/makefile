@@ -1,10 +1,14 @@
-.PHONY: all clean
+.PHONY: wav mp3 clean
 .PRECIOUS: %.mel
 
-all: mute.wav
+wav: mute.wav
+mp3: mute.mp3
 
 clean:
 	git clean -Xdf
+
+%.mp3: %.wav
+	ffmpeg -y -i $< $@
 
 %.wav: def.mel %.mel end.mel
 	cat $^ | mel $@

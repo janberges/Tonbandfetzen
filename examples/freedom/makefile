@@ -1,9 +1,13 @@
-.PHONY: all clean
+.PHONY: wav mp3 clean
 
-all: freedom.wav
+wav: freedom.wav
+mp3: freedom.mp3
 
 clean:
 	git clean -Xdf
+
+%.mp3: %.wav
+	ffmpeg -y -i $< $@
 
 %.wav: def.mel %.mel
 	cat $^ | mel $@

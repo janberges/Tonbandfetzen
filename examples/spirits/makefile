@@ -1,10 +1,14 @@
-.PHONY: all clean
+.PHONY: wav mp3 clean
 .PRECIOUS: %.mel
 
-all: spirits.wav
+wav: spirits.wav
+mp3: spirits.mp3
 
 clean:
 	git clean -Xdf
+
+%.mp3: %.wav
+	ffmpeg -y -i $< $@
 
 %.wav: %.mel
 	mel $< $@

@@ -1,9 +1,13 @@
-.PHONY: all clean
+.PHONY: wav mp3 clean
 
-all: harmony.wav
+wav: harmony.wav
+mp3: harmony.mp3
 
 clean:
 	git clean -Xdf
+
+%.mp3: %.wav
+	ffmpeg -y -i $< $@
 
 %.wav: %.mel
 	mel $< $@

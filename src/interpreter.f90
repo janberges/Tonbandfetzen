@@ -609,6 +609,10 @@ contains
 
       if (tones%amplitude .ne. 0.0_dp) mel(:, :) = mel / tones%amplitude
 
+      if (tones%channels .eq. 2) then
+         tones%amplitude = sqrt(2.0_dp) * tones%amplitude
+      end if
+
       tones%sound = nint(i2max * mel, i2)
 
    contains

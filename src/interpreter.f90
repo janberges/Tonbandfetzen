@@ -103,7 +103,7 @@ contains
       keycount = 0
 
       tones%rate = 44100.0_dp
-      tones%channels = 2
+      tones%channels = -1_i2
 
       todo = .true.
 
@@ -112,7 +112,6 @@ contains
       do
          select case (next(special, length=1))
             case ('$'); tones%rate = n()
-            case ('O'); tones%channels = int(n(), i2)
 
             case ('~'); todo( 1 ) = .false.
             case ('S'); todo( 2 ) = .false.
@@ -159,6 +158,12 @@ contains
          end if
 
          select case (symbol)
+            case ('O')
+               tones%channels = int(n(), i2)
+
+            case ('%', '(', ')', '[', ']', '{', '}')
+               if (tones%channels .eq. -1_i2) tones%channels = 2_i2
+
             case ('|')
                b = n() * s
 
@@ -236,6 +241,8 @@ contains
       allocate(rho(cmax))
 
       tones%points = tmax - tmin
+
+      if (tones%channels .eq. -1_i2) tones%channels = 1_i2
 
       allocate(mel(tones%channels, tones%points))
 

@@ -9,7 +9,7 @@ html: $(patsubst man1/%.1, html/%.html, $(wildcard man1/*.1))
 pdf: $(patsubst man1/%.1, html/%.pdf, $(wildcard man1/*.1))
 
 mp3:
-	$(MAKE) -C ../examples/
+	$(MAKE) -C ../examples/ mp3
 	rsync -av ../examples/*/*.mp3 html/
 
 html/%.html: man1/%.1

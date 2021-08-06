@@ -3,7 +3,7 @@
 letters = 'FCGDAEB'
 signs = ['#b'[int(n < 0)] * abs(n) for n in range(-8, 9)]
 notes = [letter + sign for sign in signs for letter in letters]
-notes = notes[::-1]
+notes = notes[::-1] + notes
 
 tracks = ['[10', '[6', '[2', ']2', ']6', ']10']
 sounds = [(2, 'cubic'), (3, 'major')]

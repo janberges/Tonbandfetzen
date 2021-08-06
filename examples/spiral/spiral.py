@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 letters = 'FCGDAEB'
-signs = ['bbb', 'bb', 'b', '', '#', 'x', 'x#']
+signs = ['#b'[int(n < 0)] * abs(n) for n in range(-8, 9)]
 notes = [letter + sign for sign in signs for letter in letters]
 notes = notes[::-1]
 

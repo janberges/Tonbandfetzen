@@ -398,7 +398,10 @@ contains
                   end select
                end do
 
-               keycount(i) = keycount(i) + 1
+               if (lbound(keycount, 1) .le. i .and. &
+                   ubound(keycount, 1) .ge. i) then
+                  keycount(i) = keycount(i) + 1
+               end if
 
                select case(tuning)
                   case ('equal')

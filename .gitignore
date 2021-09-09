@@ -13,4 +13,6 @@
 *.wav
 *.wave
 
+tags
+
 !index.html

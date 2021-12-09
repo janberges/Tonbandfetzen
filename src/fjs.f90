@@ -1,6 +1,6 @@
 ! The Functional Just System (FJS) has been invented by misotanni.
 ! For a complete description, see https://misotanni.github.io/fjs.
-! Here, we only use the microtonal accidentals defined by the FSJ.
+! Here, we only use the microtonal accidentals defined by the FJS.
 
 module fjs
    use constants

@@ -3,7 +3,7 @@ module io
    implicit none
    private
 
-   public :: slurp, command_argument
+   public :: slurp, command_argument, environment_variable
 
 contains
 
@@ -61,4 +61,18 @@ contains
          if (arg .eq. '-') arg = def
       end if
    end function command_argument
+
+   function environment_variable(name) result(value)
+      character(:), allocatable :: value
+
+      character(*), intent(in) :: name
+
+      integer :: size
+
+      call get_environment_variable(name, length=size)
+
+      allocate(character(size) :: value)
+
+      call get_environment_variable(name, value=value)
+   end function environment_variable
 end module io

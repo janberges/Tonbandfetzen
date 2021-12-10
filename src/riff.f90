@@ -6,6 +6,10 @@ module riff
 
    public :: read_riff, write_riff
 
+   interface b
+      module procedure bytes_i2, bytes_i4
+   end interface b
+
 contains
 
    subroutine read_riff(file, s)
@@ -86,6 +90,16 @@ contains
          riffSize = riffSize + 8_i4 + applSize
       end if
 
+      if (file .eq. 'stdout') then
+         write (stdout, '(10000000000A)', advance='no') &
+            'RIFF', b(riffSize), 'WAVE', &
+            'fmt ', b(fmtSize), b(formatTag), b(s%channels), &
+            b(sampleRate), b(byteRate), b(blockAlign), b(sampleSize), &
+            'data', b(dataSize), b(s%sound), &
+            'APPL', b(applSize), encode(s%amplitude)
+         return
+      end if
+
       open(unit, file=file, action='write', status='replace', &
          form='unformatted', access='stream', iostat=stat)
 
@@ -109,4 +123,20 @@ contains
 
       close(unit)
    end subroutine write_riff
+
+   elemental function bytes_i2(i) result(bytes)
+      character(2) :: bytes
+
+      integer(i2), intent(in) :: i
+
+      bytes = transfer(i, bytes)
+   end function bytes_i2
+
+   elemental function bytes_i4(i) result(bytes)
+      character(4) :: bytes
+
+      integer(i4), intent(in) :: i
+
+      bytes = transfer(i, bytes)
+   end function bytes_i4
 end module riff

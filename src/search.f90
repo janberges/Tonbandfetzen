@@ -23,6 +23,7 @@ contains
 
       sequence = it
 
+      if (allocated(info)) deallocate(info)
       allocate(info(len(sequence)))
 
       call reset

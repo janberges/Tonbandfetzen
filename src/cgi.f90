@@ -57,6 +57,9 @@ program cgi
    else
       call play(query, music, limit)
       if (music%points .eq. 0) call play("|1:6 E3' C3'", music)
+
+      music%amplitude = 1.0_dp
+
       write (*, "('Content-type: audio/wav', /)")
       call write_riff('stdout', music)
    end if

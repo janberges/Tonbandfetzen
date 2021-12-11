@@ -95,8 +95,13 @@ contains
             'RIFF', b(riffSize), 'WAVE', &
             'fmt ', b(fmtSize), b(formatTag), b(s%channels), &
             b(sampleRate), b(byteRate), b(blockAlign), b(sampleSize), &
-            'data', b(dataSize), b(s%sound), &
-            'APPL', b(applSize), encode(s%amplitude)
+            'data', b(dataSize), b(s%sound)
+
+         if (s%amplitude .ne. 1.0_dp) then
+            write (stdout, '(3A)', advance='no') &
+               'APPL', b(applSize), encode(s%amplitude)
+         end if
+
          return
       end if
 

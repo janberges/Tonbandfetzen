@@ -73,6 +73,8 @@ contains
 
       allocate(character(size) :: value)
 
-      call get_environment_variable(name, value=value)
+      if (len(value) .gt. 0) then
+         call get_environment_variable(name, value=value)
+      end if
    end function environment_variable
 end module io

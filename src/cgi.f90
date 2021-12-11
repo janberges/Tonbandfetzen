@@ -8,11 +8,13 @@ program cgi
    type(audio) :: music
 
    character(:), allocatable :: query
+   character(*), parameter :: example &
+      = "T pyth M A2'8 W ,5 A2' A3' E4' A4' C#v5' E5' Gz5' A5'"
 
    query = decode(environment_variable('QUERY_STRING'))
 
    if (query .eq. ' ') then
-      write (*, '(A, /, 36(/, A))') "Content-type: text/html", &
+      write (*, '(A, /, 38(/, A))') "Content-type: text/html", &
          "<!DOCTYPE html>", &
          "<html>", &
          "  <head>", &
@@ -41,7 +43,7 @@ program cgi
          "  <body>", &
          "    <h1>Tonbandfetzen</h1>", &
          "    <h2>Input</h2>", &
-         "    <textarea id='mel' rows='10'></textarea>", &
+         "    <textarea id='mel' rows='10'>", example, "</textarea>", &
          "    <button onclick='play()'>Play</button>", &
          "    <h2>Output</h2>", &
          "    <audio id='ctrl' controls>", &

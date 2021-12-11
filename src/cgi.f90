@@ -1,3 +1,5 @@
+! For standalone use on server, compile with FFLAGS='-static -O3'.
+
 program cgi
    use constants
    use interpreter
@@ -10,6 +12,7 @@ program cgi
    character(:), allocatable :: query
    character(*), parameter :: example &
       = "T pyth M A2'8 W ,5 A2' A3' E4' A4' C#v5' E5' Gz5' A5'"
+   integer, parameter :: limit = 1000000
 
    query = decode(environment_variable('QUERY_STRING'))
 
@@ -52,7 +55,8 @@ program cgi
          "  </body>", &
          "</html>"
    else
-      call play(query, music)
+      call play(query, music, limit)
+      if (music%points .eq. 0) call play("|1:6 E3' C3'", music)
       write (*, "('Content-type: audio/wav', /)")
       call write_riff('stdout', music)
    end if

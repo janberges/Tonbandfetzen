@@ -13,9 +13,10 @@ module interpreter
 
 contains
 
-   subroutine play(notes, tones)
+   subroutine play(notes, tones, limit)
       character(*), intent(in) :: notes
       type(audio), intent(out) :: tones
+      integer, intent(in), optional :: limit
 
       character(*), parameter :: initial = '!"%&+-=?ABCDEFGNPQSUVWZ[]`~'
 
@@ -35,6 +36,7 @@ contains
 
       integer :: t ! rounded time
       integer :: c ! continuance
+      integer :: p ! processed time
       integer :: d ! note duration
 
       integer :: tmin, tmax, cmax ! extreme times
@@ -138,6 +140,7 @@ contains
 
       t = 0
       c = 0
+      p = 0
 
       tmin = t
       tmax = t
@@ -158,6 +161,11 @@ contains
          end if
 
          select case (symbol)
+            case ('~', 'S', 'Z', 'N')
+               if (next(lexical) .ne. '#') then
+                  p = p + nint(rational(next(numeral, '1')) * s)
+               end if
+
             case ('O')
                tones%channels = int(n(), i2)
 
@@ -172,6 +180,7 @@ contains
                d = nint(x) - t
                c = c + d
                t = t + d
+               p = p + d
 
             case ('"', '`')
                x = x + sgn('`"') * rational(next(numeral, '1')) * b
@@ -244,7 +253,13 @@ contains
 
       if (tones%channels .eq. -1_i2) tones%channels = 1_i2
 
+      if (present(limit)) then
+         if (p .gt. limit .or. tones%points .gt. limit) tones%points = 0
+      end if
+
       allocate(mel(tones%channels, tones%points))
+
+      if (tones%points .eq. 0) return
 
       mel(:, :) = 0.0_dp
 

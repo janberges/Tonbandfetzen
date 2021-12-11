@@ -27,7 +27,7 @@ cleaner: clean
 	rm -f $(programs)
 
 $(programs):
-	$(FC) -o $@ $^ $(LDLIBS)
+	$(FC) $(FFLAGS) -o $@ $^ $(LDLIBS)
 
 build/%.o: src/%.f90
 	$(FC) $(FFLAGS) -c $< -o $@

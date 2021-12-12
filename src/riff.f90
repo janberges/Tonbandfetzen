@@ -1,14 +1,11 @@
 module riff
+   use bytes
    use constants
    use extended
    implicit none
    private
 
    public :: read_riff, write_riff
-
-   interface b
-      module procedure bytes_i2, bytes_i4
-   end interface b
 
 contains
 
@@ -86,51 +83,29 @@ contains
 
       if (file .eq. 'stdout') then
          write (stdout, '(10000000000A)', advance='no') &
-            'RIFF', b(riffSize), 'WAVE', &
-            'fmt ', b(fmtSize), b(formatTag), b(s%channels), &
-            b(sampleRate), b(byteRate), b(blockAlign), b(sampleSize), &
-            'data', b(dataSize), b(s%sound)
+            'RIFF', c(riffSize), 'WAVE', &
+            'fmt ', c(fmtSize), c(formatTag), c(s%channels), &
+            c(sampleRate), c(byteRate), c(blockAlign), c(sampleSize), &
+            'data', c(dataSize), c(s%sound)
 
          if (s%amplitude .ne. 1.0_dp) then
             write (stdout, '(3A)', advance='no') &
-               'APPL', b(applSize), encode(s%amplitude)
+               'APPL', c(applSize), encode(s%amplitude)
+         end if
+      else
+         open(unit, file=file, action='write', status='replace', &
+            form='unformatted', access='stream')
+
+         write (unit) 'RIFF', riffSize, 'WAVE', &
+            'fmt ', fmtSize, formatTag, s%channels, &
+            sampleRate, byteRate, blockAlign, sampleSize, &
+            'data', dataSize, s%sound
+
+         if (s%amplitude .ne. 1.0_dp) then
+            write (unit) 'APPL', applSize, encode(s%amplitude)
          end if
 
-         return
+         close(unit)
       end if
-
-      open(unit, file=file, action='write', status='replace', &
-         form='unformatted', access='stream')
-
-      write (unit) 'RIFF', riffSize
-      write (unit) 'WAVE'
-      write (unit) 'fmt ', fmtSize
-      write (unit) formatTag, s%channels, sampleRate, byteRate, blockAlign
-      write (unit) sampleSize
-      write (unit) 'data', dataSize
-      write (unit) s%sound
-
-      if (s%amplitude .ne. 1.0_dp) then
-         write (unit) 'APPL', applSize
-         write (unit) encode(s%amplitude)
-      end if
-
-      close(unit)
    end subroutine write_riff
-
-   elemental function bytes_i2(i) result(bytes)
-      character(2) :: bytes
-
-      integer(i2), intent(in) :: i
-
-      bytes = transfer(i, bytes)
-   end function bytes_i2
-
-   elemental function bytes_i4(i) result(bytes)
-      character(4) :: bytes
-
-      integer(i4), intent(in) :: i
-
-      bytes = transfer(i, bytes)
-   end function bytes_i4
 end module riff

@@ -1,14 +1,11 @@
 module aiff
+   use bytes
    use constants
    use extended
    implicit none
    private
 
    public :: read_aiff, write_aiff
-
-   interface re
-      module procedure reverse_bytes_i2, reverse_bytes_i4
-   end interface re
 
 contains
 
@@ -31,7 +28,7 @@ contains
          read (unit, iostat=error) ckID, ckSize
          if (error .eq. eof) exit
 
-         ckSize = re(ckSize)
+         ckSize = r(ckSize)
 
          select case (ckID)
             case ('FORM')
@@ -40,9 +37,9 @@ contains
             case ('COMM')
                read (unit) s%channels, s%points, sampleSize, extended
 
-               s%channels = re(s%channels)
-               s%points   = re(s%points)
-               sampleSize = re(sampleSize)
+               s%channels = r(s%channels)
+               s%points   = r(s%points)
+               sampleSize = r(sampleSize)
                s%rate     = decode(extended)
 
                if (sampleSize .ne. 16_i2) then
@@ -54,9 +51,9 @@ contains
                allocate(s%sound(s%channels, s%points))
                read (unit) offset, blockSize, s%sound
 
-               offset    = re(offset)
-               blockSize = re(blockSize)
-               s%sound   = re(s%sound)
+               offset    = r(offset)
+               blockSize = r(blockSize)
+               s%sound   = r(s%sound)
 
             case ('APPL')
                read (unit) extended
@@ -93,38 +90,16 @@ contains
       open(unit, file=file, action='write', status='replace', &
          form='unformatted', access='stream')
 
-      write (unit) 'FORM', re(formSize)
-      write (unit) 'AIFF'
-      write (unit) 'COMM', re(commSize)
-      write (unit) re(s%channels), re(s%points), re(sampleSize), encode(s%rate)
-      write (unit) 'SSND', re(ssndSize)
-      write (unit) re(offset), re(blockSize), re(s%sound)
+      write (unit) 'FORM', r(formSize), 'AIFF', &
+         'COMM', r(commSize), r(s%channels), &
+         r(s%points), r(sampleSize), encode(s%rate), &
+         'SSND', r(ssndSize), r(offset), r(blockSize), &
+         r(s%sound)
 
       if (s%amplitude .ne. 1.0_dp) then
-         write (unit) 'APPL', re(applSize)
-         write (unit) encode(s%amplitude)
+         write (unit) 'APPL', r(applSize), encode(s%amplitude)
       end if
 
       close(unit)
    end subroutine write_aiff
-
-   elemental function reverse_bytes_i2(original) result(reversed)
-      integer(i2), intent(in) :: original
-      integer(i2) :: reversed
-      integer(i1) :: bytes(2)
-
-      bytes = transfer(original, bytes)
-      bytes = bytes(2:1:-1)
-      reversed = transfer(bytes, reversed)
-   end function reverse_bytes_i2
-
-   elemental function reverse_bytes_i4(original) result(reversed)
-      integer(i4), intent(in) :: original
-      integer(i4) :: reversed
-      integer(i1) :: bytes(4)
-
-      bytes = transfer(original, bytes)
-      bytes = bytes(4:1:-1)
-      reversed = transfer(bytes, reversed)
-   end function reverse_bytes_i4
 end module aiff

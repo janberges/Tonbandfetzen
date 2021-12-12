@@ -20,21 +20,16 @@ contains
       character(4) :: ckID, formType
       character(10) :: extended
       integer, parameter :: unit = 14
-      integer :: i, stat
+      integer :: i, error
       integer(i4) :: ckSize, sampleRate, byteRate
       integer(i2) :: sampleSize, formatTag, blockAlign
 
       open(unit, file=file, action='read', status='old', &
-         form='unformatted', access='stream', iostat=stat)
-
-      if (stat .ne. 0) then
-         write (stderr, "('Error reading file ''', A, '''.')") file
-         stop
-      end if
+         form='unformatted', access='stream')
 
       do
-         read (unit, iostat=stat) ckID, ckSize
-         if (stat .eq. eof) exit
+         read (unit, iostat=error) ckID, ckSize
+         if (error .eq. eof) exit
 
          select case (ckID)
             case ('RIFF')
@@ -72,7 +67,6 @@ contains
       character(*), intent(in) :: file
       type(audio), intent(in) :: s
 
-      integer :: stat
       integer, parameter :: unit = 15
       integer(i4), parameter :: fmtSize = 16_i4, applSize = 10_i4
       integer(i4) :: riffSize, dataSize, sampleRate, byteRate
@@ -106,12 +100,7 @@ contains
       end if
 
       open(unit, file=file, action='write', status='replace', &
-         form='unformatted', access='stream', iostat=stat)
-
-      if (stat .ne. 0) then
-         write (stderr, "('Error writing file ''', A, '''.')") file
-         stop
-      end if
+         form='unformatted', access='stream')
 
       write (unit) 'RIFF', riffSize
       write (unit) 'WAVE'

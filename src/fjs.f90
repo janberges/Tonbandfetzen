@@ -38,7 +38,7 @@ contains
 
       character(*), intent(in) :: ratio
 
-      integer :: i, j, stat
+      integer :: i, j, error
       integer :: numerator, denominator
       integer, allocatable :: primes(:), tmp(:)
 
@@ -48,11 +48,11 @@ contains
       i = scan(ratio, ':/')
       if (i .eq. 0) i = len(ratio) + 1
 
-      read (ratio(:i - 1), *, iostat=stat) j
-      if (stat .eq. 0) numerator = j
+      read (ratio(:i - 1), *, iostat=error) j
+      if (error .eq. 0) numerator = j
 
-      read (ratio(i + 1:), *, iostat=stat) j
-      if (stat .eq. 0) denominator = j
+      read (ratio(i + 1:), *, iostat=error) j
+      if (error .eq. 0) denominator = j
 
       allocate(primes(1:max(numerator, denominator)))
       primes = 0

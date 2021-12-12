@@ -13,21 +13,16 @@ contains
       character(*), intent(in) :: file
 
       integer, parameter :: unit = 16
-      integer :: i, stat
+      integer :: i, error
 
       open(unit, file=file, action='read', status='old', &
-         form='unformatted', access='stream', iostat=stat)
-
-      if (stat .ne. 0) then
-         write (stderr, "('Error reading file ''', A, '''.')") file
-         stop
-      end if
+         form='unformatted', access='stream')
 
       allocate(character(1048576) :: content)
 
       do i = 1, len(content)
-         read (unit, iostat=stat) content(i:i)
-         if (stat .eq. eof) then
+         read (unit, iostat=error) content(i:i)
+         if (error .eq. eof) then
             content = content(1:i - 1)
             exit
          end if

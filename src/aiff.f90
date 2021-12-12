@@ -87,19 +87,33 @@ contains
          formSize = formSize + 8_i4 + applSize
       end if
 
-      open(unit, file=file, action='write', status='replace', &
-         form='unformatted', access='stream')
+      if (file .eq. 'stdout') then
+         write (stdout, '(10000000000A)', advance='no') &
+            'FORM', c(r(formSize)), 'AIFF', &
+            'COMM', c(r(commSize)), c(r(s%channels)), &
+            c(r(s%points)), c(r(sampleSize)), encode(s%rate), &
+            'SSND', c(r(ssndSize)), c(r(offset)), c(r(blockSize)), &
+            c(r(s%sound))
 
-      write (unit) 'FORM', r(formSize), 'AIFF', &
-         'COMM', r(commSize), r(s%channels), &
-         r(s%points), r(sampleSize), encode(s%rate), &
-         'SSND', r(ssndSize), r(offset), r(blockSize), &
-         r(s%sound)
+         if (s%amplitude .ne. 1.0_dp) then
+            write (stdout, '(3A)', advance='no') &
+               'APPL', c(r(applSize)), encode(s%amplitude)
+         end if
+      else
+         open(unit, file=file, action='write', status='replace', &
+            form='unformatted', access='stream')
 
-      if (s%amplitude .ne. 1.0_dp) then
-         write (unit) 'APPL', r(applSize), encode(s%amplitude)
+         write (unit) 'FORM', r(formSize), 'AIFF', &
+            'COMM', r(commSize), r(s%channels), &
+            r(s%points), r(sampleSize), encode(s%rate), &
+            'SSND', r(ssndSize), r(offset), r(blockSize), &
+            r(s%sound)
+
+         if (s%amplitude .ne. 1.0_dp) then
+            write (unit) 'APPL', r(applSize), encode(s%amplitude)
+         end if
+
+         close(unit)
       end if
-
-      close(unit)
    end subroutine write_aiff
 end module aiff

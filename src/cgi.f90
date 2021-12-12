@@ -11,7 +11,7 @@ program cgi
 
    character(:), allocatable :: query
    character(*), parameter :: example &
-      = "T pyth M A2'8 W ,5 A2' A3' E4' A4' C#v5' E5' Gz5' A5'"
+      = "$22050 T pyth M A2'8 W ,5 A2' A3' E4' A4' C#v5' E5' Gz5' A5'"
    integer, parameter :: limit = 1000000
 
    query = decode(environment_variable('QUERY_STRING'))

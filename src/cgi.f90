@@ -17,7 +17,7 @@ program cgi
    query = decode(environment_variable('QUERY_STRING'))
 
    if (query .eq. ' ') then
-      write (*, '(A, /, 38(/, A))') "Content-type: text/html", &
+      write (*, '(A, /, 1000(:, /, A))') "Content-type: text/html", &
          "<!DOCTYPE html>", &
          "<html>", &
          "  <head>", &
@@ -33,21 +33,26 @@ program cgi
          "      }", &
          "    </style>", &
          "    <script type='text/javascript'>", &
+         "      function release() {", &
+         "        document.getElementById('play').disabled = false", &
+         "        }", &
          "      function play() {", &
-         "        var mel = document.getElementById('mel')", &
-         "        var wav = document.getElementById('wav')", &
-         "        wav.src = '?' + encodeURIComponent(mel.value)", &
-         "        var ctrl = document.getElementById('ctrl')", &
-         "        ctrl.load()", &
-         "        ctrl.play()", &
+         "        document.getElementById('play').disabled = true", &
+         "        document.getElementById('wav').src = '?'", &
+         "          + encodeURIComponent(", &
+         "            document.getElementById('mel').value)", &
+         "        document.getElementById('ctrl').load()", &
+         "        document.getElementById('ctrl').play()", &
          "      }", &
          "    </script>", &
          "  </head>", &
          "  <body>", &
          "    <h1>Tonbandfetzen</h1>", &
          "    <h2>Input</h2>", &
-         "    <textarea id='mel' rows='10'>", example, "</textarea>", &
-         "    <button onclick='play()'>Play</button>", &
+         "    <textarea id='mel' rows='10' onkeyup='release()'>", &
+         example, &
+         "</textarea>", &
+         "    <button id='play' onclick='play()'>Play</button>", &
          "    <h2>Output</h2>", &
          "    <audio id='ctrl' controls>", &
          "      <source id='wav' type='audio/wave'>", &

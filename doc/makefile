@@ -1,6 +1,6 @@
 .PHONY: all mp3 clean
 
-all: html pdf mp3 html/example.wav html/example.html
+all: html pdf mp3
 
 clean:
 	git clean -Xdf
@@ -17,9 +17,3 @@ html/%.html: man1/%.1
 
 html/%.pdf: man1/%.1
 	groff -mman -Tpdf -fH $< > $@
-
-%.wav: %.mel
-	mel $< $@
-
-%.html: %.mel
-	vim -c TOhtml -c "file $@" -c xa! $<

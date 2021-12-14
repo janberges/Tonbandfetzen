@@ -23,19 +23,58 @@ program cgi
          "  <head>", &
          "    <title>Tonbandfetzen</title>", &
          "    <style type='text/css'>", &
-         "      body {", &
-         "        font-family: 'Liberation Sans', Helvetica, sans-serif", &
+         "      body, #mel, #color {", &
+         "        font-family: 'Liberation Sans', Helvetica, sans-serif;", &
+         "        font-weight: bold;", &
          "      }", &
-         "      textarea, button, audio {", &
+         "      #frame {", &
+         "        position: relative;", &
+         "      }", &
+         "      #frame, #color, #mel {", &
+         "        height: 200px;", &
+         "      }", &
+         "      #color, #mel {", &
+         "        position: absolute;", &
+         "        resize: none;", &
+         "        overflow-y: scroll;", &
+         "        padding: 1px;", &
+         "        margin: 0;", &
+         "        border: 1px solid #404040;", &
+         "        white-space: pre-wrap;", &
+         "        word-wrap: break-word;", &
+         "      }", &
+         "      #mel {", &
+         "        color: #00000000;", &
+         "        background: #00000000;", &
+         "        caret-color: #000000ff;", &
+         "      }", &
+         "      #color, #mel, #play, #ctrl {", &
          "        display: block;", &
          "        box-sizing: border-box;", &
          "        width: 500px;", &
          "      }", &
+         "      .N {", &
+         "        color: #bf8040;", &
+         "      }", &
+         "      .L {", &
+         "        color: #afdf00;", &
+         "      }", &
          "    </style>", &
          "    <script type='text/javascript'>", &
-         "      function release() {", &
+         "      function enter() {", &
          "        document.getElementById('play').disabled = false", &
-         "        }", &
+         "        var m = document.getElementById('mel').value", &
+         "        m = m.replace(/&/g, '&AMP;')", &
+         "        m = m.replace(/</g, '&LT;')", &
+         "        m = m.replace(/[\d.:]+/g, '<SPAN CLASS=""N"">$&</SPAN>')", &
+         "        m = m.replace(/[a-z#]+/g, '<SPAN CLASS=""L"">$&</SPAN>')", &
+         "        m = m.replace(/\n$/g, '$&&nbsp;')", &
+         "        document.getElementById('color').innerHTML = m", &
+         "      }", &
+         "      function move() {", &
+         "        document.getElementById('color').scrollTop =", &
+         "          document.getElementById('mel').scrollTop", &
+         "      }", &
          "      function play() {", &
          "        document.getElementById('play').disabled = true", &
          "        document.getElementById('wav').src = '?'", &
@@ -46,12 +85,16 @@ program cgi
          "      }", &
          "    </script>", &
          "  </head>", &
-         "  <body>", &
+         "  <body onload='enter()'>", &
          "    <h1>Tonbandfetzen</h1>", &
          "    <h2>Input</h2>", &
-         "    <textarea id='mel' rows='10' onkeyup='release()'>", &
+         "    <div id='frame'>", &
+         "      <div id='color'></div>", &
+         "      <textarea id='mel' spellcheck='false'", &
+         "        oninput='enter()' onscroll='move()'>", &
          example, &
          "</textarea>", &
+         "    </div>", &
          "    <button id='play' onclick='play()'>Play</button>", &
          "    <h2>Output</h2>", &
          "    <audio id='ctrl' controls>", &
@@ -61,7 +104,7 @@ program cgi
          "</html>"
    else
       call play(query, music, limit)
-      if (music%points .eq. 0) call play("|1:6 E3' C3'", music)
+      if (music%points .eq. 0) call play("$22050 |1:6 E3' C3'", music)
 
       music%amplitude = 1.0_dp
 

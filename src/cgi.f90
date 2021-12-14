@@ -1,4 +1,6 @@
 ! For standalone use on server, compile with FFLAGS='-static -O3'.
+! Syntax highlighting in textarea inspired by Will Boyd's article:
+! https://codersblock.com/blog/highlight-text-inside-a-textarea/
 
 program cgi
    use constants
@@ -23,35 +25,37 @@ program cgi
          "  <head>", &
          "    <title>Tonbandfetzen</title>", &
          "    <style type='text/css'>", &
-         "      body, #mel, #color {", &
+         "      body, #color, #mel {", &
          "        font-family: 'Liberation Sans', Helvetica, sans-serif;", &
          "        font-weight: bold;", &
+         "        font-size: 16px;", &
          "      }", &
-         "      #frame {", &
-         "        position: relative;", &
-         "      }", &
-         "      #frame, #color, #mel {", &
-         "        height: 200px;", &
-         "      }", &
-         "      #color, #mel {", &
+         "      #color {", &
          "        position: absolute;", &
-         "        resize: none;", &
-         "        overflow-y: scroll;", &
-         "        padding: 1px;", &
-         "        margin: 0;", &
-         "        border: 1px solid #404040;", &
-         "        white-space: pre-wrap;", &
-         "        word-wrap: break-word;", &
          "      }", &
          "      #mel {", &
-         "        color: #00000000;", &
-         "        background: #00000000;", &
-         "        caret-color: #000000ff;", &
+         "        position: relative;", &
+         "        color: transparent;", &
+         "        background: transparent;", &
+         "        caret-color: black;", &
          "      }", &
          "      #color, #mel, #play, #ctrl {", &
          "        display: block;", &
          "        box-sizing: border-box;", &
          "        width: 500px;", &
+         "      }", &
+         "      #color, #mel {", &
+         "        height: 200px;", &
+         "        resize: none;", &
+         "        overflow-y: scroll;", &
+         "        padding: 2px;", &
+         "        margin: 0;", &
+         "        border: 2px inset #ebe9ed;", &
+         "        white-space: pre-wrap;", &
+         "        word-wrap: break-word;", &
+         "      }", &
+         "      #play {", &
+         "        margin-bottom: 5mm;", &
          "      }", &
          "      .N {", &
          "        color: #bf8040;", &
@@ -86,17 +90,12 @@ program cgi
          "    </script>", &
          "  </head>", &
          "  <body onload='enter()'>", &
-         "    <h1>Tonbandfetzen</h1>", &
-         "    <h2>Input</h2>", &
-         "    <div id='frame'>", &
-         "      <div id='color'></div>", &
-         "      <textarea id='mel' spellcheck='false'", &
-         "        oninput='enter()' onscroll='move()'>", &
+         "    <div id='color'></div>", &
+         "    <textarea id='mel' spellcheck='false'", &
+         "      oninput='enter()' onscroll='move()'>", &
          example, &
          "</textarea>", &
-         "    </div>", &
-         "    <button id='play' onclick='play()'>Play</button>", &
-         "    <h2>Output</h2>", &
+         "    <button id='play' onclick='play()'>Interpret</button>", &
          "    <audio id='ctrl' controls>", &
          "      <source id='wav' type='audio/wave'>", &
          "    </audio>", &

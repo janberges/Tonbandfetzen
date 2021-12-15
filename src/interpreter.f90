@@ -121,7 +121,7 @@ contains
             case ('N'); todo(2:3) = .false.
 
             case ('*')
-               symbol = next('*', length=1)
+               if (next('*', length=1) .eq. 'none') exit
 
             case ("'", 'none')
                exit
@@ -239,7 +239,7 @@ contains
                call forget(int(rational(next(numeral, '0'))))
 
             case ('*')
-               symbol = next('*', length=1)
+               if (next('*', length=1) .eq. 'none') exit
 
             case ('none')
                exit
@@ -616,7 +616,7 @@ contains
                end if
 
             case ('*')
-               symbol = next('*', length=1)
+               if (next('*', length=1) .eq. 'none') exit
 
             case ('none')
                exit

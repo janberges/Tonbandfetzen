@@ -12,8 +12,6 @@ program cgi
    type(audio) :: music
 
    character(:), allocatable :: query
-   character(*), parameter :: example &
-      = "$22050 T pyth M A2'8 W ,5 A2' A3' E4' A4' C#v5' E5' Gz5' A5'"
    integer, parameter :: limit = 1000000
 
    query = decode(environment_variable('QUERY_STRING'))
@@ -63,6 +61,9 @@ program cgi
          "      .L {", &
          "        color: #afdf00;", &
          "      }", &
+         "      .C {", &
+         "        color: #da193b;", &
+         "      }", &
          "    </style>", &
          "    <script type='text/javascript'>", &
          "      function enter() {", &
@@ -73,6 +74,10 @@ program cgi
          "        m = m.replace(/[\d.:]+/g, '<SPAN CLASS=""N"">$&</SPAN>')", &
          "        m = m.replace(/[a-z#]+/g, '<SPAN CLASS=""L"">$&</SPAN>')", &
          "        m = m.replace(/\n$/g, '$&&nbsp;')", &
+         "        m = m.replace(/\*[^*]*\*?/g, function(c) {", &
+         "          c = c.replace(/<.+?>/g, '')", &
+         "          return '<SPAN CLASS=""C"">' + c + '</SPAN>'", &
+         "        })", &
          "        document.getElementById('color').innerHTML = m", &
          "      }", &
          "      function move() {", &
@@ -93,7 +98,11 @@ program cgi
          "    <div id='color'></div>", &
          "    <textarea id='mel' spellcheck='false'", &
          "      oninput='enter()' onscroll='move()'>", &
-         example, &
+         "$22050", &
+         "*Harmonic series*", &
+         "T pyth", &
+         "M A2'8", &
+         "W ,5 A2' A3' E4' A4' C#v5' E5' Gz5' A5'", &
          "</textarea>", &
          "    <button id='play' onclick='play()'>Interpret</button>", &
          "    <audio id='ctrl' controls>", &

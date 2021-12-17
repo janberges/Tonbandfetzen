@@ -106,7 +106,7 @@ program cgi
          "</textarea>", &
          "    <button id='play' onclick='play()'>Interpret</button>", &
          "    <audio id='ctrl' controls>", &
-         "      <source id='wav' type='audio/wav'>", &
+         "      <source id='wav' type='audio/x-wav'>", &
          "    </audio>", &
          "  </body>", &
          "</html>"
@@ -116,8 +116,7 @@ program cgi
 
       music%amplitude = 1.0_dp
 
-      write (*, "('Content-type: audio/wav', /)")
-      call write_riff('stdout', music)
+      call write_riff('http', music)
    end if
 
 contains

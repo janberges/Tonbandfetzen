@@ -81,7 +81,13 @@ contains
          riffSize = riffSize + 8_i4 + applSize
       end if
 
-      if (file .eq. 'stdout') then
+      if (file .eq. 'stdout' .or. file .eq. 'http') then
+         if (file .eq. 'http') then
+            write (stdout, "('Content-Type: audio/x-wav')")
+            write (stdout, "('Content-Length: ', I0)") riffSize + 8
+            write (stdout, "('Accept-Ranges: bytes', /)")
+         end if
+
          write (stdout, '(10000000000A)', advance='no') &
             'RIFF', c(riffSize), 'WAVE', &
             'fmt ', c(fmtSize), c(formatTag), c(s%channels), &

@@ -87,7 +87,13 @@ contains
          formSize = formSize + 8_i4 + applSize
       end if
 
-      if (file .eq. 'stdout') then
+      if (file .eq. 'stdout' .or. file .eq. 'http') then
+         if (file .eq. 'http') then
+            write (stdout, "('Content-Type: audio/x-aiff')")
+            write (stdout, "('Content-Length: ', I0)") formSize + 8
+            write (stdout, "('Accept-Ranges: bytes', /)")
+         end if
+
          write (stdout, '(10000000000A)', advance='no') &
             'FORM', c(r(formSize)), 'AIFF', &
             'COMM', c(r(commSize)), c(r(s%channels)), &

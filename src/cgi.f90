@@ -106,7 +106,7 @@ program cgi
          "</textarea>", &
          "    <button id='play' onclick='play()'>Interpret</button>", &
          "    <audio id='ctrl' controls>", &
-         "      <source id='wav' type='audio/wave'>", &
+         "      <source id='wav' type='audio/wav'>", &
          "    </audio>", &
          "  </body>", &
          "</html>"

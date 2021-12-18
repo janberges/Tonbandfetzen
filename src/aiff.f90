@@ -90,8 +90,7 @@ contains
       if (file .eq. 'stdout' .or. file .eq. 'http') then
          if (file .eq. 'http') then
             write (stdout, "('Content-Type: audio/x-aiff')")
-            write (stdout, "('Content-Length: ', I0)") formSize + 8
-            write (stdout, "('Accept-Ranges: bytes', /)")
+            write (stdout, "('Content-Length: ', I0, /)") formSize + 8
          end if
 
          write (stdout, '(10000000000A)', advance='no') &

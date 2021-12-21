@@ -19,53 +19,48 @@ program cgi
    if (query .eq. ' ') then
       write (*, '(A, /, 1000(:, /, A))') "Content-type: text/html", &
          "<!DOCTYPE html>", &
-         "<html>", &
+         "<html lang='en'>", &
          "  <head>", &
+         "    <meta charset='utf-8'>", &
          "    <title>Tonbandfetzen</title>", &
-         "    <style type='text/css'>", &
-         "      body, #color, #mel {", &
-         "        font-family: 'Liberation Sans', Helvetica, sans-serif;", &
-         "        font-weight: bold;", &
-         "        font-size: 16px;", &
-         "      }", &
+         "    <link rel='icon' type='image/svg+xml' sizes='any'", &
+         "      href='https://raw.githubusercontent.com/janberges/&
+                  &Tonbandfetzen/master/logo/logo.svg'>", &
+         "    <style>", &
+         "      body { background: #222222 }", &
          "      #color {", &
          "        position: absolute;", &
+         "        color: #ffffff;", &
+         "        background: #333333;", &
          "      }", &
          "      #mel {", &
          "        position: relative;", &
          "        color: transparent;", &
          "        background: transparent;", &
-         "        caret-color: black;", &
+         "        caret-color: #ffffff;", &
          "      }", &
-         "      #color, #mel, #play, #ctrl {", &
+         "      #color, #mel, #play, #wav {", &
          "        display: block;", &
          "        box-sizing: border-box;", &
-         "        width: 500px;", &
+         "        width: 600px;", &
          "      }", &
          "      #color, #mel {", &
-         "        height: 200px;", &
+         "        height: 300px;", &
          "        resize: none;", &
-         "        overflow-y: scroll;", &
-         "        padding: 2px;", &
+         "        overflow-y: auto;", &
+         "        padding: 5px;", &
+         "        border: 0;", &
          "        margin: 0;", &
-         "        border: 2px inset #ebe9ed;", &
+         "        font: bold 16px monospace;", &
          "        white-space: pre-wrap;", &
          "        word-wrap: break-word;", &
          "      }", &
-         "      #play {", &
-         "        margin-bottom: 5mm;", &
-         "      }", &
-         "      .N {", &
-         "        color: #bf8040;", &
-         "      }", &
-         "      .L {", &
-         "        color: #afdf00;", &
-         "      }", &
-         "      .C {", &
-         "        color: #da193b;", &
-         "      }", &
+         "      #play { margin-bottom: 5mm }", &
+         "      .N { color: #bf8040 }", &
+         "      .L { color: #afdf00 }", &
+         "      .C { color: #da193b }", &
          "    </style>", &
-         "    <script type='text/javascript'>", &
+         "    <script>", &
          "      function enter() {", &
          "        document.getElementById('play').disabled = false", &
          "        var m = document.getElementById('mel').value", &
@@ -89,8 +84,7 @@ program cgi
          "        document.getElementById('wav').src = '?'", &
          "          + encodeURIComponent(", &
          "            document.getElementById('mel').value)", &
-         "        document.getElementById('ctrl').load()", &
-         "        document.getElementById('ctrl').play()", &
+         "        document.getElementById('wav').load()", &
          "      }", &
          "    </script>", &
          "  </head>", &
@@ -105,9 +99,7 @@ program cgi
          "W ,5 A2' A3' E4' A4' C#v5' E5' Gz5' A5'", &
          "</textarea>", &
          "    <button id='play' onclick='play()'>Interpret</button>", &
-         "    <audio id='ctrl' controls>", &
-         "      <source id='wav' type='audio/x-wav'>", &
-         "    </audio>", &
+         "    <audio id='wav' controls autoplay>Sorry</audio>", &
          "  </body>", &
          "</html>"
    else

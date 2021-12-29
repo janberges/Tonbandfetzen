@@ -360,6 +360,30 @@ contains
                      f0 = f0 * random
                      fi = fi * random
                      f  = f  * random
+
+                  case ('flanger')
+                     i = int(n())
+                     j = int(n())
+
+                     if (mark_set(i) .and. mark_set(j)) then
+                        t1 = nint(marks(i))
+                        t2 = nint(marks(j))
+                        dx = n() * s
+
+                        factor = n() * size(wave) / (t2 - t1 - 1)
+
+                        allocate(work(tones%channels, t2 - t1))
+
+                        do i = 0, t2 - t1 - 1
+                           work(:, 1 + i) = mel(:, t1 + 1 + i + nint(dx * &
+                              wave(modulo(nint(i * factor), size(wave)))))
+                        end do
+
+                        mel(:, t1 + 1:t2) = mel(:, t1 + 1:t2) + work
+
+                        deallocate(work)
+                     end if
+
                end select
 
             case ('T')
@@ -579,29 +603,6 @@ contains
 
             case ('K')
                call forget(int(rational(next(numeral, '0'))))
-
-            case ('L')
-               i = int(n())
-               j = int(n())
-
-               if (mark_set(i) .and. mark_set(j)) then
-                  t1 = nint(marks(i))
-                  t2 = nint(marks(j))
-                  dx = n() * s
-
-                  factor = n() * size(wave) / (t2 - t1 - 1)
-
-                  allocate(work(tones%channels, t2 - t1))
-
-                  do i = 0, t2 - t1 - 1
-                     work(:, 1 + i) = mel(:, t1 + 1 + i &
-                        + nint(dx * wave(modulo(nint(i * factor), size(wave)))))
-                  end do
-
-                  mel(:, t1 + 1:t2) = mel(:, t1 + 1:t2) + work
-
-                  deallocate(work)
-               end if
 
             case ('*')
                if (next('*', length=1) .eq. 'none') exit

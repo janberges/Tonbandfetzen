@@ -52,9 +52,6 @@ contains
       real(dp) :: fb ! f(t + b) / f(t)
       real(dp) :: f1 ! f(t + 1) / f(t)
 
-      complex(dp) :: v  ! vibrato amplitude
-      complex(dp) :: v1 ! vibrato frequency
-
       real(dp) :: a  ! amplitude a(t) = sqrt(L^2 + R^2)
       real(dp) :: a0 ! reference amplitude
       real(dp) :: ai ! initial amplitude
@@ -271,9 +268,6 @@ contains
       a0 = 1.0_dp; a = a0; ai = a0; ad = 1.0_dp; ab = 1.0_dp
       r0 = 1.0_dp; r = r0; ri = r0; rd = 1.0_dp; rb = 1.0_dp
 
-      v  = 0.0_dp;
-      v1 = 1.0_dp;
-
       phase = 0.0_dp
 
       x = 0.0_dp
@@ -481,11 +475,6 @@ contains
             case ('&'); a0 = n();     ai = a0; a = ai
             case ('%'); r0 = n();     ri = r0; r = ri
 
-            case ('Y')
-               v = n() / s
-               f1 = 2 * pi * n() / s
-               v1 = cmplx(cos(f1), sin(f1), dp)
-
             case ('Q')
                fi = n() * f0; f = fi
 
@@ -518,10 +507,9 @@ contains
                   rho(i) = a * wave(floor(size(wave) * phase))
                   phi(i) = atan(r)
 
-                  phase = phase + f + real(v, dp)
+                  phase = phase + f
 
                   f = f * f1
-                  v = v * v1
                   a = a * a1
                   r = r * r1
                end do

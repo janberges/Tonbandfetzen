@@ -29,31 +29,31 @@ contains
          if (error .eq. eof) exit
 
          select case (ckID)
-            case ('RIFF')
-               read (unit) formType
+         case ('RIFF')
+            read (unit) formType
 
-            case ('fmt ')
-               read (unit) formatTag, s%channels, sampleRate, byteRate
-               read (unit) blockAlign, sampleSize
+         case ('fmt ')
+            read (unit) formatTag, s%channels, sampleRate, byteRate
+            read (unit) blockAlign, sampleSize
 
-               s%rate = real(sampleRate, dp)
+            s%rate = real(sampleRate, dp)
 
-               if (sampleSize .ne. 16_i2) then
-                  write (stderr, "('Error: only 16 bits supported')")
-                  stop
-               end if
+            if (sampleSize .ne. 16_i2) then
+               write (stderr, "('Error: only 16 bits supported')")
+               stop
+            end if
 
-            case ('data')
-               s%points = ckSize / (2 * s%channels)
-               allocate(s%sound(s%channels, s%points))
-               read (unit) s%sound
+         case ('data')
+            s%points = ckSize / (2 * s%channels)
+            allocate(s%sound(s%channels, s%points))
+            read (unit) s%sound
 
-            case ('APPL')
-               read (unit) extended
-               s%amplitude = decode(extended)
+         case ('APPL')
+            read (unit) extended
+            s%amplitude = decode(extended)
 
-            case default
-               read (unit) (byte, i = 1, ckSize)
+         case default
+            read (unit) (byte, i = 1, ckSize)
          end select
       end do
 

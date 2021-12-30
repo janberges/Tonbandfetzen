@@ -31,36 +31,36 @@ contains
          ckSize = r(ckSize)
 
          select case (ckID)
-            case ('FORM')
-               read (unit) formType
+         case ('FORM')
+            read (unit) formType
 
-            case ('COMM')
-               read (unit) s%channels, s%points, sampleSize, extended
+         case ('COMM')
+            read (unit) s%channels, s%points, sampleSize, extended
 
-               s%channels = r(s%channels)
-               s%points   = r(s%points)
-               sampleSize = r(sampleSize)
-               s%rate     = decode(extended)
+            s%channels = r(s%channels)
+            s%points   = r(s%points)
+            sampleSize = r(sampleSize)
+            s%rate     = decode(extended)
 
-               if (sampleSize .ne. 16_i2) then
-                  write (stderr, "('Error: only 16 bits supported')")
-                  stop
-               end if
+            if (sampleSize .ne. 16_i2) then
+               write (stderr, "('Error: only 16 bits supported')")
+               stop
+            end if
 
-            case ('SSND')
-               allocate(s%sound(s%channels, s%points))
-               read (unit) offset, blockSize, s%sound
+         case ('SSND')
+            allocate(s%sound(s%channels, s%points))
+            read (unit) offset, blockSize, s%sound
 
-               offset    = r(offset)
-               blockSize = r(blockSize)
-               s%sound   = r(s%sound)
+            offset    = r(offset)
+            blockSize = r(blockSize)
+            s%sound   = r(s%sound)
 
-            case ('APPL')
-               read (unit) extended
-               s%amplitude = decode(extended)
+         case ('APPL')
+            read (unit) extended
+            s%amplitude = decode(extended)
 
-            case default
-               read (unit) (byte, i = 1, ckSize)
+         case default
+            read (unit) (byte, i = 1, ckSize)
          end select
       end do
 

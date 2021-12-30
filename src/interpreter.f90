@@ -110,18 +110,18 @@ contains
 
       do
          select case (next(special, length=1))
-            case ('$'); tones%rate = n()
+         case ('$'); tones%rate = n()
 
-            case ('~'); todo( 1 ) = .false.
-            case ('S'); todo( 2 ) = .false.
-            case ('Z'); todo( 3 ) = .false.
-            case ('N'); todo(2:3) = .false.
+         case ('~'); todo( 1 ) = .false.
+         case ('S'); todo( 2 ) = .false.
+         case ('Z'); todo( 3 ) = .false.
+         case ('N'); todo(2:3) = .false.
 
-            case ('*')
-               if (next('*', length=1) .eq. 'none') exit
+         case ('*')
+            if (next('*', length=1) .eq. 'none') exit
 
-            case ("'", 'none')
-               exit
+         case ("'", 'none')
+            exit
          end select
       end do
 
@@ -158,88 +158,88 @@ contains
          end if
 
          select case (symbol)
-            case ('~', 'S', 'Z', 'N')
-               if (next(lexical) .ne. '#') then
-                  p = p + nint(rational(next(numeral, '1')) * s)
-               end if
+         case ('~', 'S', 'Z', 'N')
+            if (next(lexical) .ne. '#') then
+               p = p + nint(rational(next(numeral, '1')) * s)
+            end if
 
-            case ('O')
-               tones%channels = int(n(), i2)
+         case ('O')
+            tones%channels = int(n(), i2)
 
-            case ('%', '(', ')', '[', ']', '{', '}')
-               if (tones%channels .eq. -1_i2) tones%channels = 2_i2
+         case ('%', '(', ')', '[', ']', '{', '}')
+            if (tones%channels .eq. -1_i2) tones%channels = 2_i2
 
-            case ('|')
-               b = n() * s
+         case ('|')
+            b = n() * s
 
-            case ("'")
-               x = x + rational(next(numeral, '1')) * b
-               d = nint(x) - t
-               c = c + d
-               t = t + d
-               p = p + d
+         case ("'")
+            x = x + rational(next(numeral, '1')) * b
+            d = nint(x) - t
+            c = c + d
+            t = t + d
+            p = p + d
 
-            case ('"', '`')
-               x = x + sgn('`"') * rational(next(numeral, '1')) * b
+         case ('"', '`')
+            x = x + sgn('`"') * rational(next(numeral, '1')) * b
+            t = nint(x)
+
+         case ('M')
+            i = int(rational(next(numeral, '0')))
+            marks(i) = x
+            mark_set(i) = .true.
+
+         case ('W')
+            i = int(rational(next(numeral, '0')))
+            if (mark_set(i)) then
+               x = marks(i)
                t = nint(x)
+            end if
 
-            case ('M')
-               i = int(rational(next(numeral, '0')))
-               marks(i) = x
-               mark_set(i) = .true.
+         case ('R')
+            mark_set(int(rational(next(numeral, '0')))) = .false.
 
-            case ('W')
-               i = int(rational(next(numeral, '0')))
-               if (mark_set(i)) then
-                  x = marks(i)
+         case ('P')
+            i = int(n())
+            j = int(n())
+
+            if (mark_set(i) .and. mark_set(j)) then
+               x1 = marks(i)
+               x2 = marks(j)
+               dx = x2 - x1
+
+               do i = 1, int(rational(next(numeral, '1')))
+                  x = x + dx
                   t = nint(x)
+               end do
+            end if
+
+         case ('I')
+            call remember(int(rational(next(numeral, '0'))))
+
+         case ('J')
+            mark = int(rational(next(numeral, '0')))
+
+            if (known(mark)) then
+               count = int(rational(next(numeral, '1')))
+
+               call get(info)
+
+               if (info .lt. count) then
+                  call set(info + 1)
+                  call revert(mark)
+               else
+                  call set(0)
                end if
+            end if
 
-            case ('R')
-               mark_set(int(rational(next(numeral, '0')))) = .false.
+         case ('K')
+            call forget(int(rational(next(numeral, '0'))))
 
-            case ('P')
-               i = int(n())
-               j = int(n())
+         case ('*')
+            if (next('*', length=1) .eq. 'none') exit
 
-               if (mark_set(i) .and. mark_set(j)) then
-                  x1 = marks(i)
-                  x2 = marks(j)
-                  dx = x2 - x1
-
-                  do i = 1, int(rational(next(numeral, '1')))
-                     x = x + dx
-                     t = nint(x)
-                  end do
-               end if
-
-            case ('I')
-               call remember(int(rational(next(numeral, '0'))))
-
-            case ('J')
-               mark = int(rational(next(numeral, '0')))
-
-               if (known(mark)) then
-                  count = int(rational(next(numeral, '1')))
-
-                  call get(info)
-
-                  if (info .lt. count) then
-                     call set(info + 1)
-                     call revert(mark)
-                  else
-                     call set(0)
-                  end if
-               end if
-
-            case ('K')
-               call forget(int(rational(next(numeral, '0'))))
-
-            case ('*')
-               if (next('*', length=1) .eq. 'none') exit
-
-            case ('none')
-               exit
+         case ('none')
+            exit
          end select
       end do
 
@@ -297,324 +297,323 @@ contains
             i = t - c + 1
 
             select case (tones%channels)
-               case (1)
-                  mel(1, i:t) = mel(1, i:t) + rho(:c)
+            case (1)
+               mel(1, i:t) = mel(1, i:t) + rho(:c)
 
-               case (2)
-                  mel(1, i:t) = mel(1, i:t) + rho(:c) * cos(phi(:c))
-                  mel(2, i:t) = mel(2, i:t) + rho(:c) * sin(phi(:c))
+            case (2)
+               mel(1, i:t) = mel(1, i:t) + rho(:c) * cos(phi(:c))
+               mel(2, i:t) = mel(2, i:t) + rho(:c) * sin(phi(:c))
             end select
 
             c = 0
          end if
 
          select case (symbol)
-            case ('~', 'S', 'Z', 'N')
-               word = next(lexical)
+         case ('~', 'S', 'Z', 'N')
+            word = next(lexical)
 
-               if (word .eq. '#') then
-                  i = int(rational(next(numeral, '1')))
-               else
-                  i = nint(rational(next(numeral, '1')) * s)
-               end if
+            if (word .eq. '#') then
+               i = int(rational(next(numeral, '1')))
+            else
+               i = nint(rational(next(numeral, '1')) * s)
+            end if
 
-               select case (symbol)
-                  case ('~'); call load(wave, 'wave', word, i)
-                  case ('S'); call load(rise, 'fade', word, i)
-                  case ('Z'); call load(fall, 'fade', word, i)
-                  case ('N'); call load(rise, 'fade', word, i)
-                     fall = rise
-               end select
+            select case (symbol)
+            case ('~'); call load(wave, 'wave', word, i)
+            case ('S'); call load(rise, 'fade', word, i)
+            case ('Z'); call load(fall, 'fade', word, i)
+            case ('N'); call load(rise, 'fade', word, i)
+               fall = rise
+            end select
 
-            case ('|')
-               b = n() * s
+         case ('|')
+            b = n() * s
 
-            case ('@')
-               A4 = n() / s
+         case ('@')
+            A4 = n() / s
 
-            case ('X')
-               word = next(lexical)
+         case ('X')
+            word = next(lexical)
 
-               select case(word)
-                  case('report')
-                     write (*, "('Note counts:')")
+            select case(word)
+            case('report')
+               write (*, "('Note counts:')")
 
-                     do i = lbound(keycount, 1), ubound(keycount, 1)
-                        if (keycount(i) .gt. 0) then
-                           j = modulo(i + 4, 7) + 1
-                           write (*, "(A)", advance='no') 'FCGDAEB'(j:j)
+               do i = lbound(keycount, 1), ubound(keycount, 1)
+                  if (keycount(i) .gt. 0) then
+                     j = modulo(i + 4, 7) + 1
+                     write (*, "(A)", advance='no') 'FCGDAEB'(j:j)
 
-                           j = (i + 4 - (j - 1)) / 7
-                           if (j < 0) write (*, "(A)", advance='no') repeat('b', -j)
-                           if (j > 0) write (*, "(A)", advance='no') repeat('#', j)
+                     j = (i + 4 - (j - 1)) / 7
+                     if (j < 0) write (*, "(A)", advance='no') repeat('b', -j)
+                     if (j > 0) write (*, "(A)", advance='no') repeat('#', j)
 
-                           write (*, "(': ', I0)") keycount(i)
-                        end if
-                     end do
-
-                     keycount = 0
-
-                  case ('detune')
-                     call random_number(random)
-                     random = 1.0_dp - 2.0_dp * random
-                     random = 2.0_dp ** (random * n() / steps)
-                     A4 = A4 * random
-                     f0 = f0 * random
-                     fi = fi * random
-                     f  = f  * random
-
-                  case ('flanger', 'vibrato')
-                     i = int(n())
-                     j = int(n())
-
-                     if (mark_set(i) .and. mark_set(j)) then
-                        t1 = nint(marks(i))
-                        t2 = nint(marks(j))
-                        dx = n() * s
-
-                        factor = n() * size(wave) / (t2 - t1 - 1)
-
-                        allocate(work(tones%channels, t2 - t1))
-
-                        do i = 0, t2 - t1 - 1
-                           work(:, 1 + i) = mel(:, t1 + 1 + i + nint(dx * &
-                              wave(modulo(nint(i * factor), size(wave)))))
-                        end do
-
-                        if (word .eq. 'flanger') then
-                           mel(:, t1 + 1:t2) = mel(:, t1 + 1:t2) + work
-                        else if (word .eq. 'vibrato') then
-                           mel(:, t1 + 1:t2) = work
-                        end if
-
-                        deallocate(work)
-                     end if
-
-               end select
-
-            case ('T')
-               tuning = next(lexical)
-
-            case ('H')
-               steps = nint(n())
-
-            case ('C', 'D', 'E', 'F', 'G', 'A', 'B', 'U', 'V')
-               f = A4
-
-               if (index('UV', symbol) .ne. 0) then
-                  newtone = tone + sgn('VU') * int(n())
-                  i = keynote - 5 + modulo(newtone * 7 - keynote + 5, 12)
-               else
-                  i = index('FCGDAEB', symbol) - 5
-               end if
-
-               word = next(lexical, '')
-
-               do j = 1, len(word)
-                  select case(word(j:j))
-                     case ('b')
-                        i = i - 7
-                     case ('#')
-                        i = i + 7
-                     case ('x')
-                        i = i + 14
-                     case ('v') ! syntonic comma down
-                        f = f * comma(5)
-                     case ('u') ! syntonic comma up
-                        f = f * comma(-5)
-                     case ('z') ! septimal comma down
-                        f = f * comma(7)
-                     case ('s') ! septimal comma up
-                        f = f * comma(-7)
-                     case ('j') ! 11-comma down
-                        f = f * comma(-11)
-                     case ('i') ! 11-comma up
-                        f = f * comma(11)
-                     case ('d') ! ditonic comma down
-                        f = f * comma(-3)
-                     case ('p') ! Pythagorean comma up
-                        f = f * comma(3)
-                  end select
-               end do
-
-               if (lbound(keycount, 1) .le. i .and. &
-                   ubound(keycount, 1) .ge. i) then
-                  keycount(i) = keycount(i) + 1
-               end if
-
-               select case(tuning)
-                  case ('equal')
-                     f = f * equal_fifth ** i
-
-                  case ('pyth')
-                     f = f * just_fifth ** i
-
-                  case ('just')
-                     f = f * just_fifth ** i
-                     j = i + modulo(1 - keynote, 4)
-                     j = (j - modulo(j, 4)) / 4
-                     f = f * comma(5) ** j
-
-                  case ('close')
-                     f = f * just_fifth ** i
-                     j = i + modulo(5 - keynote, 11)
-                     j = (j - modulo(j, 11)) / 11
-                     f = f * comma(5) ** j
-               end select
-
-               ! fold back to first octave:
-               j = 4 * i + 5
-               j = (j - modulo(j, 7)) / 7
-               f = f / 2.0_dp ** j
-
-               ! position on twelve-tone scale:
-               j = i * 7 - 12 * j
-
-               if (index('UV', symbol) .ne. 0) then
-                  j = (newtone - j) / 12
-               else
-                  word = next(numeral, 'none')
-
-                  tone = j
-
-                  if (word .eq. 'none') then
-                     j = 4
-                     keynote = i
-                  else
-                     j = nint(rational(word))
+                     write (*, "(': ', I0)") keycount(i)
                   end if
-
-                  tone = tone + 12 * j
-               end if
-
-               f = f * 2.0_dp ** (j - 4.0_dp)
-               fi = f
-
-               word = next(numeral, 'none')
-
-               if (word .ne. 'none') then
-                  primes = accidentals(word)
-                  do j = 1, size(primes)
-                     f = f * comma(primes(j))
-                  end do
-               end if
-
-               if (index('UV', symbol) .eq. 0) f0 = f
-
-            case ('='); f0 = n() / s; fi = f0; f = fi
-            case ('&'); a0 = n();     ai = a0; a = ai
-            case ('%'); r0 = n();     ri = r0; r = ri
-
-            case ('Q')
-               fi = n() * f0; f = fi
-
-            case ('_', '^'); fb = 2.0_dp ** (sgn('_^') * n() / steps)
-            case ('\', '/'); fd = 2.0_dp ** (sgn('\/') * n() / steps)
-            case ('-', '+'); fi = 2.0_dp ** (sgn('-+') * n() / steps) * f0
-               f = fi
-
-            case (',', ';'); ab = 10.0_dp ** (sgn(',;') * n() * 0.1_dp)
-            case ('>', '<'); ad = 10.0_dp ** (sgn('><') * n() * 0.1_dp)
-            case ('?', '!'); ai = 10.0_dp ** (sgn('?!') * n() * 0.1_dp) * a0
-               a = ai
-
-            case ('{', '}'); rb = 10.0_dp ** (sgn('{}') * n() * 0.1_dp)
-            case ('(', ')'); rd = 10.0_dp ** (sgn('()') * n() * 0.1_dp)
-            case ('[', ']'); ri = 10.0_dp ** (sgn('[]') * n() * 0.1_dp) * r0
-               r = ri
-
-            case ("'")
-               x = x + rational(next(numeral, '1')) * b
-               d = nint(x) - t
-
-               f1 = fd ** (1.0_dp / d) * fb ** (1.0_dp / b); fd = 1.0_dp
-               a1 = ad ** (1.0_dp / d) * ab ** (1.0_dp / b); ad = 1.0_dp
-               r1 = rd ** (1.0_dp / d) * rb ** (1.0_dp / b); rd = 1.0_dp
-
-               do i = c + 1, c + d
-                  phase = phase - floor(phase)
-
-                  rho(i) = a * wave(floor(size(wave) * phase))
-                  phi(i) = atan(r)
-
-                  phase = phase + f
-
-                  f = f * f1
-                  a = a * a1
-                  r = r * r1
                end do
 
-               c = c + d
-               t = t + d
+               keycount = 0
 
-            case ('"', '`')
-               x = x + sgn('`"') * rational(next(numeral, '1')) * b
-               t = nint(x)
+            case ('detune')
+               call random_number(random)
+               random = 1.0_dp - 2.0_dp * random
+               random = 2.0_dp ** (random * n() / steps)
+               A4 = A4 * random
+               f0 = f0 * random
+               fi = fi * random
+               f  = f  * random
 
-            case ('M')
-               i = int(rational(next(numeral, '0')))
-               marks(i) = x
-               mark_set(i) = .true.
-
-            case ('W')
-               i = int(rational(next(numeral, '0')))
-               if (mark_set(i)) then
-                  x = marks(i)
-                  t = nint(x)
-               end if
-
-            case ('R')
-               mark_set(int(rational(next(numeral, '0')))) = .false.
-
-            case ('P')
+            case ('flanger', 'vibrato')
                i = int(n())
                j = int(n())
 
                if (mark_set(i) .and. mark_set(j)) then
-                  x1 = marks(i)
-                  x2 = marks(j)
+                  t1 = nint(marks(i))
+                  t2 = nint(marks(j))
+                  dx = n() * s
 
-                  dx = x2 - x1
+                  factor = n() * size(wave) / (t2 - t1 - 1)
 
-                  t1 = nint(x1)
-                  t2 = nint(x2)
-                  dt = t2 - t1
+                  allocate(work(tones%channels, t2 - t1))
 
-                  do i = 1, int(rational(next(numeral, '1')))
-                     x = x + dx
-                     t = nint(x)
-                     mel(:, t - dt + 1:t) = mel(:, t - dt + 1:t) &
-                        + mel(:, t1 + 1:t2)
+                  do i = 0, t2 - t1 - 1
+                     work(:, 1 + i) = mel(:, t1 + 1 + i + nint(dx * &
+                        wave(modulo(nint(i * factor), size(wave)))))
                   end do
-               end if
 
-            case ('I')
-               call remember(int(rational(next(numeral, '0'))))
-
-            case ('J')
-               mark = int(rational(next(numeral, '0')))
-
-               if (known(mark)) then
-                  count = int(rational(next(numeral, '1')))
-
-                  call get(info)
-
-                  if (info .lt. count) then
-                     call set(info + 1)
-                     call revert(mark)
-                  else
-                     call set(0)
+                  if (word .eq. 'flanger') then
+                     mel(:, t1 + 1:t2) = mel(:, t1 + 1:t2) + work
+                  else if (word .eq. 'vibrato') then
+                     mel(:, t1 + 1:t2) = work
                   end if
+
+                  deallocate(work)
+               end if
+            end select
+
+         case ('T')
+            tuning = next(lexical)
+
+         case ('H')
+            steps = nint(n())
+
+         case ('C', 'D', 'E', 'F', 'G', 'A', 'B', 'U', 'V')
+            f = A4
+
+            if (index('UV', symbol) .ne. 0) then
+               newtone = tone + sgn('VU') * int(n())
+               i = keynote - 5 + modulo(newtone * 7 - keynote + 5, 12)
+            else
+               i = index('FCGDAEB', symbol) - 5
+            end if
+
+            word = next(lexical, '')
+
+            do j = 1, len(word)
+               select case(word(j:j))
+               case ('b')
+                  i = i - 7
+               case ('#')
+                  i = i + 7
+               case ('x')
+                  i = i + 14
+               case ('v') ! syntonic comma down
+                  f = f * comma(5)
+               case ('u') ! syntonic comma up
+                  f = f * comma(-5)
+               case ('z') ! septimal comma down
+                  f = f * comma(7)
+               case ('s') ! septimal comma up
+                  f = f * comma(-7)
+               case ('j') ! 11-comma down
+                  f = f * comma(-11)
+               case ('i') ! 11-comma up
+                  f = f * comma(11)
+               case ('d') ! ditonic comma down
+                  f = f * comma(-3)
+               case ('p') ! Pythagorean comma up
+                  f = f * comma(3)
+            end select
+            end do
+
+            if (lbound(keycount, 1) .le. i .and. &
+                ubound(keycount, 1) .ge. i) then
+               keycount(i) = keycount(i) + 1
+            end if
+
+            select case(tuning)
+            case ('equal')
+               f = f * equal_fifth ** i
+
+            case ('pyth')
+               f = f * just_fifth ** i
+
+            case ('just')
+               f = f * just_fifth ** i
+               j = i + modulo(1 - keynote, 4)
+               j = (j - modulo(j, 4)) / 4
+               f = f * comma(5) ** j
+
+            case ('close')
+               f = f * just_fifth ** i
+               j = i + modulo(5 - keynote, 11)
+               j = (j - modulo(j, 11)) / 11
+               f = f * comma(5) ** j
+            end select
+
+            ! fold back to first octave:
+            j = 4 * i + 5
+            j = (j - modulo(j, 7)) / 7
+            f = f / 2.0_dp ** j
+
+            ! position on twelve-tone scale:
+            j = i * 7 - 12 * j
+
+            if (index('UV', symbol) .ne. 0) then
+               j = (newtone - j) / 12
+            else
+               word = next(numeral, 'none')
+
+               tone = j
+
+               if (word .eq. 'none') then
+                  j = 4
+                  keynote = i
+               else
+                  j = nint(rational(word))
                end if
 
-            case ('K')
-               call forget(int(rational(next(numeral, '0'))))
+               tone = tone + 12 * j
+            end if
 
-            case ('*')
-               if (next('*', length=1) .eq. 'none') exit
+            f = f * 2.0_dp ** (j - 4.0_dp)
+            fi = f
 
-            case ('none')
-               exit
+            word = next(numeral, 'none')
+
+            if (word .ne. 'none') then
+               primes = accidentals(word)
+               do j = 1, size(primes)
+                  f = f * comma(primes(j))
+               end do
+            end if
+
+            if (index('UV', symbol) .eq. 0) f0 = f
+
+         case ('='); f0 = n() / s; fi = f0; f = fi
+         case ('&'); a0 = n();     ai = a0; a = ai
+         case ('%'); r0 = n();     ri = r0; r = ri
+
+         case ('Q')
+            fi = n() * f0; f = fi
+
+         case ('_', '^'); fb = 2.0_dp ** (sgn('_^') * n() / steps)
+         case ('\', '/'); fd = 2.0_dp ** (sgn('\/') * n() / steps)
+         case ('-', '+'); fi = 2.0_dp ** (sgn('-+') * n() / steps) * f0
+            f = fi
+
+         case (',', ';'); ab = 10.0_dp ** (sgn(',;') * n() * 0.1_dp)
+         case ('>', '<'); ad = 10.0_dp ** (sgn('><') * n() * 0.1_dp)
+         case ('?', '!'); ai = 10.0_dp ** (sgn('?!') * n() * 0.1_dp) * a0
+            a = ai
+
+         case ('{', '}'); rb = 10.0_dp ** (sgn('{}') * n() * 0.1_dp)
+         case ('(', ')'); rd = 10.0_dp ** (sgn('()') * n() * 0.1_dp)
+         case ('[', ']'); ri = 10.0_dp ** (sgn('[]') * n() * 0.1_dp) * r0
+            r = ri
+
+         case ("'")
+            x = x + rational(next(numeral, '1')) * b
+            d = nint(x) - t
+
+            f1 = fd ** (1.0_dp / d) * fb ** (1.0_dp / b); fd = 1.0_dp
+            a1 = ad ** (1.0_dp / d) * ab ** (1.0_dp / b); ad = 1.0_dp
+            r1 = rd ** (1.0_dp / d) * rb ** (1.0_dp / b); rd = 1.0_dp
+
+            do i = c + 1, c + d
+               phase = phase - floor(phase)
+
+               rho(i) = a * wave(floor(size(wave) * phase))
+               phi(i) = atan(r)
+
+               phase = phase + f
+
+               f = f * f1
+               a = a * a1
+               r = r * r1
+            end do
+
+            c = c + d
+            t = t + d
+
+         case ('"', '`')
+            x = x + sgn('`"') * rational(next(numeral, '1')) * b
+            t = nint(x)
+
+         case ('M')
+            i = int(rational(next(numeral, '0')))
+            marks(i) = x
+            mark_set(i) = .true.
+
+         case ('W')
+            i = int(rational(next(numeral, '0')))
+            if (mark_set(i)) then
+               x = marks(i)
+               t = nint(x)
+            end if
+
+         case ('R')
+            mark_set(int(rational(next(numeral, '0')))) = .false.
+
+         case ('P')
+            i = int(n())
+            j = int(n())
+
+            if (mark_set(i) .and. mark_set(j)) then
+               x1 = marks(i)
+               x2 = marks(j)
+
+               dx = x2 - x1
+
+               t1 = nint(x1)
+               t2 = nint(x2)
+               dt = t2 - t1
+
+               do i = 1, int(rational(next(numeral, '1')))
+                  x = x + dx
+                  t = nint(x)
+                  mel(:, t - dt + 1:t) = mel(:, t - dt + 1:t) &
+                     + mel(:, t1 + 1:t2)
+               end do
+            end if
+
+         case ('I')
+            call remember(int(rational(next(numeral, '0'))))
+
+         case ('J')
+            mark = int(rational(next(numeral, '0')))
+
+            if (known(mark)) then
+               count = int(rational(next(numeral, '1')))
+
+               call get(info)
+
+               if (info .lt. count) then
+                  call set(info + 1)
+                  call revert(mark)
+               else
+                  call set(0)
+               end if
+            end if
+
+         case ('K')
+            call forget(int(rational(next(numeral, '0'))))
+
+         case ('*')
+            if (next('*', length=1) .eq. 'none') exit
+
+         case ('none')
+            exit
          end select
       end do
 

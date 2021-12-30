@@ -30,7 +30,7 @@ program stack
    allocate(s%sound(s%channels, s%points))
    allocate(sound(s%channels, s%points))
 
-   sound(:, :) = 0.0_dp
+   sound = 0.0_dp
 
    do i = 1, n - 1
       do c = 1, s%channels

@@ -11,7 +11,7 @@ program inspect
 
    path = command_argument(1, '/dev/stdin')
 
-   select case(extension(path))
+   select case (extension(path))
    case ('aiff', 'aif')
       call read_aiff(path, s)
 

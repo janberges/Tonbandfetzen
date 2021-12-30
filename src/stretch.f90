@@ -34,7 +34,7 @@ program stretch
       end do
    end if
 
-   if (factor .lt. 0.0_dp) s%sound(:, :) = s%sound(:, s%points:1:-1)
+   if (factor .lt. 0.0_dp) s%sound = s%sound(:, s%points:1:-1)
 
    call write_riff(command_argument(3, '/dev/stdout'), s)
 end program stretch

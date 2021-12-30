@@ -261,7 +261,7 @@ contains
 
       if (tones%points .eq. 0) return
 
-      mel(:, :) = 0.0_dp
+      mel = 0.0_dp
 
       b = 0.5_dp * s
       A4 = 440.0_dp / s
@@ -314,10 +314,10 @@ contains
             i = t - c + 1
 
             select case (tones%channels)
-            case (1)
+            case (1_i2)
                mel(1, i:t) = mel(1, i:t) + rho(:c)
 
-            case (2)
+            case (2_i2)
                mel(1, i:t) = mel(1, i:t) + rho(:c) * cos(phi(:c))
                mel(2, i:t) = mel(2, i:t) + rho(:c) * sin(phi(:c))
             end select
@@ -356,8 +356,8 @@ contains
          case ('X')
             word = next(lexical)
 
-            select case(word)
-            case('report')
+            select case (word)
+            case ('report')
                write (*, "('Note counts:')")
 
                do i = lbound(keycount, 1), ubound(keycount, 1)
@@ -431,7 +431,7 @@ contains
             word = next(lexical, '')
 
             do j = 1, len(word)
-               select case(word(j:j))
+               select case (word(j:j))
                case ('b')
                   i = i - 7
                case ('#')
@@ -462,7 +462,7 @@ contains
                keycount(i) = keycount(i) + 1
             end if
 
-            select case(tuning)
+            select case (tuning)
             case ('equal')
                f = f * equal_fifth ** i
 
@@ -664,9 +664,9 @@ contains
 
       tones%amplitude = maxval(abs(mel))
 
-      if (tones%amplitude .ne. 0.0_dp) mel(:, :) = mel / tones%amplitude
+      if (tones%amplitude .ne. 0.0_dp) mel = mel / tones%amplitude
 
-      if (tones%channels .eq. 2) then
+      if (tones%channels .eq. 2_i2) then
          tones%amplitude = sqrt(2.0_dp) * tones%amplitude
       end if
 
@@ -713,8 +713,8 @@ contains
 
          allocate(x(0:s%points - 1))
 
-         x(:) = s%sound(0, :)
-         x(:) = s%amplitude / i2max * x
+         x = s%sound(0, :)
+         x = s%amplitude / i2max * x
       else
          allocate(x(0:i - 1))
 

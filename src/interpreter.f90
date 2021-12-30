@@ -333,7 +333,9 @@ contains
                A4 = n() / s
 
             case ('X')
-               select case(next(lexical))
+               word = next(lexical)
+
+               select case(word)
                   case('report')
                      write (*, "('Note counts:')")
 
@@ -361,7 +363,7 @@ contains
                      fi = fi * random
                      f  = f  * random
 
-                  case ('flanger')
+                  case ('flanger', 'vibrato')
                      i = int(n())
                      j = int(n())
 
@@ -379,7 +381,11 @@ contains
                               wave(modulo(nint(i * factor), size(wave)))))
                         end do
 
-                        mel(:, t1 + 1:t2) = mel(:, t1 + 1:t2) + work
+                        if (word .eq. 'flanger') then
+                           mel(:, t1 + 1:t2) = mel(:, t1 + 1:t2) + work
+                        else if (word .eq. 'vibrato') then
+                           mel(:, t1 + 1:t2) = work
+                        end if
 
                         deallocate(work)
                      end if

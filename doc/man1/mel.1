@@ -454,6 +454,18 @@ by up to
 halftones.
 In combination with text and time marks, this is useful to generate non-white noise.
 .TP
+.BI vibrato n " " n' " " m " " m'
+Apply vibrato to sound between
+.IR n th
+and
+.IR n' th
+time mark, if marks have been set.
+The sample is periodically delayed (and advanced) with an amplitude of
+.IR m
+seconds and a frequency of
+.IR m'
+per sample length, using the current wave sample.
+.TP
 .BI flanger n " " n' " " m " " m'
 Apply flanger to sound between
 .IR n th

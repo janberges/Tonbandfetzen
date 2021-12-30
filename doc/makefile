@@ -13,7 +13,7 @@ mp3:
 	rsync -av ../examples/*/*.mp3 html/
 
 html/%.html: man1/%.1
-	groff -mman -Thtml $< > $@
+	pandoc -f man -t html -s -c style.css < $< > $@
 
 html/%.pdf: man1/%.1
 	groff -mman -Tpdf -fH $< > $@

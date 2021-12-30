@@ -1,0 +1,27 @@
+body {
+    font-family: 'Liberation Sans', Helvetica, sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: #bf8040;
+}
+
+a:hover {
+    color: #afdf00;
+}
+
+a:active {
+    color: #bfff00;
+}
+
+dt {
+    float: left;
+    clear: left;
+    min-width: 80px;
+    margin-right: 10px;
+}
+
+dd {
+    margin-left: 90px;
+}

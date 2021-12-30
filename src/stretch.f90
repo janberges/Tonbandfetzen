@@ -13,9 +13,9 @@ program stretch
 
    call read_riff(command_argument(2, '/dev/stdin'), s0)
 
-   s%channels  = s0%channels
-   s%points    = nint(abs(factor) * s0%points)
-   s%rate      = s0%rate
+   s%channels = s0%channels
+   s%points = nint(abs(factor) * s0%points)
+   s%rate = s0%rate
    s%amplitude = s0%amplitude
 
    if (s%points .eq. s0%points) then

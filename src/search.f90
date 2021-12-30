@@ -54,7 +54,7 @@ contains
          if (first .eq. 0 &
             .or. first .gt. firstn .and. firstn .ne. 0 &
             .or. first .gt. firstl .and. firstl .ne. 0 &
-            .or. first .gt. firsts .and. firsts .ne. 0 ) then
+            .or. first .gt. firsts .and. firsts .ne. 0) then
             next = def
             return
          end if

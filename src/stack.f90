@@ -10,9 +10,9 @@ program stack
    type(audio), allocatable :: p(:)
    type(audio) :: s
 
-   s%channels  = 1
-   s%points    = 0
-   s%rate      = 1.0_dp
+   s%channels = 1
+   s%points = 0
+   s%rate = 1.0_dp
    s%amplitude = 0.0_dp
 
    n = command_argument_count()
@@ -23,12 +23,12 @@ program stack
       call read_riff(command_argument(i, '/dev/stdin'), p(i))
 
       s%channels = max(s%channels, p(i)%channels)
-      s%points   = max(s%points,   p(i)%points)
-      s%rate     = max(s%rate,     p(i)%rate)
+      s%points = max(s%points, p(i)%points)
+      s%rate = max(s%rate, p(i)%rate)
    end do
 
    allocate(s%sound(s%channels, s%points))
-   allocate(  sound(s%channels, s%points))
+   allocate(sound(s%channels, s%points))
 
    sound(:, :) = 0.0_dp
 

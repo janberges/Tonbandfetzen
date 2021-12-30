@@ -38,9 +38,9 @@ contains
             read (unit) s%channels, s%points, sampleSize, extended
 
             s%channels = r(s%channels)
-            s%points   = r(s%points)
+            s%points = r(s%points)
             sampleSize = r(sampleSize)
-            s%rate     = decode(extended)
+            s%rate = decode(extended)
 
             if (sampleSize .ne. 16_i2) then
                write (stderr, "('Error: only 16 bits supported')")
@@ -51,9 +51,9 @@ contains
             allocate(s%sound(s%channels, s%points))
             read (unit) offset, blockSize, s%sound
 
-            offset    = r(offset)
+            offset = r(offset)
             blockSize = r(blockSize)
-            s%sound   = r(s%sound)
+            s%sound = r(s%sound)
 
          case ('APPL')
             read (unit) extended

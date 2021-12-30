@@ -14,9 +14,9 @@ program repeat
 
    call read_riff(command_argument(2, '/dev/stdin'), s1)
 
-   s%channels  = s1%channels
-   s%points    = nint(abs(factor) * s1%points)
-   s%rate      = s1%rate
+   s%channels = s1%channels
+   s%points = nint(abs(factor) * s1%points)
+   s%rate = s1%rate
    s%amplitude = s1%amplitude
 
    allocate(s%sound(s%channels, s%points))

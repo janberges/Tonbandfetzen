@@ -22,12 +22,10 @@ contains
 
       character(:), allocatable :: symbol, word ! special/lexical string
 
-      real(dp), allocatable ::    & ! sound stages:
-         wave(:),                 & !   I. samples
-         rise(:), rho(:),         & !  II. segments (polar coordinates)
-         fall(:), phi(:), mel(:, :) ! III. melody (channel-wise)
-
-      real(dp), allocatable :: work(:, :)
+      real(dp), allocatable :: wave(:), rise(:), fall(:) ! sound samples
+      real(dp), allocatable :: rho(:), phi(:) ! sound segment
+      real(dp), allocatable :: mel(:, :) ! melody
+      real(dp), allocatable :: work(:, :) ! temporary data
 
       logical :: todo(3) ! samples yet to be initialized?
 
@@ -45,21 +43,21 @@ contains
 
       integer :: steps ! notes per octave
 
-      real(dp) :: f  ! frequency f(t)
+      real(dp) :: f ! frequency f(t)
       real(dp) :: f0 ! reference frequency
       real(dp) :: fi ! initial frequency
       real(dp) :: fd ! f(t + d) / f(t)
       real(dp) :: fb ! f(t + b) / f(t)
       real(dp) :: f1 ! f(t + 1) / f(t)
 
-      real(dp) :: a  ! amplitude a(t) = sqrt(L^2 + R^2)
+      real(dp) :: a ! amplitude a(t) = sqrt(L^2 + R^2)
       real(dp) :: a0 ! reference amplitude
       real(dp) :: ai ! initial amplitude
       real(dp) :: ad ! a(t + d) / a(t)
       real(dp) :: ab ! a(t + b) / a(t)
       real(dp) :: a1 ! a(t + 1) / a(t)
 
-      real(dp) :: r  ! amplitudes ratio r(t) = R:L
+      real(dp) :: r ! amplitudes ratio r(t) = R:L
       real(dp) :: r0 ! reference ratio
       real(dp) :: ri ! initial ratio
       real(dp) :: rd ! r(t + d) / r(t)
@@ -76,7 +74,7 @@ contains
       real(dp) :: marks(0:99)
       logical :: mark_set(0:99)
       real(dp) :: x1, x2, dx
-      integer  :: t1, t2, dt
+      integer :: t1, t2, dt
 
       ! text marks
       integer :: mark, count, info
@@ -110,12 +108,17 @@ contains
 
       do
          select case (next(special, length=1))
-         case ('$'); tones%rate = n()
+         case ('$')
+            tones%rate = n()
 
-         case ('~'); todo( 1 ) = .false.
-         case ('S'); todo( 2 ) = .false.
-         case ('Z'); todo( 3 ) = .false.
-         case ('N'); todo(2:3) = .false.
+         case ('~')
+            todo(1) = .false.
+         case ('S')
+            todo(2) = .false.
+         case ('Z')
+            todo(3) = .false.
+         case ('N')
+            todo(2:3) = .false.
 
          case ('*')
             if (next('*', length=1) .eq. 'none') exit
@@ -264,9 +267,23 @@ contains
       A4 = 440.0_dp / s
       steps = 12
 
-      f0 = A4;     f = f0; fi = f0; fd = 1.0_dp; fb = 1.0_dp
-      a0 = 1.0_dp; a = a0; ai = a0; ad = 1.0_dp; ab = 1.0_dp
-      r0 = 1.0_dp; r = r0; ri = r0; rd = 1.0_dp; rb = 1.0_dp
+      f0 = A4
+      f = f0
+      fi = f0
+      fd = 1.0_dp
+      fb = 1.0_dp
+
+      a0 = 1.0_dp
+      a = a0
+      ai = a0
+      ad = 1.0_dp
+      ab = 1.0_dp
+
+      r0 = 1.0_dp
+      r = r0
+      ri = r0
+      rd = 1.0_dp
+      rb = 1.0_dp
 
       phase = 0.0_dp
 
@@ -319,10 +336,14 @@ contains
             end if
 
             select case (symbol)
-            case ('~'); call load(wave, 'wave', word, i)
-            case ('S'); call load(rise, 'fade', word, i)
-            case ('Z'); call load(fall, 'fade', word, i)
-            case ('N'); call load(rise, 'fade', word, i)
+            case ('~')
+               call load(wave, 'wave', word, i)
+            case ('S')
+               call load(rise, 'fade', word, i)
+            case ('Z')
+               call load(fall, 'fade', word, i)
+            case ('N')
+               call load(rise, 'fade', word, i)
                fall = rise
             end select
 
@@ -361,7 +382,7 @@ contains
                A4 = A4 * random
                f0 = f0 * random
                fi = fi * random
-               f  = f  * random
+               f = f * random
 
             case ('flanger', 'vibrato')
                i = int(n())
@@ -500,35 +521,59 @@ contains
 
             if (index('UV', symbol) .eq. 0) f0 = f
 
-         case ('='); f0 = n() / s; fi = f0; f = fi
-         case ('&'); a0 = n();     ai = a0; a = ai
-         case ('%'); r0 = n();     ri = r0; r = ri
-
-         case ('Q')
-            fi = n() * f0; f = fi
-
-         case ('_', '^'); fb = 2.0_dp ** (sgn('_^') * n() / steps)
-         case ('\', '/'); fd = 2.0_dp ** (sgn('\/') * n() / steps)
-         case ('-', '+'); fi = 2.0_dp ** (sgn('-+') * n() / steps) * f0
+         case ('=')
+            f0 = n() / s
+            fi = f0
             f = fi
 
-         case (',', ';'); ab = 10.0_dp ** (sgn(',;') * n() * 0.1_dp)
-         case ('>', '<'); ad = 10.0_dp ** (sgn('><') * n() * 0.1_dp)
-         case ('?', '!'); ai = 10.0_dp ** (sgn('?!') * n() * 0.1_dp) * a0
+         case ('&')
+            a0 = n()
+            ai = a0
             a = ai
 
-         case ('{', '}'); rb = 10.0_dp ** (sgn('{}') * n() * 0.1_dp)
-         case ('(', ')'); rd = 10.0_dp ** (sgn('()') * n() * 0.1_dp)
-         case ('[', ']'); ri = 10.0_dp ** (sgn('[]') * n() * 0.1_dp) * r0
+         case ('%')
+            r0 = n()
+            ri = r0
+            r = ri
+
+         case ('Q')
+            fi = n() * f0
+            f = fi
+
+         case ('_', '^')
+            fb = 2.0_dp ** (sgn('_^') * n() / steps)
+         case ('\', '/')
+            fd = 2.0_dp ** (sgn('\/') * n() / steps)
+         case ('-', '+')
+            fi = 2.0_dp ** (sgn('-+') * n() / steps) * f0
+            f = fi
+
+         case (',', ';')
+            ab = 10.0_dp ** (sgn(',;') * n() * 0.1_dp)
+         case ('>', '<')
+            ad = 10.0_dp ** (sgn('><') * n() * 0.1_dp)
+         case ('?', '!')
+            ai = 10.0_dp ** (sgn('?!') * n() * 0.1_dp) * a0
+            a = ai
+
+         case ('{', '}')
+            rb = 10.0_dp ** (sgn('{}') * n() * 0.1_dp)
+         case ('(', ')')
+            rd = 10.0_dp ** (sgn('()') * n() * 0.1_dp)
+         case ('[', ']')
+            ri = 10.0_dp ** (sgn('[]') * n() * 0.1_dp) * r0
             r = ri
 
          case ("'")
             x = x + rational(next(numeral, '1')) * b
             d = nint(x) - t
 
-            f1 = fd ** (1.0_dp / d) * fb ** (1.0_dp / b); fd = 1.0_dp
-            a1 = ad ** (1.0_dp / d) * ab ** (1.0_dp / b); ad = 1.0_dp
-            r1 = rd ** (1.0_dp / d) * rb ** (1.0_dp / b); rd = 1.0_dp
+            f1 = fd ** (1.0_dp / d) * fb ** (1.0_dp / b)
+            fd = 1.0_dp
+            a1 = ad ** (1.0_dp / d) * ab ** (1.0_dp / b)
+            ad = 1.0_dp
+            r1 = rd ** (1.0_dp / d) * rb ** (1.0_dp / b)
+            rd = 1.0_dp
 
             do i = c + 1, c + d
                phase = phase - floor(phase)

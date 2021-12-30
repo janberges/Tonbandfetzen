@@ -43,8 +43,7 @@ and commands (other single ASCII characters).
 Commands are followed by words and/or numbers as arguments, as listed below.
 The input is processed linearly, whereby unexpected characters, including whitespace, act as separators and are otherwise ignored.
 .TP 6
-.BI \(ti w \c
-.RI [ n ]
+.RI \fB\(ti\fR w [ n ]
 Choose wave sample of shape
 .IR w
 and duration
@@ -103,8 +102,7 @@ sgn(x) sqrt(2|x| \- x\[S2]) for x in (\-2, 2]
 white noise
 .RE
 .TP
-.BI S w \c
-.RI [ n ]
+.RI \fBS\fR w [ n ]
 Choose attack envelope.
 Arguments as above.
 Predefined values for
@@ -142,13 +140,11 @@ sqrt(1 \- x\[S2]) for x in (\-1, 0)
 3x\[S2] \- 2x\[S2] for x in (0, 1)
 .RE
 .TP
-.BI Z w \c
-.RI [ n ]
+.RI \fBZ\fR w [ n ]
 Choose release envelope.
 Arguments as above.
 .TP
-.BI N w \c
-.RI [ n ]
+.RI \fBN\fR w [ n ]
 Choose attack and release envelope at once.
 Arguments as above.
 .TP
@@ -238,8 +234,7 @@ Set reference amplitude ratio R:L between right and left channel to
 The default is
 .BR 1 .
 .TP
-.BI "C D E F G A B" \c
-.RI [ w ][ n ][ n' ]
+.RI "\fBC D E F G A B\fR[" w ][ n ][ n' ]
 Set reference frequency via note name.
 .IR w
 marks accidentals and can be
@@ -268,8 +263,7 @@ Here, compound accidentals must be written as a product and otonal and utonal ac
 .BI A4
 is the concert pitch.
 .TP
-.BI \(aq \c
-.RI [ n ]
+.RI \fB\(aq\fR[ n ]
 Play sound for a duration of
 .IR n
 beats.
@@ -277,8 +271,7 @@ beats.
 defaults to
 .BR 1 .
 .TP
-.BI \(dq \c
-.RI [ n ]
+.RI \fB\(dq\fR[ n ]
 Pause for a duration of
 .IR n
 beats.
@@ -286,8 +279,7 @@ beats.
 defaults to
 .BR 1 .
 .TP
-.BI \` \c
-.RI [ n ]
+.RI \fB\`\fR[ n ]
 Rewind by
 .IR n
 beats.
@@ -301,8 +293,7 @@ Set frequency to
 .IR n
 times the reference frequency.
 .TP
-.BI "V U" \c
-.RI [ w ] n
+.RI "\fBV U\fR[" w ] n
 Set frequency to
 .IR n
 chromatic steps below/above the reference.
@@ -359,8 +350,7 @@ Continuously lower/raise amplitude ratio by
 .IR n
 dB per beat from now on.
 .TP
-.BI M \c
-.RI [ n ]
+.RI \fBM\fR[ n ]
 Set
 .IR n th
 time mark.
@@ -370,8 +360,7 @@ must be an integer between
 and defaults to
 .BR 0 .
 .TP
-.BI W \c
-.RI [ n ]
+.RI \fBW\fR[ n ]
 Wind back to
 .IR n th
 time mark, if set.
@@ -379,8 +368,7 @@ time mark, if set.
 defaults to
 .BR 0 .
 .TP
-.BI R \c
-.RI [ n ]
+.RI \fBR\fR[ n ]
 Forget
 .IR n th
 time mark.
@@ -388,8 +376,7 @@ time mark.
 defaults to
 .BR 0 .
 .TP
-.BI P n " " n' \c
-.RI [ n\(dq ]
+.RI \fBP\fR n " " n' [ n\(dq ]
 Paste copy of sound between
 .IR n th
 and
@@ -401,8 +388,7 @@ times, if marks have been set.
 defaults to
 .BR 1 .
 .TP
-.BI I \c
-.RI [ n ]
+.RI \fBI\fR[ n ]
 Set
 .IR n th
 text mark.
@@ -412,8 +398,7 @@ must be an integer between
 and defaults to
 .BR 0 .
 .TP
-.BI J \c
-.RI [ n [ n' ]]
+.RI \fBJ\fR[ n [ n' ]]
 Jump back to
 .IR n th
 text mark, if set.
@@ -425,8 +410,7 @@ default to
 .BR 0 " and " 1 ,
 respectively.
 .TP
-.BI K \c
-.RI [ n ]
+.RI \fBK\fR[ n ]
 Forget
 .IR n th
 text mark.
@@ -434,8 +418,7 @@ text mark.
 defaults to
 .BR 0 .
 .TP
-.BI X w \c
-.RI [...]
+.RI \fBX\fR w [...]
 Do something special.
 .RS 9
 .TP 3

@@ -358,18 +358,23 @@ contains
 
             select case (word)
             case ('report')
-               write (*, "('Note counts:')")
+               write (stderr, "('Note counts:')")
 
                do i = lbound(keycount, 1), ubound(keycount, 1)
                   if (keycount(i) .gt. 0) then
                      j = modulo(i + 4, 7) + 1
-                     write (*, "(A)", advance='no') 'FCGDAEB'(j:j)
+
+                     write (stderr, "(A)", advance='no') 'FCGDAEB'(j:j)
 
                      j = (i + 4 - (j - 1)) / 7
-                     if (j < 0) write (*, "(A)", advance='no') repeat('b', -j)
-                     if (j > 0) write (*, "(A)", advance='no') repeat('#', j)
 
-                     write (*, "(': ', I0)") keycount(i)
+                     if (j < 0) write (stderr, "(A)", advance='no') &
+                        repeat('b', -j)
+
+                     if (j > 0) write (stderr, "(A)", advance='no') &
+                        repeat('#', j)
+
+                     write (stderr, "(': ', I0)") keycount(i)
                   end if
                end do
 

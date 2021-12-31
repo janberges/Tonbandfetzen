@@ -407,18 +407,32 @@ contains
                         wave(modulo(nint(i * factor), size(wave)))))
                   end do
 
-                  if (word .eq. 'flanger') then
+                  select case (word)
+                  case ('flanger')
                      mel(:, t1 + 1:t2) = mel(:, t1 + 1:t2) + work
-                  else if (word .eq. 'vibrato') then
+                  case ('vibrato')
                      mel(:, t1 + 1:t2) = work
-                  end if
+                  end select
 
                   deallocate(work)
                end if
+
+            case default
+               write (stderr, "('Warning: Unknown action ''', A, '''.')") word
             end select
 
          case ('T')
             tuning = next(lexical)
+
+            select case (tuning)
+            case ('equal', 'pyth', 'just', 'close')
+               continue
+            case default
+               write (stderr, "('Warning: Unknown tuning ''', A, '''.')") tuning
+               write (stderr, "('The tuning ''equal'' is used instead.')")
+               write (stderr, "('See ''man mel'' for list of tunings.')")
+               tuning = 'equal'
+            end select
 
          case ('H')
             steps = nint(n())
@@ -718,8 +732,7 @@ contains
 
          allocate(x(0:s%points - 1))
 
-         x = s%sound(0, :)
-         x = s%amplitude / i2max * x
+         x = s%amplitude / i2max * s%sound(0, :)
       else
          allocate(x(0:i - 1))
 

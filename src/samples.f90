@@ -15,7 +15,8 @@ contains
       select case (what)
       case ('wave')
          select case (how)
-         case ('harmonic')
+         case default ! harmonic
+            call warn
             call interval(x, 0.0_dp, 2.0_dp * pi, 1)
             x = sin(x)
 
@@ -50,16 +51,12 @@ contains
          case ('random')
             call random_number(x)
             x = 2.0_dp * x - 1.0_dp
-
-         case default
-            write (stderr, "('Error: Unknown sample ''', A, '''.')") how
-            write (stderr, "('See ''man mel'' for list of samples.')")
-            stop
          end select
 
       case ('fade')
          select case (how)
-         case ('harmonic')
+         case default ! harmonic
+            call warn
             call interval(x, 0.0_dp, 0.5_dp * pi, 0)
             x = sin(x)
 
@@ -89,12 +86,17 @@ contains
          case ('cubic')
             call interval(x, 0.0_dp, 1.0_dp, 0)
             x = 3.0_dp * x ** 2 - 2.0_dp * x ** 2
-
-         case default
-            write (stderr, "('Error: Unknown sample ''', A, '''.')") how
-            write (stderr, "('See ''man mel'' for list of samples.')")
-            stop
          end select
       end select
+
+   contains
+
+      subroutine warn
+         if (how .ne. 'harmonic') then
+            write (stderr, "('Warning: Unknown sample ''', A, '''.')") how
+            write (stderr, "('The sample ''harmonic'' is used instead.')")
+            write (stderr, "('See ''man mel'' for list of samples.')")
+         end if
+      end subroutine warn
    end subroutine sample
 end module samples

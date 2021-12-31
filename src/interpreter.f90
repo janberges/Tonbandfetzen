@@ -121,7 +121,7 @@ contains
             todo(2:3) = .false.
 
          case ('*')
-            if (next('*', length=1) .eq. 'none') exit
+            if (next('*', length=1, barrier='*') .eq. 'none') exit
 
          case ("'", 'none')
             exit
@@ -239,7 +239,7 @@ contains
             call forget(int(rational(next(numeral, '0'))))
 
          case ('*')
-            if (next('*', length=1) .eq. 'none') exit
+            if (next('*', length=1, barrier='*') .eq. 'none') exit
 
          case ('none')
             exit
@@ -660,7 +660,7 @@ contains
             call forget(int(rational(next(numeral, '0'))))
 
          case ('*')
-            if (next('*', length=1) .eq. 'none') exit
+            if (next('*', length=1, barrier='*') .eq. 'none') exit
 
          case ('none')
             exit

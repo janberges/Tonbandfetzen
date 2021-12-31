@@ -16,6 +16,8 @@ module search
       lexical = 'abcdefghijklmnopqrstuvwxyz#', &
       special = '!"$%&''()*+,-/;<=>?@ABCDEFGHIJKMNOPQRSTUVWXZ[\]^_`{|}~'
 
+   character(*), parameter :: canonical = numeral // lexical // special
+
 contains
 
    subroutine focus(it)
@@ -35,33 +37,35 @@ contains
       info = 0
    end subroutine reset
 
-   function next(set, def, length)
+   function next(set, def, length, barrier)
       character(:), allocatable :: next
 
       character(*), intent(in) :: set
       character(*), intent(in), optional :: def
       integer, intent(in), optional :: length
+      character(*), intent(in), optional :: barrier
 
-      integer :: first, firstn, firstl, firsts
+      integer :: first, break
 
-      first = scan(sequence(last + 1:), set)
+      character(:), allocatable :: blocking
 
-      if (present(def)) then
-         firstn = scan(sequence(last + 1:), numeral)
-         firstl = scan(sequence(last + 1:), lexical)
-         firsts = scan(sequence(last + 1:), special)
-
-         if (first .eq. 0 &
-            .or. first .gt. firstn .and. firstn .ne. 0 &
-            .or. first .gt. firstl .and. firstl .ne. 0 &
-            .or. first .gt. firsts .and. firsts .ne. 0) then
-            next = def
-            return
-         end if
+      if (present(barrier)) then
+         blocking = barrier
+      else if (present(def)) then
+         blocking = canonical
+      else
+         blocking = special
       end if
 
-      if (first .eq. 0) then
-         next = 'none'
+      first = scan(sequence(last + 1:), set)
+      break = scan(sequence(last + 1:), blocking)
+
+      if (first .eq. 0 .or. break .ne. 0 .and. break .lt. first) then
+         if (present(def)) then
+            next = def
+         else
+            next = 'none'
+         end if
          return
       end if
 

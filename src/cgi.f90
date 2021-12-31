@@ -2,7 +2,7 @@
 ! Syntax highlighting in textarea inspired by Will Boyd's article:
 ! https://codersblock.com/blog/highlight-text-inside-a-textarea/
 
-program cgi
+program mel_dot_cgi
    use constants
    use interpreter
    use io
@@ -132,4 +132,4 @@ contains
          url = url(:i - 2) // char(n) // url(i + 2:)
       end do
    end function decode
-end program cgi
+end program mel_dot_cgi

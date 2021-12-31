@@ -43,7 +43,7 @@ contains
             s%rate = decode(extended)
 
             if (sampleSize .ne. 16_i2) then
-               write (stderr, "('Error: only 16 bits supported')")
+               write (stderr, "('Error: Only 16 bits supported.')")
                stop
             end if
 

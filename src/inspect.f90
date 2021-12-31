@@ -19,7 +19,7 @@ program inspect
       call read_riff(path, s)
 
    case default
-      write (stderr, "('Error: unknown filename extension.')")
+      write (stderr, "('Error: Unknown filename extension.')")
       stop
    end select
 

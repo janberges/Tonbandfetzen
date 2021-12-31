@@ -52,7 +52,7 @@ contains
             x = 2.0_dp * x - 1.0_dp
 
          case default
-            write (stderr, "('Error: unknown sample ''', A, '''.')") how
+            write (stderr, "('Error: Unknown sample ''', A, '''.')") how
             write (stderr, "('See ''man mel'' for list of samples.')")
             stop
          end select
@@ -91,7 +91,7 @@ contains
             x = 3.0_dp * x ** 2 - 2.0_dp * x ** 2
 
          case default
-            write (stderr, "('Error: unknown sample ''', A, '''.')") how
+            write (stderr, "('Error: Unknown sample ''', A, '''.')") how
             write (stderr, "('See ''man mel'' for list of samples.')")
             stop
          end select

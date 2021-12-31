@@ -705,7 +705,7 @@ contains
 
       if (how .eq. '#') then
          if (i .gt. command_argument_count() - 2) then
-            write (stderr, "('Error: file ', I0, ' missing.')") i
+            write (stderr, "('Error: File ', I0, ' missing.')") i
             stop
          end if
 

@@ -2,6 +2,7 @@ module interpreter
    use constants
    use fjs
    use io
+   use lcg
    use rationals
    use riff
    use samples
@@ -381,7 +382,7 @@ contains
                keycount = 0
 
             case ('detune')
-               call random_number(random)
+               call minstd(random)
                random = 1.0_dp - 2.0_dp * random
                random = 2.0_dp ** (random * n() / steps)
                A4 = A4 * random

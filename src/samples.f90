@@ -1,6 +1,7 @@
 module samples
    use constants
    use intervals
+   use lcg
    implicit none
    private
 
@@ -11,6 +12,8 @@ contains
    subroutine sample(x, what, how)
       real(dp), intent(out), target :: x(:)
       character(*), intent(in) :: what, how
+
+      integer :: i
 
       select case (what)
       case ('wave')
@@ -49,7 +52,9 @@ contains
             x = 1.5_dp * sqrt(3.0_dp) * (x ** 3 - x)
 
          case ('random')
-            call random_number(x)
+            do i = 1, size(x)
+               call minstd(x(i))
+            end do
             x = 2.0_dp * x - 1.0_dp
          end select
 

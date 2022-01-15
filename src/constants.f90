@@ -3,6 +3,7 @@ module constants
       i1 => int8, &
       i2 => int16, &
       i4 => int32, &
+      i8 => int64, &
       eof => iostat_end, &
       stdin => input_unit, &
       stdout => output_unit, &
@@ -10,7 +11,8 @@ module constants
    implicit none
    private
 
-   public :: dp, i1, i2, i4, i2max, eof, eol, stdin, stdout, stderr, pi, audio
+   public :: audio, dp, eof, eol, i1, i2, i2max, i4, i8, pi, &
+      stderr, stdin, stdout
 
    integer, parameter :: dp = selected_real_kind(14, 300)
    integer, parameter :: i2max = 2 ** 15 - 1

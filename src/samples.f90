@@ -10,7 +10,7 @@ module samples
 contains
 
    subroutine sample(x, what, how)
-      real(dp), intent(out), target :: x(:)
+      real(dp), intent(out) :: x(:)
       character(*), intent(in) :: what, how
 
       integer :: i

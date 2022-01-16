@@ -162,7 +162,7 @@ contains
          select case (symbol)
          case ('~', 'S', 'Z', 'N')
             if (next(lexical) .ne. '#') then
-               p = p + nint(rational(next(numeral, '1')) * s)
+               p = p + nint(n(1.0_dp) * s)
             end if
 
          case ('O')
@@ -175,23 +175,23 @@ contains
             b = n() * s
 
          case ("'")
-            x = x + rational(next(numeral, '1')) * b
+            x = x + n(1.0_dp) * b
             d = nint(x) - t
             c = c + d
             t = t + d
             p = p + d
 
          case ('"', '`')
-            x = x + sgn('`"') * rational(next(numeral, '1')) * b
+            x = x + sgn('`"') * n(1.0_dp) * b
             t = nint(x)
 
          case ('M')
-            i = int(rational(next(numeral, '0')))
+            i = int(n(0.0_dp))
             marks(i) = x
             mark_set(i) = .true.
 
          case ('W')
-            i = int(rational(next(numeral, '0')))
+            i = int(n(0.0_dp))
             if (mark_set(i)) then
                x = marks(i)
                t = nint(x)
@@ -206,20 +206,20 @@ contains
                x2 = marks(j)
                dx = x2 - x1
 
-               do i = 1, int(rational(next(numeral, '1')))
+               do i = 1, int(n(1.0_dp))
                   x = x + dx
                   t = nint(x)
                end do
             end if
 
          case ('I')
-            call remember(int(rational(next(numeral, '0'))))
+            call remember(int(n(0.0_dp)))
 
          case ('J')
-            i = int(rational(next(numeral, '0')))
+            i = int(n(0.0_dp))
 
             if (known(i)) then
-               j = int(rational(next(numeral, '1')))
+               j = int(n(1.0_dp))
 
                call get(k)
 
@@ -237,9 +237,9 @@ contains
             call set(i)
 
             do
-               j = int(rational(next(numeral, '-1')))
+               j = int(n(-1.0_dp))
                l = i .eq. j
-               if (l .or. j .lt. 1) exit
+               if (l .or. j .eq. -1) exit
             end do
 
             if (symbol .eq. 'K' .eqv. l) then
@@ -341,9 +341,9 @@ contains
             word = next(lexical)
 
             if (word .eq. '#') then
-               i = int(rational(next(numeral, '1')))
+               i = int(n(1.0_dp))
             else
-               i = nint(rational(next(numeral, '1')) * s)
+               i = nint(n(1.0_dp) * s)
             end if
 
             select case (symbol)
@@ -549,8 +549,7 @@ contains
             if (index('UV', symbol) .eq. 0) f0 = f
 
          case ('@')
-            A4 = rational(next(numeral, '0')) / s
-            if (A4 .eq. 0) A4 = 1.0_dp / size(wave)
+            A4 = n(s / size(wave)) / s
             f0 = A4
             fi = f0
             f = fi
@@ -605,7 +604,7 @@ contains
             phase = n()
 
          case ("'")
-            x = x + rational(next(numeral, '1')) * b
+            x = x + n(1.0_dp) * b
             d = nint(x) - t
 
             f1 = fd ** (1.0_dp / d) * fb ** (1.0_dp / b)
@@ -632,16 +631,16 @@ contains
             t = t + d
 
          case ('"', '`')
-            x = x + sgn('`"') * rational(next(numeral, '1')) * b
+            x = x + sgn('`"') * n(1.0_dp) * b
             t = nint(x)
 
          case ('M')
-            i = int(rational(next(numeral, '0')))
+            i = int(n(0.0_dp))
             marks(i) = x
             mark_set(i) = .true.
 
          case ('W')
-            i = int(rational(next(numeral, '0')))
+            i = int(n(0.0_dp))
             if (mark_set(i)) then
                x = marks(i)
                t = nint(x)
@@ -661,7 +660,7 @@ contains
                t2 = nint(x2)
                dt = t2 - t1
 
-               do i = 1, int(rational(next(numeral, '1')))
+               do i = 1, int(n(1.0_dp))
                   x = x + dx
                   t = nint(x)
                   mel(:, t - dt + 1:t) = mel(:, t - dt + 1:t) &
@@ -670,13 +669,13 @@ contains
             end if
 
          case ('I')
-            call remember(int(rational(next(numeral, '0'))))
+            call remember(int(n(0.0_dp)))
 
          case ('J')
-            i = int(rational(next(numeral, '0')))
+            i = int(n(0.0_dp))
 
             if (known(i)) then
-               j = int(rational(next(numeral, '1')))
+               j = int(n(1.0_dp))
 
                call get(k)
 
@@ -694,9 +693,9 @@ contains
             call set(i)
 
             do
-               j = int(rational(next(numeral, '-1')))
+               j = int(n(-1.0_dp))
                l = i .eq. j
-               if (l .or. j .lt. 1) exit
+               if (l .or. j .eq. -1) exit
             end do
 
             if (symbol .eq. 'K' .eqv. l) then
@@ -734,10 +733,17 @@ contains
          done = done .and. c .gt. 0
       end function done
 
-      function n()
+      function n(def)
          real(dp) :: n
 
-         n = rational(next(numeral))
+         real(dp), intent(in), optional :: def
+
+         if (present(def)) then
+            n = rational(next(numeral, '-1'))
+            if (n .eq. -1.0_dp) n = def
+         else
+            n = rational(next(numeral))
+         end if
       end function n
 
       function sgn(minusplus)

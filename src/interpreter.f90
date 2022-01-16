@@ -199,9 +199,6 @@ contains
                t = nint(x)
             end if
 
-         case ('R')
-            mark_set(int(rational(next(numeral, '0')))) = .false.
-
          case ('Y')
             i = int(n())
             j = int(n())
@@ -235,9 +232,6 @@ contains
                   call set(0)
                end if
             end if
-
-         case ('K')
-            call forget(int(rational(next(numeral, '0'))))
 
          case ('*')
             if (next('*', length=1, barrier='*') .eq. 'none') exit
@@ -629,9 +623,6 @@ contains
                t = nint(x)
             end if
 
-         case ('R')
-            mark_set(int(rational(next(numeral, '0')))) = .false.
-
          case ('Y')
             i = int(n())
             j = int(n())
@@ -672,9 +663,6 @@ contains
                   call set(0)
                end if
             end if
-
-         case ('K')
-            call forget(int(rational(next(numeral, '0'))))
 
          case ('*')
             if (next('*', length=1, barrier='*') .eq. 'none') exit

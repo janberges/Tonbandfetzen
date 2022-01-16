@@ -19,7 +19,7 @@ contains
       type(audio), intent(out) :: tones
       integer, intent(in), optional :: limit
 
-      character(*), parameter :: initial = '!"%&+-=?ABCDEFGNPQSUVWZ[]`~'
+      character(*), parameter :: initial = '!"%&+-?@ABCDEFGNPQSUVWZ[]`~'
 
       character(:), allocatable :: symbol, word ! special/lexical string
 
@@ -351,9 +351,6 @@ contains
          case ('|')
             b = n() * s
 
-         case ('@')
-            A4 = n() / s
-
          case ('X')
             word = next(lexical)
 
@@ -541,9 +538,10 @@ contains
 
             if (index('UV', symbol) .eq. 0) f0 = f
 
-         case ('=')
-            f0 = rational(next(numeral, '0')) / s
-            if (f0 .eq. 0) f0 = 1.0_dp / size(wave)
+         case ('@')
+            A4 = rational(next(numeral, '0')) / s
+            if (A4 .eq. 0) A4 = 1.0_dp / size(wave)
+            f0 = A4
             fi = f0
             f = fi
 

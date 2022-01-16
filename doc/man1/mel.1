@@ -100,7 +100,7 @@ sgn(x) sqrt(2|x| \- x\[S2]) for x in (\-2, 2]
 .TP
 .BR random
 White noise if followed by
-.BI =
+.BI @
 without argument.
 .RE
 .TP
@@ -180,16 +180,6 @@ The default is
 .BR 0.5
 seconds.
 .TP
-.BI @ n
-Set concert pitch
-.BR A4
-to
-.IR n
-Hz.
-The default is
-.BR 440
-Hz.
-.TP
 .BI T w
 Choose tuning from the below options.
 .RS
@@ -215,14 +205,18 @@ The default is
 .BR 12
 halftones (twelve-tone equal temperament).
 .TP
-.RI \fB=\fR[ n ]
-Set reference frequency to
+.RI \fB@\fR[ n ]
+Set reference frequency and concert pitch
+.BR A4
+to
 .IR n
 Hz.
 .IR n
 defaults to the inverse length of the current wave sample.
-The default is the concert pitch
-.BR A4 .
+This allows for playing this sample at its original speed.
+The default is
+.BR 440
+Hz.
 .TP
 .BI & n
 Set reference amplitude sqrt(L\[S2] + R\[S2]) to

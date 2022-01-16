@@ -4,7 +4,7 @@ N smooth 0.0025
 
 M %1:1000 I
 
-~ random =
+~ random @
 
 !3 ' !8 ' !13 '
 

@@ -105,7 +105,7 @@ contains
 
       call focus(notes)
 
-      run1: do
+      do
          select case (next(special, length=1))
          case ('$')
             tones%rate = n()
@@ -120,12 +120,12 @@ contains
             todo(2:3) = .false.
 
          case ('*')
-            if (next('*', length=1, barrier='*') .eq. 'none') exit run1
+            if (next('*', length=1, barrier='*') .eq. 'none') exit
 
          case ("'", 'none')
-            exit run1
+            exit
          end select
-      end do run1
+      end do
 
       s = tones%rate
 
@@ -148,7 +148,7 @@ contains
       call reset
       mark_set = .false.
 
-      run2: do
+      do
          symbol = next(special, length=1)
 
          tmin = min(tmin, t)
@@ -171,9 +171,6 @@ contains
          case ('%', '(', ')', '[', ']', '{', '}')
             if (tones%channels .eq. -1_i2) tones%channels = 2_i2
 
-         case ('|')
-            b = n() * s
-
          case ("'")
             x = x + n(1.0_dp) * b
             d = nint(x) - t
@@ -181,81 +178,10 @@ contains
             t = t + d
             p = p + d
 
-         case ('"', '`')
-            x = x + sgn('`"') * n(1.0_dp) * b
-            t = nint(x)
-
-         case ('M')
-            i = int(n(0.0_dp))
-            marks(i) = x
-            mark_set(i) = .true.
-
-         case ('W')
-            i = int(n(0.0_dp))
-            if (mark_set(i)) then
-               x = marks(i)
-               t = nint(x)
-            end if
-
-         case ('Y')
-            i = int(n())
-            j = int(n())
-
-            if (mark_set(i) .and. mark_set(j)) then
-               x1 = marks(i)
-               x2 = marks(j)
-               dx = x2 - x1
-
-               do i = 1, int(n(1.0_dp))
-                  x = x + dx
-                  t = nint(x)
-               end do
-            end if
-
-         case ('I')
-            call remember(int(n(0.0_dp)))
-
-         case ('J')
-            i = int(n(0.0_dp))
-
-            if (known(i)) then
-               j = int(n(1.0_dp))
-
-               call get(k)
-
-               if (k .lt. j) then
-                  call set(k + 1)
-                  call revert(i)
-               else
-                  call set(0)
-               end if
-            end if
-
-         case ('K', 'L')
-            call get(i)
-            i = i + 1
-            call set(i)
-
-            do
-               j = int(n(-1.0_dp))
-               l = i .eq. j
-               if (l .or. j .eq. -1) exit
-            end do
-
-            if (symbol .eq. 'K' .eqv. l) then
-               do
-                  if (next(special, length=1) .ne. '*') exit
-                  if (next('*', length=1, barrier='*') .eq. 'none') exit run2
-               end do
-            end if
-
-         case ('*')
-            if (next('*', length=1, barrier='*') .eq. 'none') exit run2
-
-         case ('none')
-            exit run2
+         case default
+            if (time_commands(.true.)) exit
          end select
-      end do run2
+      end do
 
       allocate(phi(cmax))
       allocate(rho(cmax))
@@ -306,7 +232,7 @@ contains
       call reset
       mark_set = .false.
 
-      run3: do
+      do
          symbol = next(special, length=1)
 
          if (done()) then
@@ -357,9 +283,6 @@ contains
                call load(rise, 'fade', word, i)
                fall = rise
             end select
-
-         case ('|')
-            b = n() * s
 
          case ('X')
             word = next(lexical)
@@ -630,88 +553,10 @@ contains
             c = c + d
             t = t + d
 
-         case ('"', '`')
-            x = x + sgn('`"') * n(1.0_dp) * b
-            t = nint(x)
-
-         case ('M')
-            i = int(n(0.0_dp))
-            marks(i) = x
-            mark_set(i) = .true.
-
-         case ('W')
-            i = int(n(0.0_dp))
-            if (mark_set(i)) then
-               x = marks(i)
-               t = nint(x)
-            end if
-
-         case ('Y')
-            i = int(n())
-            j = int(n())
-
-            if (mark_set(i) .and. mark_set(j)) then
-               x1 = marks(i)
-               x2 = marks(j)
-
-               dx = x2 - x1
-
-               t1 = nint(x1)
-               t2 = nint(x2)
-               dt = t2 - t1
-
-               do i = 1, int(n(1.0_dp))
-                  x = x + dx
-                  t = nint(x)
-                  mel(:, t - dt + 1:t) = mel(:, t - dt + 1:t) &
-                     + mel(:, t1 + 1:t2)
-               end do
-            end if
-
-         case ('I')
-            call remember(int(n(0.0_dp)))
-
-         case ('J')
-            i = int(n(0.0_dp))
-
-            if (known(i)) then
-               j = int(n(1.0_dp))
-
-               call get(k)
-
-               if (k .lt. j) then
-                  call set(k + 1)
-                  call revert(i)
-               else
-                  call set(0)
-               end if
-            end if
-
-         case ('K', 'L')
-            call get(i)
-            i = i + 1
-            call set(i)
-
-            do
-               j = int(n(-1.0_dp))
-               l = i .eq. j
-               if (l .or. j .eq. -1) exit
-            end do
-
-            if (symbol .eq. 'K' .eqv. l) then
-               do
-                  if (next(special, length=1) .ne. '*') exit
-                  if (next('*', length=1, barrier='*') .eq. 'none') exit run3
-               end do
-            end if
-
-         case ('*')
-            if (next('*', length=1, barrier='*') .eq. 'none') exit run3
-
-         case ('none')
-            exit run3
+         case default
+            if (time_commands(.false.)) exit
          end select
-      end do run3
+      end do
 
       tones%amplitude = maxval(abs(mel))
 
@@ -753,6 +598,104 @@ contains
 
          sgn = 2 * index(minusplus, symbol) - 3
       end function sgn
+
+      function time_commands(dry) result(done)
+         logical :: done
+
+         logical, intent(in) :: dry
+
+         done = .false.
+
+         select case (symbol)
+         case ('|')
+            b = n() * s
+
+         case ('"', '`')
+            x = x + sgn('`"') * n(1.0_dp) * b
+            t = nint(x)
+
+         case ('M')
+            i = int(n(0.0_dp))
+            marks(i) = x
+            mark_set(i) = .true.
+
+         case ('W')
+            i = int(n(0.0_dp))
+            if (mark_set(i)) then
+               x = marks(i)
+               t = nint(x)
+            end if
+
+         case ('Y')
+            i = int(n())
+            j = int(n())
+
+            if (mark_set(i) .and. mark_set(j)) then
+               x1 = marks(i)
+               x2 = marks(j)
+               dx = x2 - x1
+
+               if (.not. dry) then
+                  t1 = nint(x1)
+                  t2 = nint(x2)
+                  dt = t2 - t1
+               end if
+
+               do i = 1, int(n(1.0_dp))
+                  x = x + dx
+                  t = nint(x)
+
+                  if (.not. dry) mel(:, t - dt + 1:t) = mel(:, t - dt + 1:t) &
+                     + mel(:, t1 + 1:t2)
+               end do
+            end if
+
+         case ('I')
+            call remember(int(n(0.0_dp)))
+
+         case ('J')
+            i = int(n(0.0_dp))
+
+            if (known(i)) then
+               j = int(n(1.0_dp))
+
+               call get(k)
+
+               if (k .lt. j) then
+                  call set(k + 1)
+                  call revert(i)
+               else
+                  call set(0)
+               end if
+            end if
+
+         case ('K', 'L')
+            call get(i)
+            i = i + 1
+            call set(i)
+
+            do
+               j = int(n(-1.0_dp))
+               l = i .eq. j
+               if (l .or. j .eq. -1) exit
+            end do
+
+            if (symbol .eq. 'K' .eqv. l) then
+               do
+                  if (next(special, length=1) .ne. '*') return
+                  if (next('*', length=1, barrier='*') .eq. 'none') exit
+               end do
+
+               done = .true.
+            end if
+
+         case ('*')
+            if (next('*', length=1, barrier='*') .eq. 'none') done = .true.
+
+         case ('none')
+            done = .true.
+         end select
+      end function time_commands
    end subroutine play
 
    subroutine load(x, what, how, i)

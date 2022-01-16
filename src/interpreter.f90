@@ -19,7 +19,7 @@ contains
       type(audio), intent(out) :: tones
       integer, intent(in), optional :: limit
 
-      character(*), parameter :: initial = '!"%&+-?@ABCDEFGNPQSUVWZ[]`~'
+      character(*), parameter :: initial = '!"%&+-=?@ABCDEFGNPQSUVWZ[]`~'
 
       character(:), allocatable :: symbol, word ! special/lexical string
 

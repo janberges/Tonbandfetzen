@@ -549,6 +549,14 @@ contains
             ri = r0
             r = ri
 
+         case ('R')
+            f0 = f
+            fi = f0
+            a0 = a
+            ai = a0
+            r0 = r
+            ri = r0
+
          case ('Q')
             fi = n() * f0
             f = fi

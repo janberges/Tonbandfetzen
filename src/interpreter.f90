@@ -67,7 +67,7 @@ contains
 
       real(dp) :: phase ! turn = 1
 
-      integer :: i, j ! arbitrary integers/indices
+      integer :: i, j, k ! arbitrary integers/indices
       logical :: l ! arbitrary logical
 
       real(dp) :: s ! equivalent of a second
@@ -77,9 +77,6 @@ contains
       logical :: mark_set(0:99)
       real(dp) :: x1, x2, dx
       integer :: t1, t2, dt
-
-      ! text marks
-      integer :: mark, count, info
 
       real(dp) :: random, factor
 
@@ -219,16 +216,16 @@ contains
             call remember(int(rational(next(numeral, '0'))))
 
          case ('J')
-            mark = int(rational(next(numeral, '0')))
+            i = int(rational(next(numeral, '0')))
 
-            if (known(mark)) then
-               count = int(rational(next(numeral, '1')))
+            if (known(i)) then
+               j = int(rational(next(numeral, '1')))
 
-               call get(info)
+               call get(k)
 
-               if (info .lt. count) then
-                  call set(info + 1)
-                  call revert(mark)
+               if (k .lt. j) then
+                  call set(k + 1)
+                  call revert(i)
                else
                   call set(0)
                end if
@@ -676,16 +673,16 @@ contains
             call remember(int(rational(next(numeral, '0'))))
 
          case ('J')
-            mark = int(rational(next(numeral, '0')))
+            i = int(rational(next(numeral, '0')))
 
-            if (known(mark)) then
-               count = int(rational(next(numeral, '1')))
+            if (known(i)) then
+               j = int(rational(next(numeral, '1')))
 
-               call get(info)
+               call get(k)
 
-               if (info .lt. count) then
-                  call set(info + 1)
-                  call revert(mark)
+               if (k .lt. j) then
+                  call set(k + 1)
+                  call revert(i)
                else
                   call set(0)
                end if

@@ -19,7 +19,7 @@ contains
       type(audio), intent(out) :: tones
       integer, intent(in), optional :: limit
 
-      character(*), parameter :: initial = '!"%&+-=?@ABCDEFGNPQSUVWZ[]`~'
+      character(*), parameter :: initial = '!"%&+-=?@ABCDEFGNQSUVWYZ[]`~'
 
       character(:), allocatable :: symbol, word ! special/lexical string
 
@@ -202,7 +202,7 @@ contains
          case ('R')
             mark_set(int(rational(next(numeral, '0')))) = .false.
 
-         case ('P')
+         case ('Y')
             i = int(n())
             j = int(n())
 
@@ -629,7 +629,7 @@ contains
          case ('R')
             mark_set(int(rational(next(numeral, '0')))) = .false.
 
-         case ('P')
+         case ('Y')
             i = int(n())
             j = int(n())
 

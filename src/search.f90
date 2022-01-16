@@ -14,7 +14,7 @@ module search
    character(*), parameter :: &
       numeral = '.0123456789:', &
       lexical = 'abcdefghijklmnopqrstuvwxyz#', &
-      special = '!"$%&''()*+,-/;<=>?@ABCDEFGHIJMNOPQRSTUVWXYZ[\]^_`{|}~'
+      special = '!"$%&''()*+,-/;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`{|}~'
 
    character(*), parameter :: canonical = numeral // lexical // special
 

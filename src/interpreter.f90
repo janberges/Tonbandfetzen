@@ -68,6 +68,7 @@ contains
       real(dp) :: phase ! turn = 1
 
       integer :: i, j ! arbitrary integers/indices
+      logical :: l ! arbitrary logical
 
       real(dp) :: s ! equivalent of a second
 
@@ -107,7 +108,7 @@ contains
 
       call focus(notes)
 
-      do
+      run1: do
          select case (next(special, length=1))
          case ('$')
             tones%rate = n()
@@ -122,12 +123,12 @@ contains
             todo(2:3) = .false.
 
          case ('*')
-            if (next('*', length=1, barrier='*') .eq. 'none') exit
+            if (next('*', length=1, barrier='*') .eq. 'none') exit run1
 
          case ("'", 'none')
-            exit
+            exit run1
          end select
-      end do
+      end do run1
 
       s = tones%rate
 
@@ -150,7 +151,7 @@ contains
       call reset
       mark_set = .false.
 
-      do
+      run2: do
          symbol = next(special, length=1)
 
          tmin = min(tmin, t)
@@ -233,13 +234,31 @@ contains
                end if
             end if
 
+         case ('K', 'L')
+            call get(i)
+            i = i + 1
+            call set(i)
+
+            do
+               j = int(rational(next(numeral, '-1')))
+               l = i .eq. j
+               if (l .or. j .lt. 1) exit
+            end do
+
+            if (symbol .eq. 'K' .eqv. l) then
+               do
+                  if (next(special, length=1) .ne. '*') exit
+                  if (next('*', length=1, barrier='*') .eq. 'none') exit run2
+               end do
+            end if
+
          case ('*')
-            if (next('*', length=1, barrier='*') .eq. 'none') exit
+            if (next('*', length=1, barrier='*') .eq. 'none') exit run2
 
          case ('none')
-            exit
+            exit run2
          end select
-      end do
+      end do run2
 
       allocate(phi(cmax))
       allocate(rho(cmax))
@@ -290,7 +309,7 @@ contains
       call reset
       mark_set = .false.
 
-      do
+      run3: do
          symbol = next(special, length=1)
 
          if (done()) then
@@ -672,13 +691,31 @@ contains
                end if
             end if
 
+         case ('K', 'L')
+            call get(i)
+            i = i + 1
+            call set(i)
+
+            do
+               j = int(rational(next(numeral, '-1')))
+               l = i .eq. j
+               if (l .or. j .lt. 1) exit
+            end do
+
+            if (symbol .eq. 'K' .eqv. l) then
+               do
+                  if (next(special, length=1) .ne. '*') exit
+                  if (next('*', length=1, barrier='*') .eq. 'none') exit run3
+               end do
+            end if
+
          case ('*')
-            if (next('*', length=1, barrier='*') .eq. 'none') exit
+            if (next('*', length=1, barrier='*') .eq. 'none') exit run3
 
          case ('none')
-            exit
+            exit run3
          end select
-      end do
+      end do run3
 
       tones%amplitude = maxval(abs(mel))
 

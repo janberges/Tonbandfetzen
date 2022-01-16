@@ -42,6 +42,7 @@ and a dividing colon
 and commands (other single ASCII characters).
 Commands are followed by words and/or numbers as arguments, as listed below.
 The input is processed linearly, whereby unexpected characters, including whitespace, act as separators and are otherwise ignored.
+Reference values imply initial values, and initial values imply current values.
 .TP
 .RI \fB\(ti\fR w [ n ]
 Choose wave sample of shape
@@ -67,7 +68,7 @@ given on the command line is loaded instead.
 .IR n
 defaults to
 .BR 1 .
-The default is a
+The preset value is a
 .BR circular
 wave that lasts
 .BR 1
@@ -110,7 +111,7 @@ Arguments as above.
 Predefined values for
 .IR w
 are listed below.
-The default is a
+The preset value is a
 .BR circular
 envelope that lasts
 .BR 0.1
@@ -157,7 +158,7 @@ Start/end a comment.
 Set a sample rate of
 .IR n
 samples per second.
-The default is
+The preset value is
 .BR 44100
 samples per second.
 This setting holds globally and is ignored after first note played.
@@ -170,13 +171,13 @@ Allowed values are
 (mono) and
 .BR 2
 (stereo).
-By default, the number of channels is determined automatically.
+If absent, the number of channels is determined automatically.
 .TP
 .BI | n
 Set duration of a beat to
 .IR n
 seconds.
-The default is
+The preset value is
 .BR 0.5
 seconds.
 .TP
@@ -201,7 +202,7 @@ Five-limit tuning closest to twelve-tone equal temperament.
 Divide one octave into
 .IR n
 halftones/steps of equal frequency ratio.
-The default is
+The preset value is
 .BR 12
 halftones (twelve-tone equal temperament).
 .TP
@@ -214,7 +215,7 @@ Hz.
 .IR n
 defaults to the inverse length of the current wave sample.
 This allows for playing this sample at its original speed.
-The default is
+The preset value is
 .BR 440
 Hz.
 .TP
@@ -222,14 +223,14 @@ Hz.
 Set reference amplitude sqrt(L\[S2] + R\[S2]) to
 .IR n
 arb. units.
-The default is
+The preset value is
 .BR 1
 arb. unit.
 .TP
 .BI % n
 Set reference amplitude ratio R:L between right and left channel to
 .IR n .
-The default is
+The preset value is
 .BR 1 .
 .TP
 .RI "\fBC D E F G A B\fR[" w ][ n [ n' ]]
@@ -287,12 +288,12 @@ defaults to
 (Negative pause.)
 .TP
 .BI Q n
-Set frequency to
+Set initial frequency to
 .IR n
 times the reference frequency.
 .TP
 .RI "\fBV U\fR[" w ] n
-Set frequency to
+Set initial frequency to
 .IR n
 chromatic steps below/above the reference.
 You can use the same commas
@@ -301,50 +302,50 @@ as with note names.
 The 12-tone scale is made of the \-5 to 6th fifths from the keynote.
 .TP
 .BI "\- +" n
-Set frequency to
+Set initial frequency to
 .IR n
 halftones below/above the reference.
 .TP
 .BI "\e /" n
-Continuously lower/raise frequency by
+Continuously lower/raise current frequency by
 .IR n
 halftones during the next play period
 .RB ( \(aq ).
 .TP
 .BI "_ \(ha" n
-Continuously lower/raise frequency by
+Continuously lower/raise current frequency by
 .IR n
 halftones per beat from now on.
 .TP
 .BI "? !" n
-Set amplitude to
+Set initial amplitude to
 .IR n
 dB below/above the reference.
 .TP
 .BI "< >" n
-Continuously lower/raise amplitude by
+Continuously lower/raise current amplitude by
 .IR n
 dB during the next play period
 .RB ( \(aq ).
 .TP
 .BI ", ;" n
-Continuously lower/raise amplitude by
+Continuously lower/raise current amplitude by
 .IR n
 dB per beat from now on.
 .TP
 .BI "[ ]" n
-Set amplitude ratio to
+Set initial amplitude ratio to
 .IR n
 dB below/above the reference.
 .TP
 .BI "( )" n
-Continuously lower/raise amplitude ratio by
+Continuously lower/raise current amplitude ratio by
 .IR n
 dB during the next play period
 .RB ( \(aq ).
 .TP
 .BI "{ }" n
-Continuously lower/raise amplitude ratio by
+Continuously lower/raise current amplitude ratio by
 .IR n
 dB per beat from now on.
 .TP
@@ -428,7 +429,7 @@ are counted.
 This is useful to, e.g., to determine the keynote of a piece of music.
 .TP
 .BI detune n
-Randomly detune frequency, including concert pitch
+Randomly detune reference frequency and concert pitch
 .BR A4 ,
 by up to
 .IR n

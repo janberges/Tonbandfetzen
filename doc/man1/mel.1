@@ -99,7 +99,9 @@ sgn(x) sqrt(2|x| \- x\[S2]) for x in (\-2, 2]
 3/2 sqrt(3) (x\[S3] \- x) for x in (\-1, 1]
 .TP
 .BR random
-white noise
+White noise if followed by
+.BI =
+without argument.
 .RE
 .TP
 .RI \fBS\fR w [ n ]
@@ -213,10 +215,12 @@ The default is
 .BR 12
 halftones (twelve-tone equal temperament).
 .TP
-.BI = n
+.RI \fB=\fR[ n ]
 Set reference frequency to
 .IR n
 Hz.
+.IR n
+defaults to the inverse length of the current wave sample.
 The default is the concert pitch
 .BR A4 .
 .TP

@@ -542,7 +542,8 @@ contains
             if (index('UV', symbol) .eq. 0) f0 = f
 
          case ('=')
-            f0 = n() / s
+            f0 = rational(next(numeral, '0')) / s
+            if (f0 .eq. 0) f0 = 1.0_dp / size(wave)
             fi = f0
             f = fi
 

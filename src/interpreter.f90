@@ -583,6 +583,9 @@ contains
             ri = 10.0_dp ** (sgn('[]') * n() * 0.1_dp) * r0
             r = ri
 
+         case ('P')
+            phase = n()
+
          case ("'")
             x = x + rational(next(numeral, '1')) * b
             d = nint(x) - t

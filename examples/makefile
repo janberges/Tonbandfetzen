@@ -1,12 +1,17 @@
 examples := $(wildcard */)
+examples_wav := $(examples:/=_wav)
+examples_mp3 := $(examples:/=_mp3)
 
-.PHONY: wav mp3 clean $(examples)
+.PHONY: test wav mp3 clean $(examples_wav) $(examples_mp3)
 
-wav: $(examples)
-mp3: $(examples)
+test: wav
+	md5sum -c examples.md5
+
+wav: $(examples_wav)
+mp3: $(examples_mp3)
 
 clean:
 	git clean -Xdf
 
-$(examples):
-	$(MAKE) -C $@ $(MAKECMDGOALS)
+$(examples_wav) $(examples_mp3):
+	$(MAKE) -C $(subst _, ,$@)

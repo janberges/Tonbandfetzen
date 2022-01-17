@@ -29,6 +29,7 @@ contains
       real(dp), allocatable :: work(:, :) ! temporary data
 
       logical :: todo(3) ! samples yet to be initialized?
+      logical :: over ! end of input reached?
 
       real(dp) :: x ! exact time
       real(dp) :: b ! beat duration
@@ -179,7 +180,8 @@ contains
             p = p + d
 
          case default
-            if (time_commands(.true.)) exit
+            call routine_cases
+            if (over) exit
          end select
       end do
 
@@ -554,7 +556,8 @@ contains
             t = t + d
 
          case default
-            if (time_commands(.false.)) exit
+            call routine_cases
+            if (over) exit
          end select
       end do
 
@@ -599,12 +602,8 @@ contains
          sgn = 2 * index(minusplus, symbol) - 3
       end function sgn
 
-      function time_commands(dry) result(done)
-         logical :: done
-
-         logical, intent(in) :: dry
-
-         done = .false.
+      subroutine routine_cases
+         over = .false.
 
          select case (symbol)
          case ('|')
@@ -635,7 +634,7 @@ contains
                x2 = marks(j)
                dx = x2 - x1
 
-               if (.not. dry) then
+               if (allocated(mel)) then
                   t1 = nint(x1)
                   t2 = nint(x2)
                   dt = t2 - t1
@@ -645,8 +644,8 @@ contains
                   x = x + dx
                   t = nint(x)
 
-                  if (.not. dry) mel(:, t - dt + 1:t) = mel(:, t - dt + 1:t) &
-                     + mel(:, t1 + 1:t2)
+                  if (allocated(mel)) mel(:, t - dt + 1:t) &
+                     = mel(:, t - dt + 1:t) + mel(:, t1 + 1:t2)
                end do
             end if
 
@@ -686,16 +685,16 @@ contains
                   if (next('*', length=1, barrier='*') .eq. 'none') exit
                end do
 
-               done = .true.
+               over = .true.
             end if
 
          case ('*')
-            if (next('*', length=1, barrier='*') .eq. 'none') done = .true.
+            if (next('*', length=1, barrier='*') .eq. 'none') over = .true.
 
          case ('none')
-            done = .true.
+            over = .true.
          end select
-      end function time_commands
+      end subroutine routine_cases
    end subroutine play
 
    subroutine load(x, what, how, i)

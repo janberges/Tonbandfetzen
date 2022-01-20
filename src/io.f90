@@ -14,21 +14,28 @@ contains
 
       integer, parameter :: unit = 16
       integer :: i, error
+      logical :: f
 
-      open(unit, file=file, action='read', status='old', &
+      f = file .ne. 'stdin'
+
+      if (f) open(unit, file=file, action='read', status='old', &
          form='unformatted', access='stream')
 
       allocate(character(1048576) :: content)
 
       do i = 1, len(content)
-         read (unit, iostat=error) content(i:i)
+         if (f) then
+            read (unit, iostat=error) content(i:i)
+         else
+            read (*, '(A1)', iostat=error, advance='no') content(i:i)
+         end if
          if (error .eq. eof) then
             content = content(1:i - 1)
             exit
          end if
       end do
 
-      close(unit)
+      if (f) close(unit)
    end function slurp
 
    function command_argument(num, def) result(arg)

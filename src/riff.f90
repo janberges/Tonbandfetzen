@@ -60,16 +60,26 @@ contains
       close(unit)
    end subroutine read_riff
 
-   subroutine write_riff(file, s)
-      character(*), intent(in) :: file
+   subroutine write_riff(filex, s)
+      character(*), intent(in) :: filex
       type(audio), intent(in) :: s
 
       integer, parameter :: unit = 15
       integer :: i, j
+      logical :: appl
+      character(:), allocatable :: file
       integer(i4), parameter :: fmtSize = 16_i4, applSize = 10_i4
       integer(i4) :: riffSize, dataSize, sampleRate, byteRate
       integer(i2), parameter :: sampleSize = 16_i2, formatTag = 1_i2
       integer(i2) :: blockAlign
+
+      if (filex(len(filex):len(filex)) .eq. '/') then
+         file = filex(:len(filex) - 1)
+         appl = .false.
+      else
+         file = filex
+         appl = s%amplitude .ne. 1.0_dp
+      end if
 
       blockAlign = 2_i2 * s%channels
       sampleRate = nint(s%rate, i4)
@@ -78,9 +88,7 @@ contains
       dataSize = blockAlign * s%points
       riffSize = 4_i4 + 8_i4 + fmtSize + 8_i4 + dataSize
 
-      if (s%amplitude .ne. 1.0_dp) then
-         riffSize = riffSize + 8_i4 + applSize
-      end if
+      if (appl) riffSize = riffSize + 8_i4 + applSize
 
       if (file .eq. 'stdout' .or. file .eq. 'http') then
          if (file .eq. 'http') then
@@ -100,10 +108,8 @@ contains
             end do
          end do
 
-         if (s%amplitude .ne. 1.0_dp) then
-            write (stdout, '(3A)', advance='no') &
-               'APPL', c(applSize), encode(s%amplitude)
-         end if
+         if (appl) write (stdout, '(3A)', advance='no') &
+            'APPL', c(applSize), encode(s%amplitude)
       else
          open(unit, file=file, action='write', status='replace', &
             form='unformatted', access='stream')
@@ -113,9 +119,7 @@ contains
             sampleRate, byteRate, blockAlign, sampleSize, &
             'data', dataSize, s%sound
 
-         if (s%amplitude .ne. 1.0_dp) then
-            write (unit) 'APPL', applSize, encode(s%amplitude)
-         end if
+         if (appl) write (unit) 'APPL', applSize, encode(s%amplitude)
 
          close(unit)
       end if

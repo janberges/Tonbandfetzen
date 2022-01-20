@@ -6,7 +6,7 @@ mel \- generate sound fragments from plain text
 .BI mel
 .RI [[[ wavefile " ...]"
 .IR infile ]
-.IR outfile ]
+.IR outfile [\fB/\fR]]
 .SH DESCRIPTION
 .PP
 Interpret ASCII input in
@@ -22,14 +22,19 @@ Filenames default to
 .BR /dev/stdin
 or
 .BR /dev/stdout .
+The dash
+.RB ( - )
+is a shorthand for the default value.
 Try
 .BR stdin
 if
 .BR /dev/stdin
 is not available.
-The dash
-.RB ( - )
-is a shorthand for the default value.
+If
+.IR outfile
+is followed by a slash
+.RB ( / ) ,
+application-specific metadata is omitted.
 .SH SYNTAX
 .IR infile
 shall contain words

@@ -5,7 +5,7 @@ aiff2riff \- convert .aif(f) into .wav(e) files
 .SH SYNOPSIS
 .BI aiff2riff
 .RI [[ infile ]
-.IR outfile ]
+.IR outfile [\fB/\fR]]
 .SH DESCRIPTION
 .PP
 Convert
@@ -26,3 +26,8 @@ respectively.
 The dash
 .RB ( - )
 is a shorthand for the default value.
+If
+.IR outfile
+is followed by a slash
+.RB ( / ) ,
+application-specific metadata is omitted.

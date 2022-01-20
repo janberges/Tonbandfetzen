@@ -17,4 +17,4 @@ clean:
 	guitar $< $@
 
 mute.wav: parts/part1.wav parts/part2.wav parts/part3.wav
-	stick $+ $@
+	stick $+ $@/

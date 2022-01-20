@@ -17,4 +17,4 @@ clean:
 	guitar $< $@
 
 spirits.wav: parts/part1.wav parts/part2.wav parts/part2.wav
-	stick $+ $@
+	stick $+ $@/

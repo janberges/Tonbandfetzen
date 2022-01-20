@@ -6,7 +6,7 @@ repeat \- loop audio data
 .BI repeat
 .RI [ count
 .RI [ infile
-.RI [ outfile ]]]
+.RI [ outfile [\fB/\fR]]]]
 .SH DESCRIPTION
 .PP
 Repeat the audio data in
@@ -40,3 +40,8 @@ respectively.
 The dash
 .RB ( - )
 is a shorthand for the default value.
+If
+.IR outfile
+is followed by a slash
+.RB ( / ) ,
+application-specific metadata is omitted.

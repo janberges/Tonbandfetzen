@@ -6,7 +6,7 @@ stretch \- rescale audio data
 .BI stretch
 .RI [ factor
 .RI [ infile
-.RI [ outfile ]]]
+.RI [ outfile [\fB/\fR]]]]
 .SH DESCRIPTION
 .PP
 Speed up the audio data in
@@ -41,3 +41,8 @@ respectively.
 The dash
 .RB ( - )
 is a shorthand for the default value.
+If
+.IR outfile
+is followed by a slash
+.RB ( / ) ,
+application-specific metadata is omitted.

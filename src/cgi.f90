@@ -104,11 +104,10 @@ program mel_dot_cgi
          "</html>"
    else
       call play(query, music, limit)
+
       if (music%points .eq. 0) call play("$22050 |1:6 E3' C3'", music)
 
-      music%amplitude = 1.0_dp
-
-      call write_riff('http', music)
+      call write_riff('http/', music)
    end if
 
 contains

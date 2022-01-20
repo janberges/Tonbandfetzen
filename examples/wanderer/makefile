@@ -19,4 +19,4 @@ parts/chorus.wav: chords/c.wav melody/melody.wav
 	stack $^ $@
 
 wanderer.wav: chords/e.wav parts/verse.wav parts/chorus.wav chords/d.wav chords/e.wav
-	stick $+ $@
+	stick $+ $@/

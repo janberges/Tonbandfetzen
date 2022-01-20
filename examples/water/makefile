@@ -28,4 +28,4 @@ parts/melody.wav: parts/fsh.wav parts/fsh.wav parts/fsh.wav parts/fsh.wav parts/
 	stick $+ $@
 
 water.wav: parts/melody.wav parts/chords.wav chords/pattern.wav
-	stack $^ $@
+	stack $^ $@/

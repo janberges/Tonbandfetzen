@@ -5,7 +5,7 @@ stack \- superimpose audio data
 .SH SYNOPSIS
 .BI stack
 .RI [[ infile " ...]"
-.IR outfile ]
+.IR outfile [\fB/\fR]]
 .SH DESCRIPTION
 .PP
 Superimpose the audio data from the given
@@ -26,3 +26,8 @@ respectively.
 The dash
 .RB ( - )
 is a shorthand for the default value.
+If
+.IR outfile
+is followed by a slash
+.RB ( / ) ,
+application-specific metadata is omitted.

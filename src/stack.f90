@@ -33,8 +33,8 @@ program stack
    sound = 0.0_dp
 
    do i = 1, n - 1
-      do c = 1, s%channels
-         do t = 1, s%points
+      do t = 1, s%points
+         do c = 1, s%channels
             sound(c, t) = sound(c, t) + p(i)%amplitude * p(i)%sound( &
                1_i2 + modulo(c - 1_i2, p(i)%channels), &
                1_i2 + modulo(t - 1_i2, p(i)%points))

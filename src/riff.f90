@@ -65,6 +65,7 @@ contains
       type(audio), intent(in) :: s
 
       integer, parameter :: unit = 15
+      integer :: i, j
       integer(i4), parameter :: fmtSize = 16_i4, applSize = 10_i4
       integer(i4) :: riffSize, dataSize, sampleRate, byteRate
       integer(i2), parameter :: sampleSize = 16_i2, formatTag = 1_i2
@@ -87,11 +88,17 @@ contains
             write (stdout, "('Content-Length: ', I0, /)") riffSize + 8
          end if
 
-         write (stdout, '(10000000000A)', advance='no') &
+         write (stdout, '(13A)', advance='no') &
             'RIFF', c(riffSize), 'WAVE', &
             'fmt ', c(fmtSize), c(formatTag), c(s%channels), &
             c(sampleRate), c(byteRate), c(blockAlign), c(sampleSize), &
-            'data', c(dataSize), c(s%sound)
+            'data', c(dataSize)
+
+         do j = 1, s%points
+            do i = 1, s%channels
+               write (stdout, '(A)', advance='no') c(s%sound(i, j))
+            end do
+         end do
 
          if (s%amplitude .ne. 1.0_dp) then
             write (stdout, '(3A)', advance='no') &

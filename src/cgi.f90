@@ -14,6 +14,12 @@ program mel_dot_cgi
    character(:), allocatable :: query
    integer, parameter :: limit = 1000000
 
+   character(*), parameter :: &
+      code = 'https://github.com/janberges/Tonbandfetzen', &
+      docu = 'https://janberges.github.io/Tonbandfetzen/mel.html', &
+      logo = 'https://raw.githubusercontent.com/janberges/&
+         &Tonbandfetzen/master/logo/logo.svg'
+
    query = decode(environment_variable('QUERY_STRING'))
 
    if (query .eq. ' ') then
@@ -24,10 +30,13 @@ program mel_dot_cgi
          "    <meta charset='utf-8'>", &
          "    <title>Tonbandfetzen</title>", &
          "    <link rel='icon' type='image/svg+xml' sizes='any'", &
-         "      href='https://raw.githubusercontent.com/janberges/&
-                  &Tonbandfetzen/master/logo/logo.svg'>", &
+         "      href='" // logo // "'>", &
          "    <style>", &
-         "      body { background: #222222 }", &
+         "      body {", &
+         "        font: 12px sans-serif;", &
+         "        color: #cccccc;", &
+         "        background: #222222;", &
+         "      }", &
          "      #color {", &
          "        position: absolute;", &
          "        color: #ffffff;", &
@@ -55,10 +64,12 @@ program mel_dot_cgi
          "        white-space: pre-wrap;", &
          "        word-wrap: break-word;", &
          "      }", &
-         "      #play { margin-bottom: 5mm }", &
+         "      #play, #wav { margin-bottom: 5mm }", &
          "      .N { color: #bf8040 }", &
          "      .L { color: #afdf00 }", &
          "      .C { color: #da193b }", &
+         "      a { color: inherit }", &
+         "      a:hover { text-decoration: none }", &
          "    </style>", &
          "    <script>", &
          "      function enter() {", &
@@ -100,6 +111,9 @@ program mel_dot_cgi
          "</textarea>", &
          "    <button id='play' onclick='play()'>Interpret</button>", &
          "    <audio id='wav' controls autoplay>Sorry</audio>", &
+         "    Please have a look at the ", &
+         "    <a href='" // docu // "'>documentation</a> and the", &
+         "    <a href='" // code // "'>source code</a>.", &
          "  </body>", &
          "</html>"
    else

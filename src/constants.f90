@@ -5,6 +5,7 @@ module constants
       i4 => int32, &
       i8 => int64, &
       eof => iostat_end, &
+      eol => iostat_eor, &
       stdin => input_unit, &
       stdout => output_unit, &
       stderr => error_unit
@@ -16,8 +17,6 @@ module constants
 
    integer, parameter :: dp = selected_real_kind(14, 300)
    integer, parameter :: i2max = 2 ** 15 - 1
-
-   character(*), parameter :: eol = char(10) // char(13)
 
    real(dp), parameter :: pi = 4.0_dp * atan(1.0_dp)
 

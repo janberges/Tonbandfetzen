@@ -28,6 +28,7 @@ contains
             read (unit, iostat=error) content(i:i)
          else
             read (*, '(A1)', iostat=error, advance='no') content(i:i)
+            if (error .eq. eol) content(i:i) = ' '
          end if
          if (error .eq. eof) then
             content = content(1:i - 1)

@@ -12,13 +12,12 @@ contains
 
       character(*), intent(in) :: file
 
-      integer, parameter :: unit = 16
-      integer :: i, error
+      integer :: unit, i, error
       logical :: f
 
       f = file .ne. 'stdin'
 
-      if (f) open(unit, file=file, action='read', status='old', &
+      if (f) open(newunit=unit, file=file, action='read', status='old', &
          form='unformatted', access='stream')
 
       allocate(character(1048576) :: content)

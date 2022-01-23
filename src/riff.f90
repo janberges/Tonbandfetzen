@@ -13,15 +13,15 @@ contains
       character(*), intent(in) :: file
       type(audio), intent(out) :: s
 
+      integer :: unit
+      integer :: i, error
       character(1) :: byte
       character(4) :: ckID, formType
       character(10) :: extended
-      integer, parameter :: unit = 14
-      integer :: i, error
       integer(i4) :: ckSize, sampleRate, byteRate
       integer(i2) :: sampleSize, formatTag, blockAlign
 
-      open(unit, file=file, action='read', status='old', &
+      open(newunit=unit, file=file, action='read', status='old', &
          form='unformatted', access='stream')
 
       do
@@ -64,7 +64,7 @@ contains
       character(*), intent(in) :: filex
       type(audio), intent(in) :: s
 
-      integer, parameter :: unit = 15
+      integer :: unit
       logical :: appl
       character(:), allocatable :: file
       integer(i4), parameter :: fmtSize = 16_i4, applSize = 10_i4
@@ -104,7 +104,7 @@ contains
          if (appl) write (*, '(*(A))', advance='no') &
             'APPL', c(applSize), encode(s%amplitude)
       else
-         open(unit, file=file, action='write', status='replace', &
+         open(newunit=unit, file=file, action='write', status='replace', &
             form='unformatted', access='stream')
 
          write (unit) 'RIFF', riffSize, 'WAVE', &

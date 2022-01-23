@@ -97,18 +97,18 @@ contains
 
       if (file .eq. 'stdout' .or. file .eq. 'http') then
          if (file .eq. 'http') then
-            write (stdout, "('Content-Type: audio/x-aiff')")
-            write (stdout, "('Content-Length: ', I0, /)") formSize + 8
+            write (*, "('Content-Type: audio/x-aiff')")
+            write (*, "('Content-Length: ', I0, /)") formSize + 8
          end if
 
-         write (stdout, '(*(A))', advance='no') &
+         write (*, '(*(A))', advance='no') &
             'FORM', c(r(formSize)), 'AIFF', &
             'COMM', c(r(commSize)), c(r(s%channels)), &
             c(r(s%points)), c(r(sampleSize)), encode(s%rate), &
             'SSND', c(r(ssndSize)), c(r(offset)), c(r(blockSize)), &
             c(r(s%sound))
 
-         if (appl) write (stdout, '(*(A))', advance='no') &
+         if (appl) write (*, '(*(A))', advance='no') &
             'APPL', c(r(applSize)), encode(s%amplitude)
       else
          open(unit, file=file, action='write', status='replace', &

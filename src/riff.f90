@@ -91,17 +91,17 @@ contains
 
       if (file .eq. 'stdout' .or. file .eq. 'http') then
          if (file .eq. 'http') then
-            write (stdout, "('Content-Type: audio/x-wav')")
-            write (stdout, "('Content-Length: ', I0, /)") riffSize + 8
+            write (*, "('Content-Type: audio/x-wav')")
+            write (*, "('Content-Length: ', I0, /)") riffSize + 8
          end if
 
-         write (stdout, '(*(A))', advance='no') &
+         write (*, '(*(A))', advance='no') &
             'RIFF', c(riffSize), 'WAVE', &
             'fmt ', c(fmtSize), c(formatTag), c(s%channels), &
             c(sampleRate), c(byteRate), c(blockAlign), c(sampleSize), &
             'data', c(dataSize), c(s%sound)
 
-         if (appl) write (stdout, '(*(A))', advance='no') &
+         if (appl) write (*, '(*(A))', advance='no') &
             'APPL', c(applSize), encode(s%amplitude)
       else
          open(unit, file=file, action='write', status='replace', &

@@ -1,5 +1,5 @@
 module io
-   use constants
+   use constants, only: eof, eol
    implicit none
    private
 

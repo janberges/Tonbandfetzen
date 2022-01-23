@@ -1,12 +1,12 @@
 module constants
    use, intrinsic :: iso_fortran_env, only: &
+      dp => real64, &
+      eof => iostat_end, &
+      eol => iostat_eor, &
       i1 => int8, &
       i2 => int16, &
       i4 => int32, &
       i8 => int64, &
-      dp => real64, &
-      eof => iostat_end, &
-      eol => iostat_eor, &
       stderr => error_unit
    implicit none
    public

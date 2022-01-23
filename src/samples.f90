@@ -1,7 +1,7 @@
 module samples
-   use constants
-   use intervals
-   use lcg
+   use constants, only: dp, pi, stderr
+   use intervals, only: interval
+   use lcg, only: minstd
    implicit none
    private
 

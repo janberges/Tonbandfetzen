@@ -1,7 +1,7 @@
 program stack
-   use constants
-   use io
-   use riff
+   use constants, only: audio, dp, i2, i2max
+   use io, only: command_argument
+   use riff, only: read_riff, write_riff
    implicit none
 
    integer :: i, n, t

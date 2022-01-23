@@ -1,5 +1,5 @@
 module intervals
-   use constants
+   use constants, only: dp
    implicit none
    private
 

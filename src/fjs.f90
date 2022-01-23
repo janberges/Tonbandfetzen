@@ -3,7 +3,7 @@
 ! Here, we only use the microtonal accidentals defined by the FJS.
 
 module fjs
-   use constants
+   use constants, only: dp
    implicit none
    private
 

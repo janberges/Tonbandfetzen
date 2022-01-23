@@ -3,10 +3,10 @@
 ! https://codersblock.com/blog/highlight-text-inside-a-textarea/
 
 program mel_dot_cgi
-   use constants
-   use interpreter
-   use io
-   use riff
+   use constants, only: audio
+   use interpreter, only: play
+   use io, only: environment_variable
+   use riff, only: write_riff
    implicit none
 
    type(audio) :: music

@@ -1,9 +1,9 @@
 program inspect
-   use aiff
-   use constants
-   use io
-   use paths
-   use riff
+   use aiff, only: read_aiff
+   use constants, only: audio, stderr
+   use io, only: command_argument
+   use paths, only: extension
+   use riff, only: read_riff
    implicit none
 
    character(:), allocatable :: path

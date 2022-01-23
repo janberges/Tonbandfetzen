@@ -1,8 +1,8 @@
 program repeat
-   use constants
-   use io
-   use rationals
-   use riff
+   use constants, only: audio, dp
+   use io, only: command_argument
+   use rationals, only: rational
+   use riff, only: read_riff, write_riff
    implicit none
 
    integer :: i

@@ -1,8 +1,8 @@
 program aiff2riff
-   use aiff
-   use constants
-   use io
-   use riff
+   use aiff, only: read_aiff
+   use constants, only: audio
+   use io, only: command_argument
+   use riff, only: write_riff
    implicit none
 
    type(audio) :: s

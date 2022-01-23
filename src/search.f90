@@ -1,5 +1,5 @@
 module search
-   use constants
+   use constants, only: i2
    implicit none
    private
 

@@ -1,5 +1,5 @@
 module extended
-   use constants
+   use constants, only: dp
    implicit none
    private
 

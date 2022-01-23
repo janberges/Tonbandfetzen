@@ -1,12 +1,13 @@
 module interpreter
-   use constants
-   use fjs
-   use io
-   use lcg
-   use rationals
-   use riff
-   use samples
-   use search
+   use constants, only: audio, dp, i2, i2max, stderr
+   use fjs, only: accidentals, comma
+   use io, only: command_argument
+   use lcg, only: minstd
+   use rationals, only: rational
+   use riff, only: read_riff
+   use samples, only: sample
+   use search, only: focus, get, known, lexical, next, &
+      numeral, remember, reset, revert, set, special
    implicit none
    private
 

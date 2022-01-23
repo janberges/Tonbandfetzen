@@ -1,5 +1,5 @@
 module spectra
-   use constants
+   use constants, only: dp, pi
    implicit none
    private
 

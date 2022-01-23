@@ -1,5 +1,5 @@
 module bytes
-   use constants
+   use constants, only: i1, i2, i4
    implicit none
    private
 

@@ -1,8 +1,8 @@
 program harmonics
-   use constants
-   use io
-   use samples
-   use spectra
+   use constants, only: dp
+   use io, only: command_argument
+   use samples, only: sample
+   use spectra, only: fourier
    implicit none
 
    integer :: n

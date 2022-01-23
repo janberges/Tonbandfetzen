@@ -1,7 +1,7 @@
 ! https://en.wikipedia.org/wiki/MINSTD
 
 module lcg
-   use constants
+   use constants, only: dp, i8
    implicit none
    private
 

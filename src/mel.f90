@@ -1,8 +1,8 @@
 program mel
-   use constants
-   use interpreter
-   use io
-   use riff
+   use constants, only: audio
+   use interpreter, only: play
+   use io, only: command_argument, slurp
+   use riff, only: write_riff
    implicit none
 
    integer :: n

@@ -1,8 +1,8 @@
 program stretch
-   use constants
-   use io
-   use rationals
-   use riff
+   use constants, only: audio, dp, i2
+   use io, only: command_argument
+   use rationals, only: rational
+   use riff, only: read_riff, write_riff
    implicit none
 
    integer :: t, t0

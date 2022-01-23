@@ -1,7 +1,7 @@
 module riff
-   use bytes
-   use constants
-   use extended
+   use bytes, only: c
+   use constants, only: audio, dp, eof, i2, i4, stderr
+   use extended, only: decode, encode
    implicit none
    private
 

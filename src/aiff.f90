@@ -72,7 +72,6 @@ contains
       type(audio), intent(in) :: s
 
       integer, parameter :: unit = 15
-      integer :: i, j
       logical :: appl
       character(:), allocatable :: file
       integer(i4), parameter :: commSize = 18_i4, applSize = 10_i4
@@ -102,20 +101,15 @@ contains
             write (stdout, "('Content-Length: ', I0, /)") formSize + 8
          end if
 
-         write (stdout, '(13A)', advance='no') &
+         write (stdout, '(*(A))', advance='no') &
             'FORM', c(r(formSize)), 'AIFF', &
             'COMM', c(r(commSize)), c(r(s%channels)), &
             c(r(s%points)), c(r(sampleSize)), encode(s%rate), &
-            'SSND', c(r(ssndSize)), c(r(offset)), c(r(blockSize))
+            'SSND', c(r(ssndSize)), c(r(offset)), c(r(blockSize)), &
+            c(r(s%sound))
 
-         do j = 1, s%points
-            do i = 1, s%channels
-               write (stdout, '(A)', advance='no') c(r(s%sound(i, j)))
-            end do
-         end do
-
-         if (appl) write (stdout, '(3A)', advance='no') &
-               'APPL', c(r(applSize)), encode(s%amplitude)
+         if (appl) write (stdout, '(*(A))', advance='no') &
+            'APPL', c(r(applSize)), encode(s%amplitude)
       else
          open(unit, file=file, action='write', status='replace', &
             form='unformatted', access='stream')

@@ -17,7 +17,7 @@ program mel_dot_cgi
    query = decode(environment_variable('QUERY_STRING'))
 
    if (query .eq. ' ') then
-      write (*, '(A, /, 1000(:, /, A))') "Content-type: text/html", &
+      write (*, '(A, /, *(:, /, A))') "Content-type: text/html", &
          "<!DOCTYPE html>", &
          "<html lang='en'>", &
          "  <head>", &

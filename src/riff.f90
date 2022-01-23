@@ -65,7 +65,6 @@ contains
       type(audio), intent(in) :: s
 
       integer, parameter :: unit = 15
-      integer :: i, j
       logical :: appl
       character(:), allocatable :: file
       integer(i4), parameter :: fmtSize = 16_i4, applSize = 10_i4
@@ -96,19 +95,13 @@ contains
             write (stdout, "('Content-Length: ', I0, /)") riffSize + 8
          end if
 
-         write (stdout, '(13A)', advance='no') &
+         write (stdout, '(*(A))', advance='no') &
             'RIFF', c(riffSize), 'WAVE', &
             'fmt ', c(fmtSize), c(formatTag), c(s%channels), &
             c(sampleRate), c(byteRate), c(blockAlign), c(sampleSize), &
-            'data', c(dataSize)
+            'data', c(dataSize), c(s%sound)
 
-         do j = 1, s%points
-            do i = 1, s%channels
-               write (stdout, '(A)', advance='no') c(s%sound(i, j))
-            end do
-         end do
-
-         if (appl) write (stdout, '(3A)', advance='no') &
+         if (appl) write (stdout, '(*(A))', advance='no') &
             'APPL', c(applSize), encode(s%amplitude)
       else
          open(unit, file=file, action='write', status='replace', &

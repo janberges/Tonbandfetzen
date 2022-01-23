@@ -17,8 +17,8 @@ contains
 
       f = file .ne. 'stdin'
 
-      if (f) open(newunit=unit, file=file, action='read', status='old', &
-         form='unformatted', access='stream')
+      if (f) open (newunit=unit, file=file, &
+         action='read', status='old', access='stream')
 
       allocate(character(1048576) :: content)
 
@@ -35,7 +35,7 @@ contains
          end if
       end do
 
-      if (f) close(unit)
+      if (f) close (unit)
    end function slurp
 
    function command_argument(num, def) result(arg)

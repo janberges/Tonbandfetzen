@@ -21,8 +21,8 @@ contains
       integer(i4) :: ckSize, offset, blockSize
       integer(i2) :: sampleSize
 
-      open(newunit=unit, file=file, action='read', status='old', &
-         form='unformatted', access='stream')
+      open (newunit=unit, file=file, &
+         action='read', status='old', access='stream')
 
       do
          read (unit, iostat=error) ckID, ckSize
@@ -64,7 +64,7 @@ contains
          end select
       end do
 
-      close(unit)
+      close (unit)
    end subroutine read_aiff
 
    subroutine write_aiff(filex, s)
@@ -111,8 +111,8 @@ contains
          if (appl) write (*, '(*(A))', advance='no') &
             'APPL', c(r(applSize)), encode(s%amplitude)
       else
-         open(newunit=unit, file=file, action='write', status='replace', &
-            form='unformatted', access='stream')
+         open (newunit=unit, file=file, &
+            action='write', status='replace', access='stream')
 
          write (unit) 'FORM', r(formSize), 'AIFF', &
             'COMM', r(commSize), r(s%channels), &
@@ -122,7 +122,7 @@ contains
 
          if (appl) write (unit) 'APPL', r(applSize), encode(s%amplitude)
 
-         close(unit)
+         close (unit)
       end if
    end subroutine write_aiff
 end module aiff

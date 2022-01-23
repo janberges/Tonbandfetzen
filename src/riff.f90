@@ -21,8 +21,8 @@ contains
       integer(i4) :: ckSize, sampleRate, byteRate
       integer(i2) :: sampleSize, formatTag, blockAlign
 
-      open(newunit=unit, file=file, action='read', status='old', &
-         form='unformatted', access='stream')
+      open (newunit=unit, file=file, &
+         action='read', status='old', access='stream')
 
       do
          read (unit, iostat=error) ckID, ckSize
@@ -57,7 +57,7 @@ contains
          end select
       end do
 
-      close(unit)
+      close (unit)
    end subroutine read_riff
 
    subroutine write_riff(filex, s)
@@ -104,8 +104,8 @@ contains
          if (appl) write (*, '(*(A))', advance='no') &
             'APPL', c(applSize), encode(s%amplitude)
       else
-         open(newunit=unit, file=file, action='write', status='replace', &
-            form='unformatted', access='stream')
+         open (newunit=unit, file=file, &
+            action='write', status='replace', access='stream')
 
          write (unit) 'RIFF', riffSize, 'WAVE', &
             'fmt ', fmtSize, formatTag, s%channels, &
@@ -114,7 +114,7 @@ contains
 
          if (appl) write (unit) 'APPL', applSize, encode(s%amplitude)
 
-         close(unit)
+         close (unit)
       end if
    end subroutine write_riff
 end module riff

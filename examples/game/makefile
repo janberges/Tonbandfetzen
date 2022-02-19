@@ -10,8 +10,11 @@ clean:
 %.mp3: %.wav
 	ffmpeg -y -i $< $@
 
-%.wav: def.mel %.mel
-	cat $^ | mel $@
+%.wav: def.mel %.mel end.mel %.wave
+	cat def.mel $*.mel end.mel | mel $*.wave - $@
+
+%.wave: %.txt
+	espeak-ng -vmb-de5 -s120 -f$^ -w$@
 
 %.mel: %.gtr
 	guitar $< $@

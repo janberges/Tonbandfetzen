@@ -18,7 +18,9 @@ program mel_dot_cgi
       code = 'https://github.com/janberges/Tonbandfetzen', &
       docu = 'https://janberges.github.io/Tonbandfetzen/mel.html', &
       logo = 'https://raw.githubusercontent.com/janberges/&
-         &Tonbandfetzen/master/logo/logo.svg'
+         &Tonbandfetzen/master/logo/logo.svg', &
+      gpl3 = 'magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&
+         &&dn=gpl-3.0.txt'
 
    query = decode(environment_variable('QUERY_STRING'))
 
@@ -72,6 +74,7 @@ program mel_dot_cgi
          "      a:hover { text-decoration: none }", &
          "    </style>", &
          "    <script>", &
+         "      // @license " // gpl3 // " GPL-v3-or-Later", &
          "      function enter() {", &
          "        document.getElementById('play').disabled = false", &
          "        var m = document.getElementById('mel').value", &
@@ -97,6 +100,7 @@ program mel_dot_cgi
          "            document.getElementById('mel').value)", &
          "        document.getElementById('wav').load()", &
          "      }", &
+         "      // @license-end", &
          "    </script>", &
          "  </head>", &
          "  <body onload='enter()'>", &
@@ -111,7 +115,7 @@ program mel_dot_cgi
          "</textarea>", &
          "    <button id='play' onclick='play()'>Interpret</button>", &
          "    <audio id='wav' controls autoplay>Sorry</audio>", &
-         "    Please have a look at the ", &
+         "    Please have a look at the", &
          "    <a href='" // docu // "'>documentation</a> and the", &
          "    <a href='" // code // "'>source code</a>.", &
          "  </body>", &

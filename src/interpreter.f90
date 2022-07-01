@@ -323,32 +323,42 @@ contains
                fi = fi * random
                f = f * random
 
-            case ('flanger', 'vibrato')
+            case ('delete', 'reverse', 'flanger', 'vibrato')
                i = int(n())
                j = int(n())
 
                if (mark_set(i) .and. mark_set(j)) then
                   t1 = nint(marks(i))
                   t2 = nint(marks(j))
-                  dx = n() * s
-
-                  factor = n() * size(wave) / (t2 - t1 - 1)
-
-                  allocate(work(tones%channels, t2 - t1))
-
-                  do i = 0, t2 - t1 - 1
-                     work(:, 1 + i) = mel(:, t1 + 1 + i + nint(dx * &
-                        wave(modulo(nint(i * factor), size(wave)))))
-                  end do
 
                   select case (word)
-                  case ('flanger')
-                     mel(:, t1 + 1:t2) = mel(:, t1 + 1:t2) + work
-                  case ('vibrato')
-                     mel(:, t1 + 1:t2) = work
-                  end select
+                  case ('delete')
+                     mel(:, t1 + 1:t2) = 0.0_dp
 
-                  deallocate(work)
+                  case ('reverse')
+                     mel(:, t1 + 1:t2) = mel(:, t2:t1 + 1:-1)
+
+                  case ('flanger', 'vibrato')
+                     dx = n() * s
+
+                     factor = n() * size(wave) / (t2 - t1 - 1)
+
+                     allocate(work(tones%channels, t2 - t1))
+
+                     do i = 0, t2 - t1 - 1
+                        work(:, 1 + i) = mel(:, t1 + 1 + i + nint(dx * &
+                           wave(modulo(nint(i * factor), size(wave)))))
+                     end do
+
+                     select case (word)
+                     case ('flanger')
+                        mel(:, t1 + 1:t2) = mel(:, t1 + 1:t2) + work
+                     case ('vibrato')
+                        mel(:, t1 + 1:t2) = work
+                     end select
+
+                     deallocate(work)
+                  end select
                end if
 
             case default

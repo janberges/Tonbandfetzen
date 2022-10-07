@@ -7,8 +7,7 @@ program repeat
 
    integer :: i
    real(dp) :: factor
-   type(audio) :: s1
-   type(audio) :: s
+   type(audio) :: s1, s
 
    factor = rational(command_argument(1, '2'))
 

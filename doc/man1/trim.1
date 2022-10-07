@@ -1,0 +1,40 @@
+.\" Man page for the command trim of the Tonbandfetzen tool box
+.TH TRIM 1 2010\(en2022 "Jan Berges" "Tonbandfetzen Manual"
+.SH NAME
+trim \- strip leading and trailing silence
+.SH SYNOPSIS
+.BI trim
+.RI [ threshold
+.RI [ infile
+.RI [ outfile [\fB/\fR]]]]
+.SH DESCRIPTION
+.PP
+Strip leading and trailing silence from
+.IR infile
+and store the result in
+.IR outfile .
+Silence is everything below or equal to the given
+.IR threshold
+in units of the maximum allowed displacement, i.e., between
+.BR 0 " and " 1,
+where expressions like
+.BR 1/2
+or
+.BR 3:4
+are permitted.
+All files must be in the WAVE format.
+.IR threshold
+defaults to
+.BR 0 .
+Filenames default to
+.BR /dev/stdin
+or
+.BR /dev/stdout .
+The dash
+.RB ( - )
+is a shorthand for the default value.
+If
+.IR outfile
+is followed by a slash
+.RB ( / ) ,
+application-specific metadata is omitted.

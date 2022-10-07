@@ -12,9 +12,9 @@ modules_ifort = -module build
 
 override FFLAGS += ${modules_$(FC)}
 
-needless += build/aiff.o build/aiff2riff.o build/bytes.o build/cgi.o build/constants.o build/extended.o build/fjs.o build/harmonics.o build/inspect.o build/interpreter.o build/intervals.o build/io.o build/lcg.o build/mel.o build/paths.o build/rationals.o build/repeat.o build/riff.o build/riff2aiff.o build/samples.o build/search.o build/spectra.o build/stack.o build/stick.o build/stretch.o build/*.mod
+needless += build/aiff.o build/aiff2riff.o build/bytes.o build/cgi.o build/constants.o build/extended.o build/fjs.o build/harmonics.o build/inspect.o build/interpreter.o build/intervals.o build/io.o build/lcg.o build/mel.o build/paths.o build/rationals.o build/repeat.o build/riff.o build/riff2aiff.o build/samples.o build/search.o build/spectra.o build/stack.o build/stick.o build/stretch.o build/trim.o build/*.mod
 
-programs = bin/aiff2riff bin/harmonics bin/inspect bin/mel bin/mel.cgi bin/repeat bin/riff2aiff bin/stack bin/stick bin/stretch
+programs = bin/aiff2riff bin/harmonics bin/inspect bin/mel bin/mel.cgi bin/repeat bin/riff2aiff bin/stack bin/stick bin/stretch bin/trim
 
 .PHONY: all clean cleaner
 
@@ -42,6 +42,7 @@ bin/riff2aiff: build/aiff.o build/bytes.o build/constants.o build/extended.o bui
 bin/stack: build/bytes.o build/constants.o build/extended.o build/io.o build/riff.o build/stack.o
 bin/stick: build/bytes.o build/constants.o build/extended.o build/io.o build/riff.o build/stick.o
 bin/stretch: build/bytes.o build/constants.o build/extended.o build/io.o build/rationals.o build/riff.o build/stretch.o
+bin/trim: build/bytes.o build/constants.o build/extended.o build/io.o build/rationals.o build/riff.o build/trim.o
 
 build/aiff.o: build/bytes.o build/constants.o build/extended.o
 build/aiff2riff.o: build/aiff.o build/constants.o build/io.o build/riff.o
@@ -66,3 +67,4 @@ build/spectra.o: build/constants.o
 build/stack.o: build/constants.o build/io.o build/riff.o
 build/stick.o: build/constants.o build/io.o build/riff.o
 build/stretch.o: build/constants.o build/io.o build/rationals.o build/riff.o
+build/trim.o: build/constants.o build/io.o build/rationals.o build/riff.o

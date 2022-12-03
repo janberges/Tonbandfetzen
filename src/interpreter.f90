@@ -291,6 +291,14 @@ contains
             word = next(lexical)
 
             select case (word)
+            case ('status')
+               write (stderr, "(*(A10, ':', F16.9, 1X, A, :, /))") &
+                  'Time', t / s, 's', &
+                  'Frequency', f * s, 'Hz', &
+                  'Amplitude', a, 'arb. units', &
+                  'Balance', 10 * log10(r), 'dB', &
+                  'Phase', phase, '(mod 1)'
+
             case ('report')
                write (stderr, "('Note counts:')")
 

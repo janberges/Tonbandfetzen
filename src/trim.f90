@@ -5,7 +5,7 @@ program trim
    use riff, only: read_riff, write_riff
    implicit none
 
-   integer :: a, z
+   integer :: a, i, z
    real(dp) :: threshold
    type(audio) :: s0, s
 
@@ -13,8 +13,15 @@ program trim
 
    call read_riff(command_argument(2, '/dev/stdin'), s0)
 
-   a = minval(findloc(s0%sound .gt. threshold, .true., dim=2))
-   z = maxval(findloc(s0%sound .gt. threshold, .true., dim=2, back=.true.))
+   do i = 1, s0%points
+      a = i
+      if (any(s0%sound(:, a) .gt. threshold)) exit
+   end do
+
+   do i = s0%points, a - 1, -1
+      z = i
+      if (any(s0%sound(:, z) .gt. threshold)) exit
+   end do
 
    s%channels = s0%channels
    s%points = z - a + 1

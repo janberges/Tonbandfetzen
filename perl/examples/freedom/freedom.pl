@@ -51,7 +51,7 @@ $B_lo = stack $B_lo, [map $$B_lo[$_ + $s / 80 * sin(2 * $pi * $_ / $#$B_lo) ** 2
 
 # chords
 
-@p = map { $_ ** 3 - $_ } in 0, 1;
+@p = map { $_ ** 3 - $_ } in 0, 1; # should have been (-1, 1], but this sounds better
 @a = map { sin($_) ** 2 } in 0, $pi / 2, 25 * $ms;
 @z = @a;
 

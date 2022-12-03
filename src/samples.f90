@@ -51,6 +51,10 @@ contains
             call interval(x, -1.0_dp, 1.0_dp, 1)
             x = 1.5_dp * sqrt(3.0_dp) * (x ** 3 - x)
 
+         case ('water')
+            call interval(x, 0.0_dp, 1.0_dp, 1)
+            x = 1.5_dp * sqrt(3.0_dp) * (x ** 3 - x) + 0.5_dp
+
          case ('random')
             do i = 1, size(x)
                call minstd(x(i))

@@ -6,7 +6,7 @@ program harmonics
    implicit none
 
    integer :: n
-   integer, parameter :: nmax = 100
+   integer, parameter :: nmax = 99
 
    real(dp) :: wave(2 * nmax), amplitude, phase
    complex(dp) :: spectrum(nmax)

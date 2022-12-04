@@ -2,6 +2,7 @@ module aiff
    use bytes, only: c, r
    use constants, only: audio, dp, eof, i2, i4, stderr
    use extended, only: decode, encode
+   use id3, only: read_id3
    implicit none
    private
 
@@ -58,6 +59,9 @@ contains
          case ('APPL')
             read (unit) extended
             s%amplitude = decode(extended)
+
+         case ('ID3 ')
+            call read_id3(unit)
 
          case default
             read (unit) (byte, i = 1, ckSize)

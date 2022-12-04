@@ -2,7 +2,7 @@ module aiff
    use bytes, only: c, r
    use constants, only: audio, dp, eof, i2, i4, stderr
    use extended, only: decode, encode
-   use id3, only: read_id3
+   use id3, only: read_id3, write_id3
    implicit none
    private
 
@@ -77,7 +77,7 @@ contains
 
       integer :: unit
       logical :: appl
-      character(:), allocatable :: file
+      character(:), allocatable :: file, id3
       integer(i4), parameter :: commSize = 18_i4, applSize = 10_i4
       integer(i4), parameter :: offset = 0_i4, blockSize = 0_i4
       integer(i4) :: formSize, ssndSize
@@ -87,9 +87,11 @@ contains
       if (filex(len(filex):len(filex)) .eq. '/') then
          file = filex(:len(filex) - 1)
          appl = .false.
+         id3 = write_id3(file)
       else
          file = filex
          appl = s%amplitude .ne. 1.0_dp
+         id3 = ''
       end if
 
       blockAlign = 2_i2 * s%channels
@@ -98,6 +100,8 @@ contains
       formSize = 4_i4 + 8_i4 + commSize + 8_i4 + ssndSize
 
       if (appl) formSize = formSize + 8_i4 + applSize
+
+      if (len(id3) .gt. 0) formSize = formSize + 8_i4 + len(id3)
 
       if (file .eq. 'stdout' .or. file .eq. 'http') then
          if (file .eq. 'http') then
@@ -114,6 +118,9 @@ contains
 
          if (appl) write (*, '(*(A))', advance='no') &
             'APPL', c(r(applSize)), encode(s%amplitude)
+
+         if (len(id3) .gt. 0) write (*, '(*(A))', advance='no') &
+            'ID3 ', c(r(len(id3, i4))), id3
       else
          open (newunit=unit, file=file, &
             action='write', status='replace', access='stream')
@@ -125,6 +132,8 @@ contains
             r(s%sound)
 
          if (appl) write (unit) 'APPL', r(applSize), encode(s%amplitude)
+
+         if (len(id3) .gt. 0) write (unit) 'ID3 ', r(len(id3, i4)), id3
 
          close (unit)
       end if

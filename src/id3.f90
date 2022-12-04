@@ -1,9 +1,10 @@
 module id3
    use constants, only: dp, eof, i1, stderr
+   use paths, only: stem
    implicit none
    private
 
-   public :: read_id3
+   public :: read_id3, write_id3
 
    integer, parameter :: int7max = 2 ** 7
    character(*), parameter :: NADA = transfer(0, 'NULL')
@@ -125,6 +126,49 @@ contains
          readSize = readSize + dataSize
       end do
    end subroutine read_id3
+
+   function write_id3(file) result(id3)
+      character(:), allocatable :: id3
+
+      character(*), intent(in) :: file
+
+      character(:), allocatable :: meta
+
+      character(4) :: frameID
+      character(255) :: text
+
+      character(1), parameter :: version = char(4)
+      character(1), parameter :: revision = char(0)
+      character(1), parameter :: flags = char(0)
+      character(1), parameter :: encoding = char(3)
+
+      integer :: unit, error
+      logical :: exist
+
+      meta = stem(file) // '.meta'
+
+      inquire (file=meta, exist=exist)
+
+      id3 = ''
+
+      if (exist) then
+         open (newunit=unit, file=meta, action='read', status='old')
+
+         do
+            read (unit, '(A4, 1X, A)', iostat=error) frameID, text
+
+            if (error .eq. eof) exit
+
+            id3 = id3 // frameID // encode_synchsafe(2 + len(text)) &
+               // flags // flags // encoding // flags // text
+         end do
+
+         close (unit)
+      end if
+
+      if (len(id3) .gt. 0) id3 = 'ID3' // version // revision &
+         // flags // encode_synchsafe(len(id3)) // id3
+   end function write_id3
 
    function decode_synchsafe(code) result(value)
       integer :: value

@@ -125,7 +125,7 @@ contains
 
          if (appl) write (unit) 'APPL', applSize, encode(s%amplitude)
 
-         if (len(id3) .gt. 0) write (unit) 'id3 ', len(id3, i4), id3
+         if (len(id3) .gt. 0) write (unit) 'ID3 ', len(id3, i4), id3
 
          close (unit)
       end if

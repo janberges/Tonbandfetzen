@@ -10,9 +10,10 @@ module riff
 
 contains
 
-   subroutine read_riff(file, s)
+   subroutine read_riff(file, s, id3)
       character(*), intent(in) :: file
       type(audio), intent(out) :: s
+      logical, optional :: id3
 
       integer :: unit
       integer :: i, error
@@ -28,6 +29,10 @@ contains
       do
          read (unit, iostat=error) ckID, ckSize
          if (error .eq. eof) exit
+
+         if (present(id3)) then
+            if (id3 .and. ckID .eq. 'ID3' .or. ckID .eq. 'id3') ckID = 'ID3?'
+         end if
 
          select case (ckID)
          case ('RIFF')
@@ -53,7 +58,7 @@ contains
             read (unit) extended
             s%amplitude = decode(extended)
 
-         case ('ID3 ', 'id3 ')
+         case ('ID3?')
             call read_id3(unit)
 
          case default

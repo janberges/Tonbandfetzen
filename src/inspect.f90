@@ -13,10 +13,10 @@ program inspect
 
    select case (extension(path))
    case ('aiff', 'aif')
-      call read_aiff(path, s)
+      call read_aiff(path, s, .true.)
 
    case ('wave', 'wav', '')
-      call read_riff(path, s)
+      call read_riff(path, s, .true.)
 
    case default
       write (stderr, "('Error: Unknown filename extension.')")

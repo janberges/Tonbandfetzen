@@ -135,7 +135,7 @@ contains
       character(:), allocatable :: meta
 
       character(4) :: frameID
-      character(255) :: text
+      character(256) :: text
 
       character(1), parameter :: version = char(4)
       character(1), parameter :: revision = char(0)
@@ -159,8 +159,8 @@ contains
 
             if (error .eq. eof) exit
 
-            id3 = id3 // frameID // encode_synchsafe(2 + len(text)) &
-               // flags // flags // encoding // flags // text
+            id3 = id3 // frameID // encode_synchsafe(2 + len(trim(text))) &
+               // flags // flags // encoding // flags // trim(text)
          end do
 
          close (unit)

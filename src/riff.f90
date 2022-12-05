@@ -2,6 +2,7 @@ module riff
    use bytes, only: c
    use constants, only: audio, dp, eof, i2, i4, stderr
    use extended, only: decode, encode
+   use id3, only: read_id3, write_id3
    implicit none
    private
 
@@ -52,6 +53,9 @@ contains
             read (unit) extended
             s%amplitude = decode(extended)
 
+         case ('ID3 ', 'id3 ')
+            call read_id3(unit)
+
          case default
             read (unit) (byte, i = 1, ckSize)
          end select
@@ -66,7 +70,7 @@ contains
 
       integer :: unit
       logical :: appl
-      character(:), allocatable :: file
+      character(:), allocatable :: file, id3
       integer(i4), parameter :: fmtSize = 16_i4, applSize = 10_i4
       integer(i4) :: riffSize, dataSize, sampleRate, byteRate
       integer(i2), parameter :: sampleSize = 16_i2, formatTag = 1_i2
@@ -75,9 +79,11 @@ contains
       if (filex(len(filex):len(filex)) .eq. '/') then
          file = filex(:len(filex) - 1)
          appl = .false.
+         id3 = write_id3(file)
       else
          file = filex
          appl = s%amplitude .ne. 1.0_dp
+         id3 = ''
       end if
 
       blockAlign = 2_i2 * s%channels
@@ -88,6 +94,8 @@ contains
       riffSize = 4_i4 + 8_i4 + fmtSize + 8_i4 + dataSize
 
       if (appl) riffSize = riffSize + 8_i4 + applSize
+
+      if (len(id3) .gt. 0) riffSize = riffSize + 8_i4 + len(id3)
 
       if (file .eq. 'stdout' .or. file .eq. 'http') then
          if (file .eq. 'http') then
@@ -103,6 +111,9 @@ contains
 
          if (appl) write (*, '(*(A))', advance='no') &
             'APPL', c(applSize), encode(s%amplitude)
+
+         if (len(id3) .gt. 0) write (*, '(*(A))', advance='no') &
+            'ID3 ', c(len(id3, i4)), id3
       else
          open (newunit=unit, file=file, &
             action='write', status='replace', access='stream')
@@ -113,6 +124,8 @@ contains
             'data', dataSize, s%sound
 
          if (appl) write (unit) 'APPL', applSize, encode(s%amplitude)
+
+         if (len(id3) .gt. 0) write (unit) 'id3 ', len(id3, i4), id3
 
          close (unit)
       end if

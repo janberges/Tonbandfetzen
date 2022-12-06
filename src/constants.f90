@@ -23,5 +23,7 @@ module constants
       real(dp) :: amplitude = 1.0_dp
 
       integer(i2), allocatable :: sound(:, :)
+
+      character(:), allocatable :: meta
    end type audio
 end module constants

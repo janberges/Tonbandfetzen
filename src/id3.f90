@@ -7,26 +7,20 @@ module id3
    public :: read_id3, write_id3
 
    integer, parameter :: int7max = 2 ** 7
-   character(*), parameter :: NADA = transfer(0, 'NULL')
 
 contains
 
-   subroutine read_id3(unit)
-      integer, intent(in) :: unit
+   subroutine read_id3(id3)
+      character(*), intent(in) :: id3
 
-      integer :: i, j, error
-      character(1) :: byte
-      character(3) :: tagID
-      character(4) :: frameID, long
-      integer(i1) :: version, revision, flags, encoding
-      integer :: tagSize, frameSize, readSize, dataSize
-      character(:), allocatable :: feature, title, album, artist, year
+      integer :: i, flags, tagSize, frameSize, first
+      character(4) :: frameID
+      character(:), allocatable :: feature
 
-      read (unit) tagID, version, revision, flags, long
+      write (stderr, "('Metadata format: ', A, 'v2.', I0, '.', I0)") &
+         id3(1:3), ichar(id3(4:4)), ichar(id3(5:5))
 
-      tagSize = decode_synchsafe(long)
-
-      write (stderr, "('Metadata format: ID3v2.', I0, '.', I0)") version, revision
+      flags = ichar(id3(6:6))
 
       do i = 7, 4, -1
          if (btest(flags, i)) then
@@ -42,30 +36,28 @@ contains
             end select
 
             write (stderr, "('Warning: ID3 ', A, ' not supported.')") feature
-            read (unit) (byte, j = 1, tagSize)
             return
          end if
       end do
 
-      readSize = 0
+      i = 10
 
-      do while (readSize .lt. tagSize)
-         read (unit, iostat=error) frameID, long
+      tagSize = decode_synchsafe(id3(7:10))
 
-         if (error .eq. eof) then
-            write (stderr, "('Warning: Unexpected end of ID3 tag.')")
-            exit
-         end if
+      do while (i .lt. 10 + tagSize)
+         if (ichar(id3(i + 1:i + 1)) .eq. 0) exit
 
-         frameSize = decode_synchsafe(long)
+         frameID = id3(i + 1:i + 4)
 
-         read (unit) flags
+         frameSize = decode_synchsafe(id3(i + 5:i + 8))
+
+         flags = ichar(id3(i + 9:i + 9))
 
          if (btest(flags, 6)) write (stderr, "(A, ' tag-bound')") frameID
          if (btest(flags, 5)) write (stderr, "(A, ' file-bound')") frameID
          if (btest(flags, 4)) write (stderr, "(A, ' read-only')") frameID
 
-         read (unit) flags
+         flags = ichar(id3(i + 10:i + 10))
 
          if (btest(flags, 6)) write (stderr, "(A, ' grouped')") frameID
          if (btest(flags, 3)) write (stderr, "(A, ' compressed')") frameID
@@ -73,57 +65,31 @@ contains
          if (btest(flags, 1)) write (stderr, "(A, ' unsyrchronised')") frameID
          if (btest(flags, 0)) write (stderr, "(A, ' states length')") frameID
 
-         readSize = readSize + 10
-
-         dataSize = frameSize
+         i = i + 10
 
          if (frameID(1:1) .eq. 'T') then
-            read (unit) encoding
-            dataSize = dataSize - 1
-
-            select case (encoding)
-               case (0, 3) ! ISO-8859-1, UTF-8
-                  read (unit) byte
-                  dataSize = dataSize - 1
-
-               case (1, 2) ! UTF-16, UTF-16BE
-                  read (unit) byte, byte
-                  dataSize = dataSize - 2
+            select case (frameID)
+            case ('TIT2')
+               feature = 'Title'
+            case ('TALB')
+               feature = 'Album'
+            case ('TPE1')
+               feature = 'Artist'
+            case ('TYER')
+               feature = 'Year'
             end select
+
+            select case (ichar(id3(i + 1:i + 1)))
+            case (0, 3) ! ISO-8859-1, UTF-8
+               first = i + 3
+            case (1, 2) ! UTF-16, UTF-16BE
+               first = i + 4
+            end select
+
+            write (stderr, "(A, ': ', A)") feature, id3(first:i + frameSize)
          end if
 
-         readSize = readSize + frameSize - dataSize
-
-         select case (frameID)
-         case ('TIT2')
-            allocate(character(dataSize) :: title)
-            read (unit) title
-            write (stderr, "('Title: ', A)") title
-
-         case ('TALB')
-            allocate(character(dataSize) :: album)
-            read (unit) album
-            write (stderr, "('Album: ', A)") album
-
-         case ('TPE1')
-            allocate(character(dataSize) :: artist)
-            read (unit) artist
-            write (stderr, "('Artist: ', A)") artist
-
-         case ('TYER')
-            allocate(character(dataSize) :: year)
-            read (unit) year
-            write (stderr, "('Year: ', A)") year
-
-         case default
-            read (unit) (byte, i = 1, dataSize)
-
-         case (NADA)
-            dataSize = tagSize - readSize
-            read (unit) (byte, i = 1, dataSize)
-         end select
-
-         readSize = readSize + dataSize
+         i = i + frameSize
       end do
    end subroutine read_id3
 

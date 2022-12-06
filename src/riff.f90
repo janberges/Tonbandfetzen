@@ -2,7 +2,7 @@ module riff
    use bytes, only: c
    use constants, only: audio, dp, eof, i2, i4, stderr
    use extended, only: decode, encode
-   use id3, only: read_id3, write_id3
+   use id3, only: write_id3
    implicit none
    private
 
@@ -10,10 +10,9 @@ module riff
 
 contains
 
-   subroutine read_riff(file, s, id3)
+   subroutine read_riff(file, s)
       character(*), intent(in) :: file
       type(audio), intent(out) :: s
-      logical, optional :: id3
 
       integer :: unit
       integer :: i, error
@@ -29,10 +28,6 @@ contains
       do
          read (unit, iostat=error) ckID, ckSize
          if (error .eq. eof) exit
-
-         if (present(id3)) then
-            if (id3 .and. ckID .eq. 'ID3' .or. ckID .eq. 'id3') ckID = 'ID3?'
-         end if
 
          select case (ckID)
          case ('RIFF')
@@ -58,8 +53,9 @@ contains
             read (unit) extended
             s%amplitude = decode(extended)
 
-         case ('ID3?')
-            call read_id3(unit)
+         case ('ID3 ', 'id3 ')
+            allocate(character(ckSize) :: s%meta)
+            read (unit) s%meta
 
          case default
             read (unit) (byte, i = 1, ckSize)
@@ -88,7 +84,11 @@ contains
       else
          file = filex
          appl = s%amplitude .ne. 1.0_dp
-         id3 = ''
+         if (allocated(s%meta)) then
+            id3 = s%meta
+         else
+            id3 = ''
+         end if
       end if
 
       blockAlign = 2_i2 * s%channels

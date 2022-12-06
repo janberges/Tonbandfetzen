@@ -1,6 +1,7 @@
 program inspect
    use aiff, only: read_aiff
    use constants, only: audio, stderr
+   use id3, only: read_id3
    use io, only: command_argument
    use paths, only: extension
    use riff, only: read_riff
@@ -13,15 +14,17 @@ program inspect
 
    select case (extension(path))
    case ('aiff', 'aif')
-      call read_aiff(path, s, .true.)
+      call read_aiff(path, s)
 
    case ('wave', 'wav', '')
-      call read_riff(path, s, .true.)
+      call read_riff(path, s)
 
    case default
       write (stderr, "('Error: Unknown filename extension.')")
       stop
    end select
+
+   if (allocated(s%meta)) call read_id3(s%meta)
 
    write (*, "('Number of channels: ', I0)") s%channels
    write (*, "('Number of sample points: ', I0)") s%points

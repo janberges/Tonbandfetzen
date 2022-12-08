@@ -1,0 +1,48 @@
+.\" Man page for the command tag of the Tonbandfetzen tool box
+.TH TAG 1 2010\(en2022 "Jan Berges" "Tonbandfetzen Manual"
+.SH NAME
+tag \- add ID3v2 metadata to .wav(e) files
+.SH SYNOPSIS
+.BI tag
+.RI [ datafile
+.RI [ infile
+.RI [ outfile [\fB/\fR]]]]
+.SH DESCRIPTION
+.PP
+Add metadata in the ID3v2 format to the content of
+.IR infile
+and store the result in
+.IR outfile .
+If
+.IR outfile
+is followed by a slash
+.RB ( / ) ,
+application-specific metadata is omitted.
+The IDv3 metadata is provided via a
+.IR datafile ,
+where each lines consists of an ID3 frame ID followed by a single space and the actual information, for example:
+.PP
+.RS
+.nf
+TIT2 Explosion
+TALB Kapitulation
+TPE1 Tocotronic
+TYER 2007
+.fi
+.RE
+.PP
+Currently, only text-information frames, whose frame IDs start with "T", are supported.
+Existing IDv3 metadata is overwritten.
+Filenames default to
+.BR meta.dat ,
+.BR /dev/stdin ,
+and
+.BR /dev/stdout .
+The dash
+.RB ( - )
+is a shorthand for the default value.
+If
+.IR outfile
+is followed by a slash
+.RB ( / ) ,
+application-specific metadata is omitted.

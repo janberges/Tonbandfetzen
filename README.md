@@ -16,6 +16,7 @@ music based on audio fragments generated from plain text input. It contains:
 * `inspect` - show information on audio file
 * `riff2aiff` - convert .wav(e) into .aif(f) files
 * `aiff2riff` - convert .aif(f) into .wav(e) files
+* `tag` - add ID3v2 metadata to .wav(e) files
 
 ## Usage
 

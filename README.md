@@ -12,6 +12,7 @@ music based on audio fragments generated from plain text input. It contains:
 * `stretch` - rescale audio data
 * `repeat` - loop audio data
 * `trim` - strip leading and trailing silence
+* `mono` - unzip audio channels
 * `harmonics` - show spectra of wave samples
 * `inspect` - show information on audio file
 * `riff2aiff` - convert .wav(e) into .aif(f) files

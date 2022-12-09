@@ -1,0 +1,26 @@
+.\" Man page for the command mono of the Tonbandfetzen tool box
+.TH MONO 1 2010\(en2022 "Jan Berges" "Tonbandfetzen Manual"
+.SH NAME
+mono \- unzip audio channels
+.SH SYNOPSIS
+.BI mono
+.RI [ infile
+.RI [ outfile "[\fB/\fR] ...]]"
+.SH DESCRIPTION
+.PP
+Store the audio channels in
+.IR infile
+in separate
+.IR outfile s.
+Filenames default to
+.BR /dev/stdin
+or
+.BR /dev/null .
+The dash
+.RB ( - )
+is a shorthand for the default value.
+If
+.IR outfile
+is followed by a slash
+.RB ( / ) ,
+application-specific metadata is omitted.

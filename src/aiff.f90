@@ -16,7 +16,7 @@ contains
       integer :: unit
       integer :: i, error
       character(1) :: byte
-      character(4) :: ckID, formType
+      character(4) :: ckID, formType, applicationSignature
       character(10) :: extended
       integer(i4) :: ckSize, offset, blockSize
       integer(i2) :: sampleSize
@@ -56,8 +56,14 @@ contains
             s%sound = r(s%sound)
 
          case ('APPL')
-            read (unit) extended
-            s%amplitude = decode(extended)
+            read (unit) applicationSignature
+
+            if (applicationSignature .eq. 'FETZ') then
+               read (unit) extended
+               s%amplitude = decode(extended)
+            else
+               read (unit) (byte, i = 1, ckSize - 4)
+            end if
 
          case ('ID3 ')
             allocate(character(ckSize) :: s%meta)
@@ -78,7 +84,7 @@ contains
       integer :: unit
       logical :: appl
       character(:), allocatable :: file
-      integer(i4), parameter :: commSize = 18_i4, applSize = 10_i4
+      integer(i4), parameter :: commSize = 18_i4, applSize = 14_i4
       integer(i4), parameter :: offset = 0_i4, blockSize = 0_i4
       integer(i4) :: formSize, ssndSize
       integer(i2), parameter :: sampleSize = 16_i2
@@ -115,7 +121,7 @@ contains
             c(r(s%sound))
 
          if (appl) write (*, '(*(A))', advance='no') &
-            'APPL', c(r(applSize)), encode(s%amplitude)
+            'APPL', c(r(applSize)), 'FETZ',  encode(s%amplitude)
 
          if (allocated(s%meta)) write (*, '(*(A))', advance='no') &
             'ID3 ', c(r(len(s%meta, i4))), s%meta
@@ -129,7 +135,7 @@ contains
             'SSND', r(ssndSize), r(offset), r(blockSize), &
             r(s%sound)
 
-         if (appl) write (unit) 'APPL', r(applSize), encode(s%amplitude)
+         if (appl) write (unit) 'APPL', r(applSize), 'FETZ', encode(s%amplitude)
 
          if (allocated(s%meta)) write (unit) 'ID3 ', r(len(s%meta, i4)), s%meta
 

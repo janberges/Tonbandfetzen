@@ -1,4 +1,5 @@
 .PHONY: wav mp3 clean
+.PRECIOUS: %.wav
 
 wav: freedom.wav
 mp3: freedom.mp3
@@ -16,7 +17,10 @@ clean:
 	cat $< $*.fit | mel $*.wav - $@
 
 %.wav: %.txt %.speed
-	espeak-ng -vmb-de5 -s`cat $*.speed` -f$^ -w$@
+	wget -O $@ https://janber.de/freedom/$(@F) || espeak-ng -vmb-de5 -s`cat $*.speed` -f$^ -w$@
+
+# The downloaded audio files have been recorded in 2012 using Google Translate,
+# GarageBand, and a cable connecting the headphone and microphone jacks.
 
 parts/b_hi.wav: melody/b_hi1.wav melody/b_hi1.wav melody/b_hi2.wav melody/b_hi1.wav
 	stick $+ $@

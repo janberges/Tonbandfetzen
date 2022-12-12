@@ -12,11 +12,29 @@ contains
       character(*), intent(in) :: id3
 
       integer :: i, n, flags, tagSize, frameSize
+      integer(i1) :: version, revision
+      character(3) :: tagID
       character(4) :: frameID
       character(:), allocatable :: feature, text
 
+      tagID = id3(1:3)
+
+      if (tagID .eq. 'TAG') then
+         write (stderr, "('Warning: ID3v1 not supported.')") feature
+         return
+      end if
+
+      version = ichar(id3(4:4), i1)
+      revision = ichar(id3(5:5), i1)
+
+      if (version .le. 2) then
+         write (stderr, "('Warning: ', A, 'v2.', I0, ' not supported.')") &
+            tagID, version
+         return
+      end if
+
       write (stderr, "('Metadata format: ', A, 'v2.', I0, '.', I0)") &
-         id3(1:3), ichar(id3(4:4)), ichar(id3(5:5))
+         tagID, version, revision
 
       flags = ichar(id3(6:6))
 

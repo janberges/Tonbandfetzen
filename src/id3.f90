@@ -6,8 +6,6 @@ module id3
 
    public :: read_id3, write_id3
 
-   integer, parameter :: int7max = 2 ** 7
-
 contains
 
    subroutine read_id3(id3)
@@ -145,7 +143,7 @@ contains
 
       value = 0
       do byte = 1, 4
-         value = value + ichar(code(byte:byte)) * int7max  ** (4 - byte)
+         value = value + ichar(code(byte:byte)) * 128 ** (4 - byte)
       end do
    end function decode_synchsafe
 
@@ -157,7 +155,90 @@ contains
       integer :: byte
 
       do byte = 1, 4
-         code(byte:byte) = char(modulo(value / int7max ** (4 - byte), int7max))
+         code(byte:byte) = char(modulo(value / 128 ** (4 - byte), 128))
       end do
    end function encode_synchsafe
+
+   function decode_iso8859_1(code) result(value)
+      integer, allocatable :: value(:)
+
+      character(*), intent(in) :: code
+
+      integer :: byte
+
+      allocate(value(len(code)))
+
+      do byte = 1, len(code)
+         value(byte) = ichar(code(byte:byte))
+      end do
+   end function decode_iso8859_1
+
+   function decode_utf16(code) result(value)
+      integer, allocatable :: value(:)
+
+      character(*), intent(in) :: code
+
+      integer :: c, s, v
+      logical :: be
+
+      allocate(value(len(code) / 2))
+
+      be = .true.
+
+      v = 1
+      do c = 1, len(code), 2
+         if (be) then
+            s = ichar(code(c:c)) * 256 + ichar(code(c + 1:c + 1))
+         else
+            s = ichar(code(c + 1:c + 1)) * 256 + ichar(code(c:c))
+         end if
+
+         if (s .eq. 65279) then ! FEFF (BOM)
+            continue
+         else if (s .eq. 65534) then ! FFFE (wrong BOM)
+            be = .not. be
+         else if (55296 .le. s .and. s .lt. 56320) then ! high surrogate
+            value(v) = 1024 * (s - 55296)
+         else if (56320 .le. s .and. s .lt. 57344) then ! low surrogate
+            value(v) = 65536 + s - 56320 + value(v)
+            v = v + 1
+         else ! basic multilingual plane
+            value(v) = s
+            v = v + 1
+         end if
+      end do
+
+      value = value(:v - 1)
+   end function decode_utf16
+
+   function encode_utf8(value) result(code)
+      character(:), allocatable :: code
+
+      integer, intent(in) :: value(:)
+
+      integer :: c, i, j, n, v
+
+      code = ''
+
+      do v = lbound(value, 1), ubound(value, 1)
+         if (value(v) .lt. 128) then
+            code = code // char(value(v))
+         else
+            do n = 1, 5
+               if (value(v) .lt. 64 * 32 ** n) then
+                  do i = n, 0, -1
+                     c = 128 + modulo(value(v) / 64 ** i, 64)
+                     if (i .eq. n) then
+                        do j = 1, n
+                           c = c + 128 / 2 ** n
+                        end do
+                     end if
+                     code = code // char(c)
+                  end do
+                  exit
+               end if
+            end do
+         end if
+      end do
+   end function encode_utf8
 end module id3

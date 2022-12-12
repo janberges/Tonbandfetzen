@@ -2,7 +2,7 @@ program inspect
    use aiff, only: read_aiff
    use constants, only: audio, stderr
    use id3, only: read_id3
-   use io, only: command_argument
+   use io, only: command_argument, slurp
    use paths, only: extension
    use riff, only: read_riff
    implicit none
@@ -18,6 +18,10 @@ program inspect
 
    case ('wave', 'wav', '')
       call read_riff(path, s)
+
+   case ('mp3')
+      call read_id3(slurp(path))
+      stop
 
    case default
       write (stderr, "('Error: Unknown filename extension.')")

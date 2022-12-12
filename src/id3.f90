@@ -266,7 +266,7 @@ contains
                      c = 128 + modulo(value(v) / 64 ** i, 64)
                      if (i .eq. n) then
                         do j = 1, n
-                           c = c + 128 / 2 ** n
+                           c = c + 128 / 2 ** j
                         end do
                      end if
                      code = code // char(c)

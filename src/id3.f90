@@ -11,9 +11,9 @@ contains
    subroutine read_id3(id3)
       character(*), intent(in) :: id3
 
-      integer :: i, flags, tagSize, frameSize, first
+      integer :: i, n, flags, tagSize, frameSize
       character(4) :: frameID
-      character(:), allocatable :: feature
+      character(:), allocatable :: feature, text
 
       write (stderr, "('Metadata format: ', A, 'v2.', I0, '.', I0)") &
          id3(1:3), ichar(id3(4:4)), ichar(id3(5:5))
@@ -75,16 +75,34 @@ contains
                feature = 'Artist'
             case ('TYER')
                feature = 'Year'
+            case default
+               feature = frameID
             end select
+
+            text = id3(i + 2:i + frameSize)
 
             select case (ichar(id3(i + 1:i + 1)))
-            case (0, 3) ! ISO-8859-1, UTF-8
-               first = i + 3
+            case (0) ! ISO-8859-1
+               text = encode_utf8(decode_iso8859_1(text))
             case (1, 2) ! UTF-16, UTF-16BE
-               first = i + 4
+               text = encode_utf8(decode_utf16(text))
+            case (3) ! UTF-8
+               continue
             end select
 
-            write (stderr, "(A, ': ', A)") feature, id3(first:i + frameSize)
+            do
+               n = index(text, char(0))
+
+               if (n .eq. 0) exit
+
+               if (n .eq. len(text)) then
+                  text = text(:n - 1)
+               else
+                  text = text(:n - 1) // '/' // text(n + 1:)
+               end if
+            end do
+
+            write (stderr, "(A, ': ', A)") feature, text
          end if
 
          i = i + frameSize
@@ -123,8 +141,8 @@ contains
 
             if (error .eq. eof) exit
 
-            id3 = id3 // frameID // encode_synchsafe(2 + len(trim(text))) &
-               // flags // flags // encoding // flags // trim(text)
+            id3 = id3 // frameID // encode_synchsafe(1 + len(trim(text))) &
+               // flags // flags // encoding // trim(text)
          end do
 
          close (unit)

@@ -4,8 +4,8 @@
 tag \- add ID3v2 metadata to .wav(e) files
 .SH SYNOPSIS
 .BI tag
-.RI [ datafile
 .RI [ infile
+.RI [ datafile
 .RI [ outfile [\fB/\fR]]]]
 .SH DESCRIPTION
 .PP
@@ -33,11 +33,22 @@ TYER 2007
 .PP
 Currently, only text-information frames, whose frame IDs start with "T", are supported.
 Existing IDv3 metadata is overwritten.
-Filenames default to
-.BR meta.dat ,
-.BR /dev/stdin ,
-and
-.BR /dev/stdout .
+.IR infile
+defaults to
+.BR /dev/stdin .
+If nonexistent or empty, all metadata is cleared.
+.IR datafile
+defaults to the filename stem of
+.IR infile
+with the extension
+.BR .id3 .
+.IR outfile
+defaults to
+.IR infile
+where the possible substring
+.BR stdin
+is replaced by
+.BR stdout .
 The dash
 .RB ( - )
 is a shorthand for the default value.

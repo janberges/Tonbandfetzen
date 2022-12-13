@@ -1,6 +1,5 @@
 module id3
    use constants, only: dp, eof, i1, stderr
-   use paths, only: stem
    implicit none
    private
 
@@ -166,8 +165,6 @@ contains
 
       character(*), intent(in) :: file
 
-      character(:), allocatable :: meta
-
       character(4) :: frameID
       character(256) :: text
 
@@ -179,14 +176,12 @@ contains
       integer :: unit, error
       logical :: exist
 
-      meta = stem(file) // '.meta'
-
-      inquire (file=meta, exist=exist)
+      inquire (file=file, exist=exist)
 
       id3 = ''
 
       if (exist) then
-         open (newunit=unit, file=meta, action='read', status='old')
+         open (newunit=unit, file=file, action='read', status='old')
 
          do
             read (unit, '(A4, 1X, A)', iostat=error) frameID, text

@@ -58,14 +58,14 @@ contains
 
       i = 10
 
-      tagSize = decode_synchsafe(id3(7:10))
+      tagSize = decode_size(id3(7:10))
 
       do while (i .lt. 10 + tagSize)
          if (ichar(id3(i + 1:i + 1)) .eq. 0) exit
 
          frameID = id3(i + 1:i + 4)
 
-         frameSize = decode_synchsafe(id3(i + 5:i + 8))
+         frameSize = decode_size(id3(i + 5:i + 8), synchsafe=version .eq. 4_i1)
 
          flags = ichar(id3(i + 9:i + 9))
 
@@ -137,10 +137,10 @@ contains
       character(4) :: frameID
       character(256) :: text
 
-      character(1), parameter :: version = char(4)
-      character(1), parameter :: revision = char(0)
-      character(1), parameter :: flags = char(0)
-      character(1), parameter :: encoding = char(3)
+      integer(i1), parameter :: version = 4_i1
+      integer(i1), parameter :: revision = 0_i1
+      integer(i1), parameter :: flags = 0_i1
+      integer(i1), parameter :: encoding = 3_i1
 
       integer :: unit, error
       logical :: exist
@@ -159,41 +159,56 @@ contains
 
             if (error .eq. eof) exit
 
-            id3 = id3 // frameID // encode_synchsafe(1 + len(trim(text))) &
-               // flags // flags // encoding // trim(text)
+            id3 = id3 // frameID // encode_size(1 + len(trim(text)), &
+               synchsafe=version .eq. 4_i1) // char(flags) // char(flags) &
+               // char(encoding) // trim(text)
          end do
 
          close (unit)
       end if
 
-      if (len(id3) .gt. 0) id3 = 'ID3' // version // revision &
-         // flags // encode_synchsafe(len(id3)) // id3
+      if (len(id3) .gt. 0) id3 = 'ID3' // char(version) // char(revision) &
+         // char(flags) // encode_size(len(id3)) // id3
    end function write_id3
 
-   function decode_synchsafe(code) result(value)
+   function decode_size(code, synchsafe) result(value)
       integer :: value
 
       character(*), intent(in) :: code
+      logical, intent(in), optional :: synchsafe
 
-      integer :: byte
+      integer :: byte, base
+
+      base = 256
+
+      if (present(synchsafe)) then
+         if (synchsafe) base = 128
+      end if
 
       value = 0
       do byte = 1, 4
-         value = value + ichar(code(byte:byte)) * 128 ** (4 - byte)
+         value = value + ichar(code(byte:byte)) * base ** (4 - byte)
       end do
-   end function decode_synchsafe
+   end function decode_size
 
-   function encode_synchsafe(value) result(code)
+   function encode_size(value, synchsafe) result(code)
       character(4) :: code
 
       integer, intent(in) :: value
+      logical, intent(in), optional :: synchsafe
 
-      integer :: byte
+      integer :: byte, base
+
+      base = 256
+
+      if (present(synchsafe)) then
+         if (synchsafe) base = 128
+      end if
 
       do byte = 1, 4
-         code(byte:byte) = char(modulo(value / 128 ** (4 - byte), 128))
+         code(byte:byte) = char(modulo(value / base ** (4 - byte), base))
       end do
-   end function encode_synchsafe
+   end function encode_size
 
    function decode_iso8859_1(code) result(value)
       integer, allocatable :: value(:)

@@ -7,7 +7,8 @@ mp3: game.mp3
 clean:
 	git clean -Xdf
 
-%.mp3: %.wav
+%.mp3: %.wav %.id3
+	tag $<
 	ffmpeg -y -i $< $@
 
 %.wav: def.mel %.mel end.mel %.wave

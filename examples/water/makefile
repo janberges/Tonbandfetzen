@@ -6,7 +6,8 @@ mp3: water.mp3
 clean:
 	git clean -Xdf
 
-%.mp3: %.wav
+%.mp3: %.wav %.id3
+	tag $<
 	ffmpeg -y -i $< $@
 
 %.wav: %.mel

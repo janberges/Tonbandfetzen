@@ -6,7 +6,8 @@ mp3: spiral.mp3
 clean:
 	git clean -Xdf
 
-%.mp3: %.wav
+%.mp3: %.wav %.id3
+	tag $<
 	ffmpeg -y -i $< $@
 
 %.wav: %.mel

@@ -3,7 +3,7 @@
 ! https://codersblock.com/blog/highlight-text-inside-a-textarea/
 
 program mel_dot_cgi
-   use constants, only: audio
+   use constants, only: audio, dp
    use interpreter, only: play
    use io, only: environment_variable
    use riff, only: write_riff
@@ -125,7 +125,9 @@ program mel_dot_cgi
 
       if (music%points .eq. 0) call play("$22050 |1:6 E3' C3'", music)
 
-      call write_riff('http/', music)
+      music%amplitude = 1.0_dp
+
+      call write_riff('http', music)
    end if
 
 contains

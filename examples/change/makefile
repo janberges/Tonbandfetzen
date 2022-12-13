@@ -10,7 +10,7 @@ clean:
 	ffmpeg -y -i $< $@
 
 %.wav: %.mel
-	mel $< $@/
+	mel $< $@
 
 %.mel: %.py
 	python3 $< > $@

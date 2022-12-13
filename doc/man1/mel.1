@@ -6,7 +6,7 @@ mel \- generate sound fragments from plain text
 .BI mel
 .RI [[[ wavefile " ...]"
 .IR infile ]
-.IR outfile [\fB/\fR]]
+.IR outfile ]
 .SH DESCRIPTION
 .PP
 Interpret ASCII input in
@@ -30,11 +30,6 @@ Try
 if
 .BR /dev/stdin
 is not available.
-If
-.IR outfile
-is followed by a slash
-.RB ( / ) ,
-application-specific metadata is omitted.
 .SH SYNTAX
 .IR infile
 shall contain words

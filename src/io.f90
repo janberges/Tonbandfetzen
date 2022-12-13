@@ -60,12 +60,7 @@ contains
 
          call get_command_argument(i, value=arg)
 
-         select case (arg)
-         case ('-')
-            arg = def
-         case ('-/')
-            arg = def // '/'
-         end select
+         if (arg .eq. '-') arg = def
       end if
    end function command_argument
 

@@ -34,5 +34,7 @@ program tag
 
    if (len(s%meta) .eq. 0) deallocate(s%meta)
 
+   s%amplitude = 1.0_dp
+
    call write_riff(outfile, s)
 end program tag

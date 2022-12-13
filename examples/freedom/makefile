@@ -68,4 +68,4 @@ parts/outro.wav: parts/c.wav lyrics/outro_fitted.wav
 	stack $^ $@
 
 freedom.wav: parts/intro.wav parts/verse1.wav parts/chorus.wav parts/c.wav parts/verse2.wav parts/chorus.wav parts/c.wav parts/verse3.wav parts/chorus.wav parts/outro.wav
-	stick $+ $@/
+	stick $+ $@

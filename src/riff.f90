@@ -70,25 +70,15 @@ contains
       close (unit)
    end subroutine read_riff
 
-   subroutine write_riff(filex, s)
-      character(*), intent(in) :: filex
+   subroutine write_riff(file, s)
+      character(*), intent(in) :: file
       type(audio), intent(in) :: s
 
       integer :: unit
-      logical :: appl
-      character(:), allocatable :: file
       integer(i4), parameter :: fmtSize = 16_i4, applSize = 14_i4
       integer(i4) :: riffSize, dataSize, sampleRate, byteRate
       integer(i2), parameter :: sampleSize = 16_i2, formatTag = 1_i2
       integer(i2) :: blockAlign
-
-      if (filex(len(filex):len(filex)) .eq. '/') then
-         file = filex(:len(filex) - 1)
-         appl = .false.
-      else
-         file = filex
-         appl = s%amplitude .ne. 1.0_dp
-      end if
 
       blockAlign = 2_i2 * s%channels
       sampleRate = nint(s%rate, i4)
@@ -97,7 +87,7 @@ contains
       dataSize = blockAlign * s%points
       riffSize = 4_i4 + 8_i4 + fmtSize + 8_i4 + dataSize
 
-      if (appl) riffSize = riffSize + 8_i4 + applSize
+      if (s%amplitude .ne. 1.0_dp) riffSize = riffSize + 8_i4 + applSize
 
       if (allocated(s%meta)) riffSize = riffSize + 8_i4 + len(s%meta)
 
@@ -113,7 +103,7 @@ contains
             c(sampleRate), c(byteRate), c(blockAlign), c(sampleSize), &
             'data', c(dataSize), c(s%sound)
 
-         if (appl) write (*, '(*(A))', advance='no') &
+         if (s%amplitude .ne. 1.0_dp) write (*, '(*(A))', advance='no') &
             'APPL', c(applSize), 'FETZ', encode(s%amplitude)
 
          if (allocated(s%meta)) write (*, '(*(A))', advance='no') &
@@ -127,9 +117,11 @@ contains
             sampleRate, byteRate, blockAlign, sampleSize, &
             'data', dataSize, s%sound
 
-         if (appl) write (unit) 'APPL', applSize, 'FETZ', encode(s%amplitude)
+         if (s%amplitude .ne. 1.0_dp) write (unit) &
+            'APPL', applSize, 'FETZ', encode(s%amplitude)
 
-         if (allocated(s%meta)) write (unit) 'ID3 ', len(s%meta, i4), s%meta
+         if (allocated(s%meta)) write (unit) &
+            'ID3 ', len(s%meta, i4), s%meta
 
          close (unit)
       end if

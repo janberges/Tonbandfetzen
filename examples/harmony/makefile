@@ -13,4 +13,4 @@ clean:
 	mel $< $@
 
 harmony.wav: parts/tunings.wav parts/series.wav parts/chords.wav
-	stick $+ $@/
+	stick $+ $@

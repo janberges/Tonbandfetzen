@@ -77,33 +77,23 @@ contains
       close (unit)
    end subroutine read_aiff
 
-   subroutine write_aiff(filex, s)
-      character(*), intent(in) :: filex
+   subroutine write_aiff(file, s)
+      character(*), intent(in) :: file
       type(audio), intent(in) :: s
 
       integer :: unit
-      logical :: appl
-      character(:), allocatable :: file
       integer(i4), parameter :: commSize = 18_i4, applSize = 14_i4
       integer(i4), parameter :: offset = 0_i4, blockSize = 0_i4
       integer(i4) :: formSize, ssndSize
       integer(i2), parameter :: sampleSize = 16_i2
       integer(i2) :: blockAlign
 
-      if (filex(len(filex):len(filex)) .eq. '/') then
-         file = filex(:len(filex) - 1)
-         appl = .false.
-      else
-         file = filex
-         appl = s%amplitude .ne. 1.0_dp
-      end if
-
       blockAlign = 2_i2 * s%channels
 
       ssndSize = 8_i4 + blockAlign * s%points
       formSize = 4_i4 + 8_i4 + commSize + 8_i4 + ssndSize
 
-      if (appl) formSize = formSize + 8_i4 + applSize
+      if (s%amplitude .ne. 1.0_dp) formSize = formSize + 8_i4 + applSize
 
       if (allocated(s%meta)) formSize = formSize + 8_i4 + len(s%meta)
 
@@ -120,7 +110,7 @@ contains
             'SSND', c(r(ssndSize)), c(r(offset)), c(r(blockSize)), &
             c(r(s%sound))
 
-         if (appl) write (*, '(*(A))', advance='no') &
+         if (s%amplitude .ne. 1.0_dp) write (*, '(*(A))', advance='no') &
             'APPL', c(r(applSize)), 'FETZ',  encode(s%amplitude)
 
          if (allocated(s%meta)) write (*, '(*(A))', advance='no') &
@@ -135,9 +125,11 @@ contains
             'SSND', r(ssndSize), r(offset), r(blockSize), &
             r(s%sound)
 
-         if (appl) write (unit) 'APPL', r(applSize), 'FETZ', encode(s%amplitude)
+         if (s%amplitude .ne. 1.0_dp) write (unit) &
+            'APPL', r(applSize), 'FETZ', encode(s%amplitude)
 
-         if (allocated(s%meta)) write (unit) 'ID3 ', r(len(s%meta, i4)), s%meta
+         if (allocated(s%meta)) write (unit) &
+            'ID3 ', r(len(s%meta, i4)), s%meta
 
          close (unit)
       end if

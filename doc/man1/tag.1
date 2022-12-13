@@ -6,18 +6,13 @@ tag \- add ID3v2 metadata to .wav(e) files
 .BI tag
 .RI [ infile
 .RI [ datafile
-.RI [ outfile [\fB/\fR]]]]
+.RI [ outfile ]]]
 .SH DESCRIPTION
 .PP
 Add metadata in the ID3v2 format to the content of
 .IR infile
 and store the result in
 .IR outfile .
-If
-.IR outfile
-is followed by a slash
-.RB ( / ) ,
-application-specific metadata is omitted.
 The IDv3 metadata is provided via a UTF-8-encoded
 .IR datafile ,
 where each lines consists of an ID3 frame ID followed by a single space and the actual information, for example:
@@ -33,6 +28,9 @@ TYER 2007
 .PP
 Currently, only text-information frames, whose frame IDs start with "T", are supported.
 Existing IDv3 metadata is overwritten.
+Tonbandfetzen metadata, namely the amplitude stored in the application-specific
+.BR APPL
+chunk, is cleared.
 .IR infile
 defaults to
 .BR /dev/stdin .
@@ -52,8 +50,3 @@ is replaced by
 The dash
 .RB ( - )
 is a shorthand for the default value.
-If
-.IR outfile
-is followed by a slash
-.RB ( / ) ,
-application-specific metadata is omitted.

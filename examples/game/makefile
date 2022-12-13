@@ -20,4 +20,4 @@ clean:
 	guitar $< $@
 
 game.wav: parts/part1.wav parts/part2.wav parts/part3.wav parts/part3.wav parts/part4.wav
-	stick $+ $@/
+	stick $+ $@

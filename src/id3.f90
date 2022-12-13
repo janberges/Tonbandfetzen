@@ -65,6 +65,45 @@ contains
 
          frameID = id3(i + 1:i + 4)
 
+         select case (frameID)
+         case ('APIC')
+            feature = 'picture'
+         case ('COMM')
+            feature = 'comment'
+         case ('PRIV')
+            feature = 'private'
+         case ('TALB')
+            feature = 'album'
+         case ('TCOM')
+            feature = 'composer'
+         case ('TCON')
+            feature = 'genre'
+         case ('TCOP')
+            feature = 'copyright'
+         case ('TENC')
+            feature = 'encoded by'
+         case ('TIT2')
+            feature = 'title'
+         case ('TLEN')
+            feature = 'duration/ms'
+         case ('TOPE')
+            feature = 'original artist'
+         case ('TPE1')
+            feature = 'artist'
+         case ('TPE2')
+            feature = 'album artist'
+         case ('TPOS')
+            feature = 'disc number'
+         case ('TRCK')
+            feature = 'track number'
+         case ('TYER')
+            feature = 'year'
+         case ('WAAA':'WXXX')
+            feature = 'website'
+         case default
+            feature = 'unknown'
+         end select
+
          frameSize = decode_size(id3(i + 5:i + 8), synchsafe=version .eq. 4_i1)
 
          flags = ichar(id3(i + 9:i + 9))
@@ -84,19 +123,6 @@ contains
          i = i + 10
 
          if (frameID(1:1) .eq. 'T') then
-            select case (frameID)
-            case ('TIT2')
-               feature = 'Title'
-            case ('TALB')
-               feature = 'Album'
-            case ('TPE1')
-               feature = 'Artist'
-            case ('TYER')
-               feature = 'Year'
-            case default
-               feature = frameID
-            end select
-
             text = id3(i + 2:i + frameSize)
 
             select case (ichar(id3(i + 1:i + 1)))
@@ -119,8 +145,16 @@ contains
                   text = text(:n - 1) // '/' // text(n + 1:)
                end if
             end do
+         else
+            text = repeat(' ', 64)
+            write (text, "(I0, ' bytes')") frameSize
+            text = trim(text)
+         end if
 
-            write (stderr, "(A, ': ', A)") feature, text
+         if (feature .ne. 'unknown') then
+            write (stderr, "(A, ' (', A, '): ', A)") frameID, feature, text
+         else
+            write (stderr, "(A, ': ', A)") frameID, text
          end if
 
          i = i + frameSize

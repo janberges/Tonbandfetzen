@@ -13,13 +13,13 @@ program inspect
    path = command_argument(1, '/dev/stdin')
 
    select case (extension(path))
-   case ('aiff', 'aif')
+   case ('aiff', 'aif', 'AIFF', 'AIF')
       call read_aiff(path, s)
 
-   case ('wave', 'wav', '')
+   case ('wave', 'wav', 'WAVE', 'WAV', '')
       call read_riff(path, s)
 
-   case ('mp3')
+   case ('mp3', 'MP3')
       call read_id3(slurp(path))
       stop
 

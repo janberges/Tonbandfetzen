@@ -208,10 +208,10 @@ contains
 
       integer :: byte, base
 
-      base = 256
+      base = 128
 
       if (present(synchsafe)) then
-         if (synchsafe) base = 128
+         if (.not. synchsafe) base = 256
       end if
 
       value = 0
@@ -228,10 +228,10 @@ contains
 
       integer :: byte, base
 
-      base = 256
+      base = 128
 
       if (present(synchsafe)) then
-         if (synchsafe) base = 128
+         if (.not. synchsafe) base = 256
       end if
 
       do byte = 1, 4

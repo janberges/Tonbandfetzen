@@ -6,9 +6,12 @@ mp3: spiral.mp3
 clean:
 	git clean -Xdf
 
-%.mp3: %.wav %.id3
+%.mp3: %.wav %.id3 ../../logo/logo.png
 	tag $<
 	ffmpeg -y -i $< $@
+
+%.png: %.tex
+	cd $(@D) && ./logo.sh
 
 %.wav: %.mel
 	mel $< $@

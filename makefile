@@ -53,7 +53,7 @@ build/cgi.o: build/constants.o build/interpreter.o build/io.o build/riff.o
 build/extended.o: build/constants.o
 build/fjs.o: build/constants.o
 build/harmonics.o: build/constants.o build/io.o build/samples.o build/spectra.o
-build/id3.o: build/constants.o
+build/id3.o: build/constants.o build/io.o build/paths.o
 build/inspect.o: build/aiff.o build/constants.o build/id3.o build/io.o build/paths.o build/riff.o
 build/interpreter.o: build/constants.o build/fjs.o build/io.o build/lcg.o build/rationals.o build/riff.o build/samples.o build/search.o
 build/intervals.o: build/constants.o

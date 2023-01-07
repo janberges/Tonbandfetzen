@@ -7,9 +7,12 @@ mp3: mute.mp3
 clean:
 	git clean -Xdf
 
-%.mp3: %.wav %.id3
+%.mp3: %.wav %.id3 ../../logo/logo.png
 	tag $<
 	ffmpeg -y -i $< $@
+
+%.png: %.tex
+	cd $(@D) && ./logo.sh
 
 %.wav: def.mel %.mel end.mel
 	cat $^ | mel $@

@@ -1,5 +1,7 @@
 module id3
    use constants, only: dp, eof, i1, stderr
+   use io, only: slurp
+   use paths, only: extension
    implicit none
    private
 
@@ -166,7 +168,8 @@ contains
       character(*), intent(in) :: file
 
       character(4) :: frameID
-      character(256) :: text
+      character(256) :: buffer
+      character(:), allocatable :: text, mime
 
       integer(i1), parameter :: version = 4_i1
       integer(i1), parameter :: revision = 0_i1
@@ -184,13 +187,37 @@ contains
          open (newunit=unit, file=file, action='read', status='old')
 
          do
-            read (unit, '(A4, 1X, A)', iostat=error) frameID, text
+            read (unit, '(A4, 1X, A)', iostat=error) frameID, buffer
+            text = trim(buffer)
 
             if (error .eq. eof) exit
 
-            id3 = id3 // frameID // encode_size(1 + len(trim(text)), &
+            if (frameID .eq. 'APIC') then
+               select case(extension(text))
+               case ('jpeg', 'jpg', 'JPEG', 'JPG')
+                  mime = 'image/jpeg'
+               case ('png', 'PNG')
+                  mime = 'image/png'
+               case ('svg', 'SVG')
+                  mime = 'image/svg+xml'
+               case ('tiff', 'tif', 'TIFF', 'TIF')
+                  mime = 'image/tiff'
+               case ('gif', 'GIF')
+                  mime = 'image/gif'
+               case ('bmp', 'BMP')
+                  mime = 'image/bmp'
+               end select
+
+               text = mime // char(0) // char(3) // 'cover' // char(0) &
+                  // slurp(text)
+            else if (frameID(1:1) .ne. 'T') then
+               write (stderr, "('Warning: ', A, ' not supported.')") frameID
+               continue
+            end if
+
+            id3 = id3 // frameID // encode_size(1 + len(text), &
                synchsafe=version .eq. 4_i1) // char(flags) // char(flags) &
-               // char(encoding) // trim(text)
+               // char(encoding) // text
          end do
 
          close (unit)

@@ -21,7 +21,7 @@ clean:
 	cat $< $*.fit | mel $*.wav - $@
 
 %.wav: %.txt %.speed
-	wget -O $@ https://janber.de/freedom/$(@F) || espeak-ng -vmb-de5 -s`cat $*.speed` -f$^ -w$@
+	wget -O $@ https://janberges.de/freedom/$(@F) || espeak-ng -vmb-de5 -s`cat $*.speed` -f$^ -w$@
 
 # The downloaded audio files have been recorded in 2012 using Google Translate,
 # GarageBand, and a cable connecting the headphone and microphone jacks.

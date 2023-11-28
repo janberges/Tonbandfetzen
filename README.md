@@ -1,4 +1,4 @@
-![Tonbandfetzen logo](logo/logo.svg)
+![Tonbandfetzen logo](logo/Tonbandfetzen.svg)
 
 # Tonbandfetzen
 

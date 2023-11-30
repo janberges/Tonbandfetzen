@@ -18,7 +18,7 @@ program mel_dot_cgi
       code = 'https://github.com/janberges/Tonbandfetzen', &
       docu = 'https://janberges.github.io/Tonbandfetzen/mel.html', &
       logo = 'https://raw.githubusercontent.com/janberges/&
-         &Tonbandfetzen/master/logo/logo.svg', &
+         &Tonbandfetzen/master/logo/Tonbandfetzen.svg', &
       gpl3 = 'magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&
          &&dn=gpl-3.0.txt'
 

@@ -7,12 +7,12 @@ mp3: freedom.mp3
 clean:
 	git clean -Xdf
 
-%.mp3: %.wav %.id3 ../../logo/logo.png
+%.mp3: %.wav %.id3 ../../logo/Tonbandfetzen.png
 	tag $<
 	ffmpeg -y -i $< $@
 
 %.png: %.tex
-	cd $(@D) && ./logo.sh
+	$(MAKE) -C $(@D)
 
 %.wav: def.mel %.mel
 	cat $^ | mel $@

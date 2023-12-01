@@ -9,11 +9,11 @@ all: Tonbandfetzen.png Tonbandfetzen_banner.png
 	pdflatex --interaction=batchmode $*
 
 Tonbandfetzen.png: Tonbandfetzen.pdf
-	convert -density `perl -e "print 640 / ($(a) / $(in))"` $< \
+	convert -density `perl -e "print 399.99 / $(a) * $(in)"` $< \
         -flatten PNG8:$@
 
 Tonbandfetzen_banner.png: Tonbandfetzen.pdf
-	convert -density `perl -e "print 480 / ($(a) / $(in))"` $< \
+	convert -density `perl -e "print 479.99 / $(a) * $(in)"` $< \
         -gravity center -extent 1280x640 PNG8:$@
 
 clean:

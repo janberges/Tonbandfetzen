@@ -9,8 +9,8 @@ all: Tonbandfetzen.png Tonbandfetzen_banner.png
 	pdflatex --interaction=batchmode $*
 
 Tonbandfetzen.png: Tonbandfetzen.pdf
-	convert -density `perl -e "print 399.99 / $(a) * $(in)"` $< \
-        -flatten PNG8:$@
+	convert -density `perl -e "print 399.99 / $(a) * $(in)"` $< -flatten PNG8:$@
+	python3 -c "import storylines; storylines.save('$@', storylines.load('$@'))"
 
 Tonbandfetzen_banner.png: Tonbandfetzen.pdf
 	convert -density `perl -e "print 479.99 / $(a) * $(in)"` $< \

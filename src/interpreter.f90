@@ -677,6 +677,8 @@ contains
             if (known(i)) then
                j = int(n(1.0_dp))
 
+               if (j .eq. 0) j = i2max
+
                call get(k)
 
                if (k .lt. j) then

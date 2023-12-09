@@ -37,7 +37,7 @@ contains
 
       integer :: t ! rounded time
       integer :: c ! continuance
-      integer :: p ! processed time
+      integer :: p ! processed time (plus command count)
       integer :: d ! note duration
 
       integer :: tmin, tmax, cmax ! extreme times
@@ -184,6 +184,12 @@ contains
             call routine_cases
             if (over) exit
          end select
+
+         p = p + 1
+
+         if (present(limit)) then
+            if (p .gt. limit) exit
+         end if
       end do
 
       allocate(phi(cmax))

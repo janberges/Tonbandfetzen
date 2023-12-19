@@ -7,12 +7,9 @@ mp3: game.mp3
 clean:
 	git clean -Xdf
 
-%.mp3: %.wav %.id3 ../../logo/Tonbandfetzen.png
+%.mp3: %.wav %.id3
 	tag $<
 	ffmpeg -y -i $< $@
-
-%.png: %.tex
-	$(MAKE) -C $(@D)
 
 %.wav: def.mel %.mel end.mel %.wave
 	cat def.mel $*.mel end.mel | mel $*.wave - $@

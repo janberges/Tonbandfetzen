@@ -1,6 +1,0 @@
-$44100 O2 |1:4 T just A
-
-~ power 1
-N smooth 1:20
-
-M B3 '20 W [10 D4 '20 W ]10 F#4 '20

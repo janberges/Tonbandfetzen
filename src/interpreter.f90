@@ -67,6 +67,9 @@ contains
       real(dp) :: rb ! r(t + b) / r(t)
       real(dp) :: r1 ! r(t + 1) / r(t)
 
+      logical :: loudness ! boost low frequencies?
+      real(dp) :: boost ! amplitude scaling factor
+
       real(dp) :: phase ! turn = 1
 
       integer :: i, j, k ! arbitrary integers/indices
@@ -231,6 +234,8 @@ contains
       rd = 1.0_dp
       rb = 1.0_dp
 
+      loudness = .false.
+
       phase = 0.0_dp
 
       x = 0.0_dp
@@ -297,6 +302,9 @@ contains
             word = next(lexical)
 
             select case (word)
+            case ('loudness')
+               loudness = n(1.0_dp) .ne. 0
+
             case ('status')
                write (stderr, "(*(A10, ':', F16.9, 1X, A, :, /))") &
                   'Time', t / s, 's', &
@@ -564,10 +572,16 @@ contains
             r1 = rd ** (1.0_dp / d) * rb ** (1.0_dp / b)
             rd = 1.0_dp
 
+            if (loudness) then
+               boost = A4 / f
+            else
+               boost = 1.0_dp
+            end if
+
             do i = c + 1, c + d
                phase = phase - floor(phase)
 
-               rho(i) = a * wave(floor(size(wave) * phase))
+               rho(i) = a * boost * wave(floor(size(wave) * phase))
                phi(i) = atan(r)
 
                phase = phase + f

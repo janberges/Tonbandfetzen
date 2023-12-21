@@ -34,6 +34,7 @@ represents one bar/measure.
 Here, the commands
 .RI \fB|\fR n ,
 .RI \fB\-\fR n ,
+.RI \fBX\fR w [...],
 and
 .RI \fB\(ti\fR w [ n ]
 cannot be applied as usual and the
@@ -46,8 +47,10 @@ The bar duration, defined beforehand via the
 command, is evenly distributed among the enclosed characters.
 The hyphen-minus
 .RB ( - )
-represents a string at rest (a pause); the tilde
-.RB ( \(ti ),
+and
+.BR X
+represent a string at rest and a muted string (a pause); the tilde
+.RB ( \(ti )
 represents a vibrating string (sound is played), just like all other characters, beyond their usual meanings.
 Lines with tablature that are not separated by an empty line start at the same point in time.
 This is realized via the

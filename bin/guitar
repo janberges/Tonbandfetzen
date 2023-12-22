@@ -29,9 +29,9 @@ with open(infile, 'r') as gtr, open(outfile, 'w') as mel:
                 mel.write('W0')
 
             for block in line.split('|'):
-                block = re.sub('X', '-', block)
-
                 if re.search(r'[-~]', block):
+                    block = re.sub('X', '-', block)
+
                     block = re.sub(r'[^-~]+', lambda match:
                         match.group() + '~' * len(match.group()), block)
 

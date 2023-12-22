@@ -32,11 +32,16 @@ or tilde
 .RB ( \(ti ),
 represents one bar/measure.
 Here, the commands
+.RI \fB\(ti\fR w [ n ],
 .RI \fB|\fR n ,
 .RI \fB\-\fR n ,
-.RI \fBX\fR w [...],
+.RI \fB+\fR n ,
+.RI \fB\e\fR n ,
+.RI \fB/\fR n ,
+.RI \fB_\fR n ,
+.RI \fB\(ha\fR n ,
 and
-.RI \fB\(ti\fR w [ n ]
+.RI \fBX\fR w [...]
 cannot be applied as usual and the
 .BR U
 of the
@@ -46,12 +51,22 @@ The bar duration, defined beforehand via the
 .BI | n
 command, is evenly distributed among the enclosed characters.
 The hyphen-minus
-.RB ( - )
-and
+.RB ( - ),
+the plus sign
+.RB ( + ),
+and the uppercase
 .BR X
-represent a string at rest and a muted string (a pause); the tilde
-.RB ( \(ti )
-represents a vibrating string (sound is played), just like all other characters, beyond their usual meanings.
+represent a string at rest (a pause); the tilde
+.RB ( \(ti ),
+the backslash
+.RB ( \e ),
+the slash
+.RB ( / ),
+the underscore
+.RB ( _ ),
+and the caret
+.BR ( \(ha )
+represent a vibrating string (sound is played), just like all other characters, beyond their usual meanings.
 Lines with tablature that are not separated by an empty line start at the same point in time.
 This is realized via the
 .BR M0

@@ -219,7 +219,7 @@ if (@i) {
 	}
 
 print "
-		<form action='$ENV{SCRIPT_NAME}' method='post' accept-charset='utf-8'>
+		<form action='' method='post' accept-charset='utf-8'>
 			<textarea name='I' cols='101' rows='27'>", $I || "4410\n\nsin(x); 0; 2pi; s/4\nsin(x)^2; 0; pi/2; 75ms\n\n&1^2\$2&1^2$2|C2[30/60}60~~\\60{60~~~~~~~|", "</textarea><br>
 			<input type='submit'>
 		</form>

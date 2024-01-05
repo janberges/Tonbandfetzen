@@ -1,5 +1,7 @@
 #!/usr/bin/perl
 
+BEGIN { chdir $0 =~ s|[^/]*$||r }
+
 use Tonbandfetzen;
 
 use CGI;

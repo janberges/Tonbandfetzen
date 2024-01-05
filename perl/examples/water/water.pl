@@ -4,9 +4,6 @@ BEGIN { chdir $0 =~ s|[^/]*$||r }
 
 use Tonbandfetzen;
 
-$0 =~ /(.+)\//;
-chdir $1;
-
 $T = $s / 4;
 $ms = $s / 1000;
 

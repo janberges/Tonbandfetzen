@@ -10,13 +10,13 @@
 
 \begin{document}
 	\maketitle
-	
+
 	\section*{Outline}
-	
+
 	The perl module {\it Tonbandfetzen} helps create audio data from plain text input, modify and arrange it and handle the {\it Audio Interchange File Format}.
-	
+
 	\section*{Global variables}
-	
+
 	There are several global variables ($\rightarrow$ table \ref{variables}) reserved for the information which is necessary to make the module collaborate with the main script.
 	\begin{table}[H]
 		\centering
@@ -37,29 +37,29 @@
 		\caption{global variables}
 		\label{variables}
 	\end{table}
-	
+
 	\section*{Audio data}
-	
+
 	Audio data is stored in one-dimensional arrays which are sorted chronologically and subordinately by channel according to the {\it Audio Interchange File Format}. Except for \verb|@p|, \verb|@a| and \verb|@z|, data transfer works via references.
-	
+
 	\section*{Subroutines}
-	
+
 	\subsection*{make}
-	
+
 	\begin{verbatim}
 		make 'name.aif', fix $data
 	\end{verbatim}
 	\verb|make| saves data with respect to \verb|$B|, \verb|$C| and \verb|$s|.
-	
+
 	\subsection*{take}
-	
+
 	\begin{verbatim}
 		$data = take 'name.aif'
 	\end{verbatim}
 	\verb|take| reads data and sets \verb|$B|, \verb|$C| and \verb|$s| accordingly.
-	
+
 	\subsection*{mel}
-	
+
 	\begin{verbatim}
 		$theme = mel 'F#2 1 = 1 = 1 -4 3:4 +3 1:4 + 1 -4 3:4 +3 1:4 + 2'
 	\end{verbatim}
@@ -79,47 +79,47 @@
 		\caption{signs}
 		\label{signs}
 	\end{table}
-	
+
 	\subsection*{stack}
-	
+
 	\begin{verbatim}
 		$band = stack $vocals, $guitar, $bass, $drums
 	\end{verbatim}
 	\verb|stack| superposes data, whereby shorter data is repeated.
-	
+
 	\subsection*{stick}
-	
+
 	\begin{verbatim}
 		$song = stick $intro, $verse1, $chorus, $verse2, $chorus, $outro
 	\end{verbatim}
 	\verb|stick| juxtaposes data.
-	
+
 	\subsection*{fit}
-	
+
 	\verb|fit($a, $t)| returns data \verb|$a| scaled to duration \verb|$t| or \verb|$T| with respect to \verb|$C|.
-	
+
 	\subsection*{fix}
-	
+
 	\verb|fix($a, $y)| returns data \verb|$a| scaled to amplitude \verb|$y| or maximizes it for \verb|out| with respect to \verb|$B|. The original data is changed.
-	
+
 	\subsection*{cut}
-	
+
 	\verb|cut($a)| returns data \verb|$a| without leading or trailing zero blocks of length \verb|$C|.
-	
+
 	\subsection*{in}
-	
+
 	\begin{verbatim}
 		@p = map { sin($_)      } in 0, $pi * 2;
 		@a = map { sin($_) ** 2 } in 0, $pi / 2, $s / 20;
 		@z = @a
 	\end{verbatim}
 	\verb|in($a, $b, $n)| returns an array of \verb|$n| or \verb|$s| equidistant numbers from \verb|$a| exclusively to \verb|$b| inclusively.
-	
-	\subsection*{noise}	
-	
+
+	\subsection*{noise}
+
 	\verb|noise($f, $i, $n, $t)| returns noise data of duration \verb|$t| or \verb|$s| that contains \verb|$n| or a hundred frequencies lying inside a range over \verb|$i| half tones or one octave centered geometrically around a given \verb|$f| or the standard pitch.
-	
+
 	\subsection*{ext/rex}
-	
+
 	\verb|ext($n)| returns the {\it 80 bit IEEE Standard 754} representation of the number \verb|$n|, \verb|rex| vice versa.
 \end{document}

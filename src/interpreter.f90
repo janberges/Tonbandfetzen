@@ -404,6 +404,8 @@ contains
             steps = nint(n())
 
          case ('C', 'D', 'E', 'F', 'G', 'A', 'B', 'U', 'V')
+            fi = f ! remember current frequency
+
             f = A4
 
             if (index('UV', symbol) .ne. 0) then
@@ -483,7 +485,8 @@ contains
                tone = j
 
                if (word .eq. 'none') then
-                  j = 4
+                  j = 4 + nint(log(fi / f) / log(2.0_dp))
+
                   keynote = i
                else
                   j = nint(rational(word))

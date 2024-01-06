@@ -30,8 +30,8 @@ with open(infile, 'r') as gtr, open(outfile, 'w') as mel:
 
             for block in line.split('|'):
                 if re.search(r'[-~]', block):
-                    block = re.sub(r'[+X]', '-', block)
-                    block = re.sub(r'[\\/_^]', '~', block)
+                    block = re.sub(r'X', '-', block)
+                    block = re.sub(r'[SZNT]', '~', block)
 
                     block = re.sub(r'[^-~]+', lambda match:
                         match.group() + '~' * len(match.group()), block)

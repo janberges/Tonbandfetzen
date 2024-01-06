@@ -1,0 +1,9 @@
+#!/bin/bash
+
+infile=${1:--}
+outfile=${2:--}
+
+test "$infile" = - && infile=/dev/stdin
+test "$outfile" = - && outfile=/dev/shm/tmp.wav
+
+guitar "$infile" | mel > "$outfile" && xdg-open "$outfile"

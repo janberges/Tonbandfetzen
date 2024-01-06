@@ -1,0 +1,28 @@
+.\" Man page for the command guitar of the Tonbandfetzen tool box
+.TH ZPLAY 1 2010\(en2023 "Jan Berges" "Tonbandfetzen Manual"
+.SH NAME
+zplay \- generate and play sound fragments
+.SH SYNOPSIS
+.BI zplay
+.RI [ infile
+.RI [ outfile ]]
+.SH DESCRIPTION
+.PP
+Interpret ASCII input in
+.IR infile
+using
+.BR guitar
+and
+.BR mel ,
+save it to
+.IR outfile
+in the WAVE format, and play it using
+.BR xdg-open .
+This is a simple wrapper script added for convenience.
+Filenames default to
+.BR /dev/stdin
+or
+.BR /dev/shm/tmp.wav .
+The dash
+.RB ( - )
+is a shorthand for the default value.

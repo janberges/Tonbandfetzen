@@ -1,0 +1,152 @@
+\documentclass[a4paper, 10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath, amsfonts, amssymb}
+\usepackage{here}
+
+\title{\itshape \ttfamily Tonbandfetzen}
+\author{Jan Berges}
+\date{August 15, 2013}
+
+\begin{document}
+	\maketitle
+
+	\section{About}
+
+	The perl module {\it Tonbandfetzen} helps create audio data from plain text input, modify and combine it and handle the {\it Audio Interchange File Format}.
+
+	\section{Global variables}
+
+	There are several global variables ($\rightarrow$ table \ref{variables}) reserved for the information which is necessary to make the module collaborate with the main script.
+	\begin{table}[H]
+		\centering
+		\begin{tabular}
+		    { r            c                     l }
+			{\bf Variable} & {\bf Initial value} & {\bf Meaning}                  \\
+			{\tt \$s}      & 44100               & Second/{\it sampleRate}        \\
+			{\tt \$c}      & 2                   & {\it numChannels}              \\
+			{\tt \$b}      & 16                  & {\it sampleSize} (8, 16 or 32) \\
+			{\tt \$T}      & {\tt \$s}/2         & Beat duration                  \\
+			{\tt \$A4}     & 440/{\tt \$s}       & Standard pitch                 \\
+			{\tt \$pi}     & $\pi$               &                                \\
+			{\tt @p}       & (Mono               & Single wave                    \\
+			{\tt @a}       & audio               & Attack envelope                \\
+			{\tt @z}       & data)               & Reversed release envelope
+		\end{tabular}
+		\caption{Global variables}
+		\label{variables}
+	\end{table}
+
+	\section{Audio data}
+
+	Audio data is stored in one-dimensional arrays which are sorted chronologically and subordinately by channel according to the {\it Audio Interchange File Format}. Except for \texttt{@p}, \texttt{@a} and \texttt{@z}, data transfer works via references.
+
+	\section{Main subroutines}
+
+	\subsection{in}
+
+	\begin{center} \ttfamily
+		\$data = in "song.aif"
+	\end{center}
+	\texttt{in(\textit{name})} returns the audio data stored in the \textit{Audio Interchange File} \texttt{\textit{name}} and sets \texttt{\$s}, \texttt{\$c} and \texttt{\$b} accordingly.
+
+	\subsection{out}
+
+	\begin{center} \ttfamily
+		out "song.aif", \$data
+	\end{center}
+	\texttt{out(\textit{name}, \textit{data})} writes \texttt{\textit{data}} into the \textit{Audio Interchange File} \texttt{\textit{name}} with respect to \texttt{\$s}, \texttt{\$c} and \texttt{\$b}.
+
+	\subsection{mel}
+
+	\begin{center} \ttfamily
+		\$theme = mel 'F\#2 1 + 1 + 1 -4 3:4 +3 1:4 + 1 -4 3:4 +3 1:4 + 2'
+	\end{center}
+	\texttt{mel(\textit{cmd})} creates two-channel audio data from a textual command sequence \texttt{cmd} using the samples \texttt{@p}, \texttt{@a} and \texttt{@z}. The commands are separated by white space and usually feature a special sign ($\rightarrow$ table \ref{signs}), that not only defines the meaning but also the mathematical sign of the accompanying number, which may contain the decimal point and one dividing colon and be omitted if zero. The processing of a defined tone is initiated by the duration command, which lacks a sign, unless it indicates pauses (\texttt{\textbf{*}}) or repeated stimuli ($\texttt{\textbf{=}}$). All other commands hold until they are overwritten. Frequencies may also be declared via scientific pitch notation (\texttt{B3}, \texttt{C4}, \texttt{C\#4}). Eventually \texttt{\$c} is set to two.
+	\begin{table}[H]
+		\centering
+		\begin{tabular}
+			{ l            l                                    l            c               c                c }
+			{\bf Quantity} & {\bf Formula}                      & {\bf Unit} & {\bf Attack} & {\bf Shift}/$t$ & {\bf Shift}/{\tt \$s} \\
+			Duration       & $t$                                & {\tt \$T}  &              &                 &                       \\
+			Frequency      & $f = f_0$                          & Hz         & {\tt \~{}}   &                 &                       \\
+			Interval       & $\operatorname{lb} \frac f {f_0}$  & Half tone  & {\tt - +}    & $\backslash /$  & {\tt \_ \^{}}         \\
+			Level          & $\lg \frac{\sqrt{L^2 + R^2}}{y_0}$ & dB         & {\tt ? !}    & {\tt > <}       & {\tt , ;}             \\
+			Level diff.    & $\lg \frac R L$                    & dB         & {\tt [ ]}    & {\tt ( )}       & {\tt \{ \}}
+		\end{tabular}
+		\caption{Signs used in \texttt{cmd}}
+		\label{signs}
+	\end{table}
+
+	\subsection{stack}
+
+	\begin{center} \ttfamily
+		\$band = stack \$vocals, \$guitar, \$bass, \$drums
+	\end{center}
+	\texttt{stack(\textit{several data})} returns the superposition of \texttt{\textit{several data}} whereby shorter data is repeated.
+
+	\subsection{stick}
+
+	\begin{center} \ttfamily
+		\$song = stick \$intro, \$verse1, \$chorus, \$verse2, \$chorus, \$outro
+	\end{center}
+	\texttt{stick(\textit{several data})} returns the juxtaposition of \texttt{\textit{several data}}.
+
+	\subsection{fit}
+
+	\begin{center} \ttfamily
+		\$sound = fit \$rec, \$T
+	\end{center}
+	\texttt{fit(\textit{data}, \textit{dur})} returns \texttt{\textit{data}} scaled to duration \texttt{\textit{dur}} with respect to \texttt{\$c}.
+
+	\subsection{fix}
+
+	\begin{center} \ttfamily
+		out "song.aif", fix \$song
+	\end{center}
+	\texttt{fix(\textit{data}, \textit{max})} returns \texttt{\textit{data}} scaled to desired maximum displacement \texttt{\textit{max}} or maximizes it for \texttt{out} with respect to \texttt{\$b}, whereby the original data is changed.
+
+	\subsection{cut}
+
+	\begin{center} \ttfamily
+		\$voice = cut \$recording
+	\end{center}
+	\texttt{cut(\textit{data})} returns \texttt{\textit{data}} without leading or trailing zero blocks of length \texttt{\$c}.
+
+	\subsection{samp}
+
+	\begin{center} \ttfamily
+		\begin{tabular}{l}
+			@p = samp "circ";              \\
+			@a = samp "harfade", \$s / 40; \\
+			@z = @a
+		\end{tabular}
+	\end{center}
+	\texttt{samp(\textit{name}, \textit{length})} provides some samples for \texttt{@p}, \texttt{@a} and \texttt{@z} of duration \texttt{\textit{length}} or \texttt{\$s}. \texttt{\textit{name}} may be \texttt{har}, \texttt{har3}, \texttt{lin}, \texttt{cub} or \texttt{circ} for \texttt{@p} and \texttt{linfade}, \texttt{sinfade}, \texttt{harfade} or \texttt{cubfade} for \texttt{@a} and \texttt{@z}.
+
+	\subsection{range}
+
+	\begin{center} \ttfamily
+		@p = map sin \$\_, range 0, 2 * \$pi
+	\end{center}
+	\texttt{range(\textit{min}, \textit{max}, \textit{length})} returns an array of \texttt{\textit{length}} or \texttt{\$s} equidistant numbers from \texttt{\textit{min}} to \texttt{\textit{max}}.
+
+	\section{Mathematical functions}
+
+	\subsection{floor/round/ceil}
+
+	\begin{center} \ttfamily
+		\$price = round \$price, 0.01
+	\end{center}
+	\texttt{round(\textit{num}, \textit{prec})} returns the multiple of \texttt{\textit{prec}} or the integer closest to \texttt{\textit{num}}.
+
+	\subsection{tan/cot/arctan/arccot/arcsin/arccos/sgn/hea}
+
+	Trigonometric functions may be useful for wave calculation, \texttt{sgn} is the sign, \texttt{hea} the Heaviside function.
+
+	\section{Other subroutines}
+
+	\subsection{ext/rex}
+
+	\texttt{ext(\textit{num})} returns the binary {\it 80 bit IEEE Standard 754} -- i.e. \textit{extended} -- representation of the floating point number \texttt{num} whereas \texttt{rex(\textit{bin})} returns the decimal value of the \textit{extended} \texttt{\textit{bin}}.
+\end{document}

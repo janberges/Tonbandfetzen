@@ -19,8 +19,8 @@ program mel_dot_cgi
       docu = 'https://janberges.github.io/Tonbandfetzen/mel.html', &
       logo = 'https://raw.githubusercontent.com/janberges/&
          &Tonbandfetzen/master/logo/Tonbandfetzen.svg', &
-      gpl3 = 'magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&
-         &&dn=gpl-3.0.txt'
+      cc0 = 'magnet:?xt=urn:btih:90dc5c0be029de84e523b9b3922520e79e0e6f08&
+         &&dn=cc0.txt'
 
    query = decode(environment_variable('QUERY_STRING'))
 
@@ -74,7 +74,7 @@ program mel_dot_cgi
          "      a:hover { text-decoration: none }", &
          "    </style>", &
          "    <script>", &
-         "      // @license " // gpl3 // " GPL-v3-or-Later", &
+         "      // @license " // cc0 // " CC0-1.0", &
          "      function enter() {", &
          "        document.getElementById('play').disabled = false", &
          "        var m = document.getElementById('mel').value", &

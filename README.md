@@ -32,8 +32,19 @@ At the heart of this toolbox, the program `mel` converts text into audio (try
 
     echo "T pyth M A2'8 W ,5 A2' A3' E4' A4' C#v5' E5' Gz5' A5'" | mel | aplay
 
-It partially supports the [Functional Just System](https://misotanni.github.io)
-for just intonation invented by misotanni.
+The `guitar` preprocessor converts guitar tablature into suitable `mel` input:
+
+    echo "|3 ,30
+    E4|--------------------0~~~~~~~~~~~|~~~~0~~~~~~~~~~~~~~~~~~~~~~~~~~~|
+    B3|----0~~~~~~~~~~~~~3~~~0~~~~~0~~~|~~3~~~0~~~~~0~~~~~~~~~~~~~~~~~~~|
+    G3|--2~~~0~~~~~0~~~~~~~~~~~~~2~~~0~|~~~~~~~~~~2~~~0~~~~~0~~~~~~~~~~~|
+    D3|----------2~~~0~~~~~~~~~~~~~~~~~|~~~~~~~~~~~~~~~~~~2~~~0~~~~~0~~~|
+    A2|3~~~~~~~~~~~~~~~----------------|--------------------------2~~~0~|
+    E2|----------------3~~~~~~~~~~~~~~~|0~~~~~~~~~~~~~~~2~~~~~~~3~~~~~~~|
+    " | guitar | mel | repeat | aplay
+
+The [Functional Just System](https://misotanni.github.io) for just intonation
+invented by misotanni is partially supported.
 
 ## Installation
 

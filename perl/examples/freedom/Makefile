@@ -10,7 +10,7 @@ clean:
 	mel $^ - | riff2aiff $@
 
 %.wav: %.txt
-	espeak-ng -vmb-de5 -s130 -f$< -w$@
+	espeak-ng -vde+f5 -s130 -f$< -w$@
 
 freedom.aif: freedom.pl freedom1.aif freedom2.aif freedom3.aif freedom4.aif
 	perl $<

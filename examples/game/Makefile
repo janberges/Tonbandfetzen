@@ -15,7 +15,7 @@ clean:
 	cat def.mel $*.mel end.mel | mel $*.wave - $@
 
 %.wave: %.txt
-	espeak-ng -vmb-de5 -s120 -f$^ -w$@
+	espeak-ng -vde+f5 -s120 -f$^ -w$@
 
 %.mel: %.gtr
 	guitar $< $@

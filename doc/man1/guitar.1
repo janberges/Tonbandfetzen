@@ -24,13 +24,14 @@ The syntax of
 is as described in
 .BR mel (1),
 with the following exception:
-Text between two vertical bars
-.RB ( | )
-that contains at least one hyphen-minus
+If a line contains at least two vertical bars
+.RB ( | ),
+they act as separators between regions.
+If a region contains at least one hyphen-minus
 .RB ( - )
 or tilde
 .RB ( \(ti ),
-represents one bar/measure.
+it represents one bar/measure.
 Here, the commands
 .BR | ,
 .BR - ,

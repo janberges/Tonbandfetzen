@@ -48,13 +48,7 @@ invented by misotanni is partially supported.
 
 ## Installation
 
-You will need a recent Fortran compiler. For some features, Python (guitar
-tablatures) and eSpeak NG (examples) are required additionally. Using APT, these
-prerequisites can be installed as follows:
-
-    sudo apt install gfortran python3 espeak-ng
-
-To compile the binaries, you can use the provided makefile:
+To build all tools, you only need a recent Fortran compiler:
 
     cd /path/to/Tonbandfetzen
     make FC=gfortran FFLAGS=-O3
@@ -77,17 +71,18 @@ To have Vim detect the corresponding file types, add this line to your .vimrc:
 
 ## Documentation
 
-Please have a look at the examples (or listen to them
-[here](https://janberges.github.io/Tonbandfetzen)):
+Please have a look at the examples, some of which require Python or eSpeak NG:
 
     cd examples/freedom
     make -j 2
     aplay freedom.wav
 
-The man pages can be viewed [here](https://janberges.github.io/Tonbandfetzen)
-or in the terminal:
+Each program has its own manual page:
 
     man mel
+
+You can also listen to the examples and browse the manual pages
+[here](https://janberges.github.io/Tonbandfetzen).
 
 ## Hear also
 

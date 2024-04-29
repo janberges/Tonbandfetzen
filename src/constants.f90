@@ -7,7 +7,9 @@ module constants
       i2 => int16, &
       i4 => int32, &
       i8 => int64, &
-      stderr => error_unit
+      stderr => error_unit, &
+      stdin => input_unit, &
+      stdout => output_unit
    implicit none
    public
 

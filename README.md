@@ -32,7 +32,7 @@ At the heart of this toolbox, the program `mel` converts text into audio (try
 
     echo "T pyth M A2'8 W ,5 A2' A3' E4' A4' C#v5' E5' Gz5' A5'" | mel | aplay
 
-The `guitar` preprocessor converts guitar tablature into suitable `mel` input:
+The `guitar` preprocessor converts tablature into suitable `mel` input:
 
     echo "|3 ,30
     E4|--------------------0~~~~~~~~~~~|~~~~0~~~~~~~~~~~~~~~~~~~~~~~~~~~|

@@ -1,5 +1,5 @@
 program guitar
-   use constants, only: eof, stdin, stdout
+   use constants, only: eof, stderr, stdin, stdout
    use io, only: command_argument
    implicit none
 
@@ -15,13 +15,24 @@ program guitar
    if (gtr .eq. 'stdin') then
       iu = stdin
    else
-      open (newunit=iu, file=gtr, action='read', status='old')
+      open (newunit=iu, file=gtr, action='read', status='old', iostat=error)
+
+      if (error .ne. 0) then
+         write (stderr, "('Error: Cannot read ASCII file ''', A, '''.')") gtr
+         stop
+      end if
    end if
 
    if (mel .eq. 'stdout') then
       ou = stdout
    else
-      open (newunit=ou, file=mel, action='write', status='replace')
+      open (newunit=ou, file=mel, action='write', status='replace', &
+         iostat=error)
+
+      if (error .ne. 0) then
+         write (stderr, "('Error: Cannot write ASCII file ''', A, '''.')") mel
+         stop
+      end if
    end if
 
    first = .true.

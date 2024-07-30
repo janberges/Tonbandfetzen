@@ -184,7 +184,13 @@ contains
       id3 = ''
 
       if (exist) then
-         open (newunit=unit, file=file, action='read', status='old')
+         open (newunit=unit, file=file, action='read', status='old', &
+            iostat=error)
+
+         if (error .ne. 0) then
+            write (stderr, "('Error: Cannot read ID3 file ''', A, '''.')") file
+            stop
+         end if
 
          do
             read (unit, '(A4, 1X, A)', iostat=error) frameID, buffer

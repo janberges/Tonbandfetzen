@@ -1,5 +1,5 @@
 module io
-   use constants, only: eof, eol
+   use constants, only: eof, eol, stderr
    implicit none
    private
 
@@ -17,8 +17,15 @@ contains
 
       f = file .ne. 'stdin'
 
-      if (f) open (newunit=unit, file=file, &
-         action='read', status='old', access='stream')
+      if (f) then
+         open (newunit=unit, file=file, iostat=error, &
+            action='read', status='old', access='stream')
+
+         if (error .ne. 0) then
+            write (stderr, "('Error: Cannot read file ''', A, '''.')") file
+            stop
+         end if
+      end if
 
       allocate(character(1048576) :: content)
 

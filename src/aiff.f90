@@ -21,8 +21,13 @@ contains
       integer(i4) :: ckSize, offset, blockSize
       integer(i2) :: sampleSize
 
-      open (newunit=unit, file=file, &
+      open (newunit=unit, file=file, iostat=error, &
          action='read', status='old', access='stream')
+
+      if (error .ne. 0) then
+         write (stderr, "('Error: Cannot read AIFF file ''', A, '''.')") file
+         stop
+      end if
 
       do
          read (unit, iostat=error) ckID, ckSize
@@ -70,7 +75,15 @@ contains
             read (unit) s%meta
 
          case default
-            read (unit) (byte, i = 1, ckSize)
+            do i = 1, ckSize
+               read (unit, iostat=error) byte
+
+               if (error .ne. 0) then
+                  write (stderr, "('Error: Corrupt AIFF file ''', A, '''.')") &
+                     file
+                  stop
+               end if
+            end do
          end select
       end do
 
@@ -81,7 +94,7 @@ contains
       character(*), intent(in) :: file
       type(audio), intent(in) :: s
 
-      integer :: unit
+      integer :: unit, error
       integer(i4), parameter :: commSize = 18_i4, applSize = 14_i4
       integer(i4), parameter :: offset = 0_i4, blockSize = 0_i4
       integer(i4) :: formSize, ssndSize
@@ -116,8 +129,14 @@ contains
          if (allocated(s%meta)) write (*, '(*(A))', advance='no') &
             'ID3 ', c(r(len(s%meta, i4))), s%meta
       else
-         open (newunit=unit, file=file, &
+         open (newunit=unit, file=file, iostat=error, &
             action='write', status='replace', access='stream')
+
+         if (error .ne. 0) then
+            write (stderr, "('Error: Cannot write AIFF file ''', A, '''.')") &
+               file
+            stop
+         end if
 
          write (unit) 'FORM', r(formSize), 'AIFF', &
             'COMM', r(commSize), r(s%channels), &

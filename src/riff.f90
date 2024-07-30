@@ -21,8 +21,13 @@ contains
       integer(i4) :: ckSize, sampleRate, byteRate
       integer(i2) :: sampleSize, formatTag, blockAlign
 
-      open (newunit=unit, file=file, &
+      open (newunit=unit, file=file, iostat=error, &
          action='read', status='old', access='stream')
+
+      if (error .ne. 0) then
+         write (stderr, "('Error: Cannot read RIFF file ''', A, '''.')") file
+         stop
+      end if
 
       do
          read (unit, iostat=error) ckID, ckSize
@@ -63,7 +68,15 @@ contains
             read (unit) s%meta
 
          case default
-            read (unit) (byte, i = 1, ckSize)
+            do i = 1, ckSize
+               read (unit, iostat=error) byte
+
+               if (error .ne. 0) then
+                  write (stderr, "('Error: Corrupt RIFF file ''', A, '''.')") &
+                     file
+                  stop
+               end if
+            end do
          end select
       end do
 
@@ -74,7 +87,7 @@ contains
       character(*), intent(in) :: file
       type(audio), intent(in) :: s
 
-      integer :: unit
+      integer :: unit, error
       integer(i4), parameter :: fmtSize = 16_i4, applSize = 14_i4
       integer(i4) :: riffSize, dataSize, sampleRate, byteRate
       integer(i2), parameter :: sampleSize = 16_i2, formatTag = 1_i2
@@ -109,8 +122,14 @@ contains
          if (allocated(s%meta)) write (*, '(*(A))', advance='no') &
             'ID3 ', c(len(s%meta, i4)), s%meta
       else
-         open (newunit=unit, file=file, &
+         open (newunit=unit, file=file, iostat=error, &
             action='write', status='replace', access='stream')
+
+         if (error .ne. 0) then
+            write (stderr, "('Error: Cannot write RIFF file ''', A, '''.')") &
+               file
+            stop
+         end if
 
          write (unit) 'RIFF', riffSize, 'WAVE', &
             'fmt ', fmtSize, formatTag, s%channels, &

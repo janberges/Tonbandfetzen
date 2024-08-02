@@ -2,6 +2,7 @@ FC = gfortran
 
 flags_gfortran = -std=f2008 -pedantic -Wall -Wno-maybe-uninitialized
 flags_ifort = -O0 -stand f08 -warn all
+flags_ifx = ${flags_ifort}
 
 FFLAGS = ${flags_$(FC)}
 
@@ -9,6 +10,7 @@ FFLAGS = ${flags_$(FC)}
 
 modules_gfortran = -Jbuild
 modules_ifort = -module build
+modules_ifx = ${modules_ifort}
 
 override FFLAGS += ${modules_$(FC)}
 

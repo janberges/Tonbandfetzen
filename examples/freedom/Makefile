@@ -17,8 +17,10 @@ clean:
 %_fitted.wav: def.mel %.fit %.wav
 	cat $< $*.fit | mel $*.wav - $@
 
+url = https://janberges.de/freedom
+
 %.wav: speak.py %.txt
-	wget -O $@ https://janberges.de/freedom/$(@F) || python3 $< $*
+	wget -O $@ $(url)/$(@F) || curl -o $@ $(url)/$(@F) || python3 $< $*
 
 # The downloaded audio files have been recorded in 2012 using Google Translate,
 # GarageBand, and a cable connecting the headphone and microphone jacks.

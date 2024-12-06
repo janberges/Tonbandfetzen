@@ -34,7 +34,7 @@ At the heart of this toolbox, the program `mel` converts text into audio (try
 
 The `guitar` preprocessor converts tablature into suitable `mel` input:
 
-    echo "|3 ,30
+    echo "X pluck |3
     E4|--------------------0~~~~~~~~~~~|~~~~0~~~~~~~~~~~~~~~~~~~~~~~~~~~|
     B3|----0~~~~~~~~~~~~~3~~~0~~~~~0~~~|~~3~~~0~~~~~0~~~~~~~~~~~~~~~~~~~|
     G3|--2~~~0~~~~~0~~~~~~~~~~~~~2~~~0~|~~~~~~~~~~2~~~0~~~~~0~~~~~~~~~~~|

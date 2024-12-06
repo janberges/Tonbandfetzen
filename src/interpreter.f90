@@ -8,6 +8,7 @@ module interpreter
    use samples, only: sample
    use search, only: focus, get, known, lexical, next, &
       numeral, remember, reset, revert, set, special
+   use synthesis, only: plucked_string
    implicit none
    private
 
@@ -69,6 +70,8 @@ contains
 
       logical :: loudness ! boost low frequencies?
       real(dp) :: boost ! amplitude scaling factor
+
+      logical :: pluck ! synthesize plucked string?
 
       real(dp) :: phase ! turn = 1
 
@@ -236,6 +239,8 @@ contains
 
       loudness = .false.
 
+      pluck = .false.
+
       phase = 0.0_dp
 
       x = 0.0_dp
@@ -253,6 +258,11 @@ contains
             f = fi
             a = ai
             r = ri
+
+            if (pluck) then
+               call plucked_string(rho, 1.0_dp / f)
+               rho = a * boost * rho
+            end if
 
             i = min(size(rise), c)
 
@@ -304,6 +314,9 @@ contains
             select case (word)
             case ('loudness')
                loudness = n(1.0_dp) .ne. 0
+
+            case ('pluck')
+               pluck = n(1.0_dp) .ne. 0
 
             case ('status')
                write (stderr, "(*(A10, ':', F16.9, 1X, A, :, /))") &

@@ -88,3 +88,5 @@ You can also listen to the examples and browse the manual pages
 
 The name Tonbandfetzen originates from the song Explosion by Tocotronic from
 their 2007 album Kapitulation.
+
+Have a look at [ForSynth](https://vmagnin.github.io/forsynth) by Vincent Magnin.

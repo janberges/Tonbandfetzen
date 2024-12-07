@@ -9,7 +9,7 @@ module synthesis
    implicit none
    private
 
-   public :: plucked_string
+   public :: plucked_string, plucked_string_tuned
 
 contains
 
@@ -27,4 +27,22 @@ contains
          y(t) = 0.5_dp * (y(t - p) + y(t - p - 1))
       end do
    end subroutine plucked_string
+
+   subroutine plucked_string_tuned(y, period)
+      real(dp), intent(out) :: y(:)
+      real(dp), intent(in) :: period
+
+      integer :: p, t
+      real(dp) :: v, w
+
+      p = max(nint(period), 1)
+      v = 0.5_dp + period - p
+      w = 0.5_dp + p - period
+
+      call sample(y(1:min(p + 1, size(y))), 'wave', 'random')
+
+      do t = p + 2, size(y)
+         y(t) = 0.5_dp * (v * y(t - p - 1) + y(t - p) + w * y(t - p + 1))
+      end do
+   end subroutine plucked_string_tuned
 end module synthesis

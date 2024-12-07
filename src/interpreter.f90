@@ -8,7 +8,7 @@ module interpreter
    use samples, only: sample
    use search, only: focus, get, known, lexical, next, &
       numeral, remember, reset, revert, set, special
-   use synthesis, only: plucked_string
+   use synthesis, only: plucked_string_tuned
    implicit none
    private
 
@@ -260,7 +260,7 @@ contains
             r = ri
 
             if (pluck) then
-               call plucked_string(rho, 1.0_dp / f)
+               call plucked_string_tuned(rho, 1.0_dp / f)
                rho = a * boost * rho
             end if
 

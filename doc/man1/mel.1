@@ -456,16 +456,32 @@ This keeps the acoustic-pressure rather than the particle-displacement amplitude
 defaults to
 .BR 1 .
 .TP
-.BI pluck n
-Switch synthesis of plucked-string timbre on
-.RI ( n
-nonzero) and off again
-.RI ( n
-zero).
-Only the initial frequency and amplitude are considered.
+.RI \fBsynth\fR[ n [ n' [ m ]]]
+Control synthesis of plucked-string and drum timbres.
 See Karplus and Strong, Comput. Music J. 7, 43 (1983).
-.IR n
-defaults to
+The stretch factor
+.RI n
+should be at least
+.BR 1 .
+A value of
+.BR 0
+disables the synthesizer.
+The blend factor
+.RI n'
+differentiates between plucked-string
+.RB ( 1 ),
+drum
+.RB ( 0.5 ),
+or plucked-bottle
+.RB ( 0 )
+timbres.
+You can choose between the original algorithm
+.RI ( m
+zero) and a variant that should improve tuning
+.RI ( n
+nonzero).
+While the synthesizer is enabled, only the initial frequency and amplitude are taken into account.
+All arguments default to
 .BR 1 .
 .TP
 .BI status

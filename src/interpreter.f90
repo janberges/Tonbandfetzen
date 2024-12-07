@@ -8,7 +8,7 @@ module interpreter
    use samples, only: sample
    use search, only: focus, get, known, lexical, next, &
       numeral, remember, reset, revert, set, special
-   use synthesis, only: plucked_string_tuned
+   use synthesis, only: karplus_strong
    implicit none
    private
 
@@ -71,7 +71,8 @@ contains
       logical :: loudness ! boost low frequencies?
       real(dp) :: boost ! amplitude scaling factor
 
-      logical :: pluck ! synthesize plucked string?
+      real(dp) :: stretch, blend ! Karplus and Strong's factors
+      logical :: tune ! improve tuning?
 
       real(dp) :: phase ! turn = 1
 
@@ -239,7 +240,9 @@ contains
 
       loudness = .false.
 
-      pluck = .false.
+      stretch = 0.0_dp
+      blend = 1.0_dp
+      tune = .true.
 
       phase = 0.0_dp
 
@@ -259,8 +262,8 @@ contains
             a = ai
             r = ri
 
-            if (pluck) then
-               call plucked_string_tuned(rho, 1.0_dp / f)
+            if (stretch .gt. 0.0_dp) then
+               call karplus_strong(rho, 1.0_dp / f, stretch, blend, tune)
                rho = a * boost * rho
             end if
 
@@ -315,8 +318,10 @@ contains
             case ('loudness')
                loudness = n(1.0_dp) .ne. 0
 
-            case ('pluck')
-               pluck = n(1.0_dp) .ne. 0
+            case ('synth')
+               stretch = n(1.0_dp)
+               blend = n(1.0_dp)
+               tune = n(1.0_dp) .ne. 0
 
             case ('status')
                write (stderr, "(*(A10, ':', F16.9, 1X, A, :, /))") &

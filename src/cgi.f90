@@ -110,8 +110,11 @@ program mel_dot_cgi
          "$22050", &
          "*Harmonic series*", &
          "T pyth", &
+         "X synth", &
+         '"', &
          "M A2'8", &
          "W ,5 A2' A3' E4' A4' C#v5' E5' Gz5' A5'", &
+         '"', &
          "</textarea>", &
          "    <button id='play' onclick='play()'>Interpret</button>", &
          "    <audio id='wav' controls autoplay>Sorry</audio>", &

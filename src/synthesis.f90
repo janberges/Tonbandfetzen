@@ -27,7 +27,9 @@ contains
          v = 0.5_dp + period - p
          w = 0.5_dp + p - period
       else
-         p = floor(period) ! resulting pitch corresponds to period p + 1/2
+         p = max(floor(period), 1) ! signal frequency is 1 / (p + 1/2)
+         v = 1.0_dp
+         w = 0.0_dp
       end if
 
       call sample(y(1:min(p + 1, size(y))), 'wave', 'random')
@@ -36,11 +38,7 @@ contains
          call minstd(r)
 
          if (r .lt. 1 / stretch) then
-            if (tune) then
-               y(t) = 0.5_dp * (v * y(t - p - 1) + y(t - p) + w * y(t - p + 1))
-            else
-               y(t) = 0.5_dp * (y(t - p - 1) + y(t - p))
-            end if
+            y(t) = 0.5_dp * (v * y(t - p - 1) + y(t - p) + w * y(t - p + 1))
          else
             y(t) = y(t - p)
          end if

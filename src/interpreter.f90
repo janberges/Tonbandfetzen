@@ -26,7 +26,7 @@ contains
       character(:), allocatable :: symbol, word ! special/lexical string
 
       real(dp), allocatable :: wave(:), rise(:), fall(:) ! sound samples
-      real(dp), allocatable :: rho(:), phi(:) ! sound segment
+      real(dp), allocatable :: rho(:), tau(:), phi(:) ! sound segment
       real(dp), allocatable :: mel(:, :) ! melody
       real(dp), allocatable :: work(:, :) ! temporary data
 
@@ -199,8 +199,9 @@ contains
          end if
       end do
 
-      allocate(phi(cmax))
       allocate(rho(cmax))
+      allocate(tau(cmax))
+      allocate(phi(cmax))
 
       tones%points = tmax - tmin
 
@@ -264,8 +265,9 @@ contains
 
             if (stretch .gt. 0.0_dp) then
                call karplus_strong(rho, 1.0_dp / f, stretch, blend, tune)
-               rho = a * boost * rho
             end if
+
+            rho = rho * tau
 
             i = min(size(rise), c)
 
@@ -602,7 +604,8 @@ contains
             do i = c + 1, c + d
                phase = phase - floor(phase)
 
-               rho(i) = a * boost * wave(floor(size(wave) * phase))
+               rho(i) = wave(floor(size(wave) * phase))
+               tau(i) = a * boost
                phi(i) = atan(r)
 
                phase = phase + f

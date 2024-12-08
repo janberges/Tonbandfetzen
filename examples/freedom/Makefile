@@ -21,6 +21,7 @@ url = https://janberges.de/freedom
 
 %.wav: speak.py %.txt
 	wget -O $@ $(url)/$(@F) || curl -o $@ $(url)/$(@F) || python3 $< $*
+	touch $@
 
 # The downloaded audio files have been recorded in 2012 using Google Translate,
 # GarageBand, and a cable connecting the headphone and microphone jacks.

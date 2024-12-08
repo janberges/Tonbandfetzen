@@ -263,10 +263,6 @@ contains
             a = ai
             r = ri
 
-            if (stretch .gt. 0.0_dp) then
-               call karplus_strong(rho, 1.0_dp / f, stretch, blend, tune)
-            end if
-
             rho = rho * tau
 
             i = min(size(rise), c)
@@ -604,7 +600,12 @@ contains
             do i = c + 1, c + d
                phase = phase - floor(phase)
 
-               rho(i) = wave(floor(size(wave) * phase))
+               if (stretch .gt. 0.0_dp) then
+                  call karplus_strong(rho, i, 1.0_dp / f, stretch, blend, tune)
+               else
+                  rho(i) = wave(floor(size(wave) * phase))
+               end if
+
                tau(i) = a * boost
                phi(i) = atan(r)
 

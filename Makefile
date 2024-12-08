@@ -75,6 +75,6 @@ build/spectra.o: build/constants.o
 build/stack.o: build/constants.o build/io.o build/riff.o
 build/stick.o: build/constants.o build/io.o build/riff.o
 build/stretch.o: build/constants.o build/io.o build/rationals.o build/riff.o
-build/synthesis.o: build/constants.o build/samples.o
+build/synthesis.o: build/constants.o build/lcg.o
 build/tag.o: build/constants.o build/id3.o build/io.o build/paths.o build/riff.o
 build/trim.o: build/constants.o build/io.o build/rationals.o build/riff.o

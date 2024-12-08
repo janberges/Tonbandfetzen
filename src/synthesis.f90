@@ -20,27 +20,28 @@ contains
       logical, intent(in) :: tune
 
       integer :: p, t
-      real(dp) :: v, w, r
+      real(dp) :: r, v, w
+
+      r = max(period, 1.0_dp)
 
       if (tune) then
-         p = max(nint(period), 1)
-         v = 0.5_dp + period - p
-         w = 0.5_dp + p - period
+         p = nint(r)
+         v = 0.5_dp + r - p
       else
-         p = max(floor(period), 1) ! signal frequency is 1 / (p + 1/2)
+         p = floor(r) ! signal frequency is 1 / (p + 1/2)
          v = 1.0_dp
-         w = 0.0_dp
       end if
+
+      w = 1.0_dp - v
 
       call sample(y(1:min(p + 1, size(y))), 'wave', 'random')
 
       do t = p + 2, size(y)
          call minstd(r)
-
-         if (r .lt. 1 / stretch) then
-            y(t) = 0.5_dp * (v * y(t - p - 1) + y(t - p) + w * y(t - p + 1))
-         else
+         if (r .ge. 1 / stretch) then
             y(t) = y(t - p)
+         else
+            y(t) = 0.5_dp * (v * y(t - p - 1) + y(t - p) + w * y(t - p + 1))
          end if
 
          call minstd(r)

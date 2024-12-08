@@ -71,8 +71,8 @@ contains
       logical :: loudness ! boost low frequencies?
       real(dp) :: boost ! amplitude scaling factor
 
-      real(dp) :: stretch, blend ! Karplus and Strong's factors
-      logical :: tune ! improve tuning?
+      logical :: synth, tuned ! employ Karplus and Strong's synthesizer?
+      real(dp) :: blend, decay ! blend and inverse decay-stretch factors
 
       real(dp) :: phase ! turn = 1
 
@@ -241,9 +241,10 @@ contains
 
       loudness = .false.
 
-      stretch = 0.0_dp
+      synth = .false.
+      tuned = .true.
       blend = 1.0_dp
-      tune = .true.
+      decay = 1.0_dp
 
       phase = 0.0_dp
 
@@ -317,9 +318,16 @@ contains
                loudness = n(1.0_dp) .ne. 0
 
             case ('synth')
-               stretch = n(1.0_dp)
+               synth = n(1.0_dp) .ne. 0
+
+            case ('blend')
                blend = n(1.0_dp)
-               tune = n(1.0_dp) .ne. 0
+
+            case ('decay')
+               decay = n(1.0_dp)
+
+            case ('tuned')
+               tuned = n(1.0_dp) .ne. 0
 
             case ('status')
                write (stderr, "(*(A10, ':', F16.9, 1X, A, :, /))") &
@@ -600,8 +608,8 @@ contains
             do i = c + 1, c + d
                phase = phase - floor(phase)
 
-               if (stretch .gt. 0.0_dp) then
-                  call karplus_strong(rho, i, 1.0_dp / f, stretch, blend, tune)
+               if (synth) then
+                  call karplus_strong(rho, i, 1.0_dp / f, blend, decay, tuned)
                else
                   rho(i) = wave(floor(size(wave) * phase))
                end if

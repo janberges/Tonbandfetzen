@@ -38,12 +38,10 @@ contains
 
       if (t .lt. p + 2) then
          y(t) = 2.0_dp * r - 1.0_dp
+      else if (r .ge. 1 / stretch) then
+         y(t) = y(t - p)
       else
-         if (r .ge. 1 / stretch) then
-            y(t) = y(t - p)
-         else
-            y(t) = 0.5_dp * (v * y(t - p - 1) + y(t - p) + w * y(t - p + 1))
-         end if
+         y(t) = 0.5_dp * (v * y(t - p - 1) + y(t - p) + w * y(t - p + 1))
       end if
 
       call minstd(r)

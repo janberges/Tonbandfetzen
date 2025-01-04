@@ -39,7 +39,7 @@ bin/guitar: build/constants.o build/guitar.o build/io.o build/tab.o
 bin/harmonics: build/constants.o build/harmonics.o build/intervals.o build/io.o build/lcg.o build/samples.o build/spectra.o
 bin/inspect: build/aiff.o build/bytes.o build/constants.o build/extended.o build/id3.o build/inspect.o build/io.o build/paths.o build/riff.o
 bin/mel: build/bytes.o build/constants.o build/extended.o build/fjs.o build/interpreter.o build/intervals.o build/io.o build/lcg.o build/mel.o build/rationals.o build/riff.o build/samples.o build/search.o build/synthesis.o
-bin/mel.cgi: build/bytes.o build/cgi.o build/constants.o build/extended.o build/fjs.o build/interpreter.o build/intervals.o build/io.o build/lcg.o build/rationals.o build/riff.o build/samples.o build/search.o build/synthesis.o
+bin/mel.cgi: build/bytes.o build/cgi.o build/constants.o build/extended.o build/fjs.o build/interpreter.o build/intervals.o build/io.o build/lcg.o build/rationals.o build/riff.o build/samples.o build/search.o build/synthesis.o build/tab.o
 bin/mono: build/bytes.o build/constants.o build/extended.o build/io.o build/mono.o build/riff.o
 bin/repeat: build/bytes.o build/constants.o build/extended.o build/io.o build/rationals.o build/repeat.o build/riff.o
 bin/riff2aiff: build/aiff.o build/bytes.o build/constants.o build/extended.o build/io.o build/riff.o build/riff2aiff.o
@@ -52,7 +52,7 @@ bin/trim: build/bytes.o build/constants.o build/extended.o build/io.o build/rati
 build/aiff.o: build/bytes.o build/constants.o build/extended.o
 build/aiff2riff.o: build/aiff.o build/constants.o build/io.o build/riff.o
 build/bytes.o: build/constants.o
-build/cgi.o: build/constants.o build/interpreter.o build/io.o build/riff.o
+build/cgi.o: build/constants.o build/interpreter.o build/io.o build/riff.o build/tab.o
 build/extended.o: build/constants.o
 build/fjs.o: build/constants.o
 build/guitar.o: build/constants.o build/io.o build/tab.o

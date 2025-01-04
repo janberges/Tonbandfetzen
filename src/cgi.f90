@@ -7,6 +7,7 @@ program mel_dot_cgi
    use interpreter, only: play
    use io, only: environment_variable
    use riff, only: write_riff
+   use tab, only: preprocess
    implicit none
 
    type(audio) :: music
@@ -108,12 +109,17 @@ program mel_dot_cgi
          "    <textarea id='mel' spellcheck='false'", &
          "      oninput='enter()' onscroll='move()'>", &
          "$22050", &
-         "*Harmonic series*", &
+         "*Harmonic series and cadence*", &
          "T pyth", &
          "X synth", &
          "M A2'8", &
          "W ,5 A2' A3' E4' A4' C#v5' E5' Gz5' A5'", &
-         "</textarea>", &
+         "E4|----0~~~|---2~~~~|-----0~~|----0~~~|", &
+         "B3|---2~~~~|--3~~~~~|----0~~~|---2~~~~|", &
+         "G3|--2~~~~~|-2~~~~~~|---1~~~~|--2~~~~~|", &
+         "D3|-2~~~~~~|0~~~~~~~|--2~~~~~|-2~~~~~~|", &
+         "A2|0~~~~~~~|--------|-2~~~~~~|0~~~~~~~|", &
+         "E2|--------|--------|0~~~~~~~|--------|</textarea>", &
          "    <button id='play' onclick='play()'>Interpret</button>", &
          "    <audio id='wav' controls autoplay>Sorry</audio>", &
          "    Please have a look at the", &
@@ -122,7 +128,7 @@ program mel_dot_cgi
          "  </body>", &
          "</html>"
    else
-      call play(query, music, limit)
+      call play(preprocess(query), music, limit)
 
       if (music%points .eq. 0) call play("$22050 |1:6 E3' C3'", music)
 

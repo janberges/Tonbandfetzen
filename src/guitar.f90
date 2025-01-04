@@ -3,94 +3,13 @@ program guitar
    use io, only: command_argument, slurp
    implicit none
 
-   integer :: unit, error, lower, upper, from, till, beats
-   logical :: first
+   integer :: unit, error, beats
 
-   character :: c
-   character, parameter :: lf = achar(10), cr = achar(13)
-   character(2), parameter :: rn = cr // lf
-   character(:), allocatable :: file, tablature, notes, nl, line, bar, bars
+   character(:), allocatable :: file, notes
 
-   tablature = slurp(command_argument(1, '/dev/stdin'))
+   notes = preprocess(slurp(command_argument(1, '/dev/stdin')))
 
    file = command_argument(2, '/dev/stdout')
-
-   notes = ''
-
-   first = .true.
-
-   lower = 1
-   do while (lower .le. len(tablature))
-      upper = scan(tablature(lower:), rn)
-
-      if (upper .eq. 0) then
-         upper = len(tablature)
-
-         nl = ''
-      else
-         upper = lower + upper - 2
-
-         nl = tablature(upper + 1:upper + 1)
-
-         if (upper + 2 .le. len(tablature)) then
-            c = tablature(upper + 2:upper + 2)
-
-            if (scan(c, rn) .eq. 1 .and. c .ne. nl) nl = nl // c
-         end if
-      end if
-
-      line = trim(tablature(lower:upper))
-
-      lower = upper + len(nl) + 1
-
-      if (matches(line, '|') .gt. 1) then
-         if (first) then
-            bars = 'M0'
-            first = .false.
-         else
-            bars = 'W0'
-         end if
-
-         from = 1
-         do while (from .le. len(line))
-            till = scan(line(from:), '|')
-
-            if (till .eq. 0) then
-               till = len(line)
-            else
-               till = from + till - 2
-            end if
-
-            bar = line(from:till)
-
-            from = till + 2
-
-            if (scan(bar, '-~') .ne. 0) then
-               bar = sub(bar, 'X', replace='-')
-               bar = sub(bar, 'SZNT', replace='~')
-
-               bar = sub(bar, '-~', invert=.true., &
-                  keep=.true., replace='~')
-
-               bar = sub(bar, '0.123456789:', before='-~', &
-                  insert='U', keep=.true.)
-
-               beats = matches(bar, '-~')
-
-               bar = sub(bar, '-', insert='"', ratio=.true.)
-               bar = sub(bar, '~', insert="'", ratio=.true.)
-            end if
-
-            bars = bars // strip(bar)
-         end do
-
-         notes = notes // bars // nl
-      else
-         if (len(strip(line)) .eq. 0) first = .true.
-
-         notes = notes // line // nl
-      end if
-   end do
 
    if (file .eq. 'stdout') then
       write (*, '(A)', advance='no') notes
@@ -108,6 +27,97 @@ program guitar
    end if
 
 contains
+
+   function preprocess(tablature) result(notes)
+      character(:), allocatable :: notes
+
+      character(*), intent(in) :: tablature
+
+      integer :: lower, upper, from, till
+      logical :: first
+
+      character :: c
+      character, parameter :: lf = achar(10), cr = achar(13)
+      character(2), parameter :: rn = cr // lf
+      character(:), allocatable :: nl, line, bar, bars
+
+      notes = ''
+
+      first = .true.
+
+      lower = 1
+      do while (lower .le. len(tablature))
+         upper = scan(tablature(lower:), rn)
+
+         if (upper .eq. 0) then
+            upper = len(tablature)
+
+            nl = ''
+         else
+            upper = lower + upper - 2
+
+            nl = tablature(upper + 1:upper + 1)
+
+            if (upper + 2 .le. len(tablature)) then
+               c = tablature(upper + 2:upper + 2)
+
+               if (scan(c, rn) .eq. 1 .and. c .ne. nl) nl = nl // c
+            end if
+         end if
+
+         line = trim(tablature(lower:upper))
+
+         lower = upper + len(nl) + 1
+
+         if (matches(line, '|') .gt. 1) then
+            if (first) then
+               bars = 'M0'
+               first = .false.
+            else
+               bars = 'W0'
+            end if
+
+            from = 1
+            do while (from .le. len(line))
+               till = scan(line(from:), '|')
+
+               if (till .eq. 0) then
+                  till = len(line)
+               else
+                  till = from + till - 2
+               end if
+
+               bar = line(from:till)
+
+               from = till + 2
+
+               if (scan(bar, '-~') .ne. 0) then
+                  bar = sub(bar, 'X', replace='-')
+                  bar = sub(bar, 'SZNT', replace='~')
+
+                  bar = sub(bar, '-~', invert=.true., &
+                     keep=.true., replace='~')
+
+                  bar = sub(bar, '0.123456789:', before='-~', &
+                     insert='U', keep=.true.)
+
+                  beats = matches(bar, '-~')
+
+                  bar = sub(bar, '-', insert='"', ratio=.true.)
+                  bar = sub(bar, '~', insert="'", ratio=.true.)
+               end if
+
+               bars = bars // strip(bar)
+            end do
+
+            notes = notes // bars // nl
+         else
+            if (len(strip(line)) .eq. 0) first = .true.
+
+            notes = notes // line // nl
+         end if
+      end do
+   end function preprocess
 
    function strip(string)
       character(:), allocatable :: strip

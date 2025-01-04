@@ -15,6 +15,8 @@ contains
       integer :: unit, i, error
       logical :: f
 
+      character, parameter :: lf = new_line('A')
+
       f = file .ne. 'stdin'
 
       if (f) then
@@ -34,7 +36,7 @@ contains
             read (unit, iostat=error) content(i:i)
          else
             read (*, '(A1)', iostat=error, advance='no') content(i:i)
-            if (error .eq. eol) content(i:i) = ' '
+            if (error .eq. eol) content(i:i) = lf
          end if
          if (error .eq. eof) then
             content = content(1:i - 1)

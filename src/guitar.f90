@@ -1,47 +1,47 @@
 program guitar
-   use constants, only: eof, stderr, stdin, stdout
-   use io, only: command_argument
+   use constants, only: stderr
+   use io, only: command_argument, slurp
    implicit none
 
-   integer :: iu, ou, error, from, till, beats
+   integer :: unit, error, lower, upper, from, till, beats
    logical :: first
 
-   character(:), allocatable :: gtr, mel, line, bar, bars
-   character(1048576) :: tmp
+   character :: c
+   character, parameter :: lf = achar(10), cr = achar(13)
+   character(2), parameter :: rn = cr // lf
+   character(:), allocatable :: file, tablature, notes, nl, line, bar, bars
 
-   gtr = command_argument(1, '/dev/stdin')
-   mel = command_argument(2, '/dev/stdout')
+   tablature = slurp(command_argument(1, '/dev/stdin'))
 
-   if (gtr .eq. 'stdin') then
-      iu = stdin
-   else
-      open (newunit=iu, file=gtr, action='read', status='old', iostat=error)
+   file = command_argument(2, '/dev/stdout')
 
-      if (error .ne. 0) then
-         write (stderr, "('Error: Cannot read ASCII file ''', A, '''.')") gtr
-         stop
-      end if
-   end if
-
-   if (mel .eq. 'stdout') then
-      ou = stdout
-   else
-      open (newunit=ou, file=mel, action='write', status='replace', &
-         iostat=error)
-
-      if (error .ne. 0) then
-         write (stderr, "('Error: Cannot write ASCII file ''', A, '''.')") mel
-         stop
-      end if
-   end if
+   notes = ''
 
    first = .true.
 
-   do
-      read (iu, '(A)', iostat=error) tmp
-      if (error .eq. eof) exit
+   lower = 1
+   do while (lower .le. len(tablature))
+      upper = scan(tablature(lower:), rn)
 
-      line = trim(tmp)
+      if (upper .eq. 0) then
+         upper = len(tablature)
+
+         nl = ''
+      else
+         upper = lower + upper - 2
+
+         nl = tablature(upper + 1:upper + 1)
+
+         if (upper + 2 .le. len(tablature)) then
+            c = tablature(upper + 2:upper + 2)
+
+            if (scan(c, rn) .eq. 1 .and. c .ne. nl) nl = nl // c
+         end if
+      end if
+
+      line = trim(tablature(lower:upper))
+
+      lower = upper + len(nl) + 1
 
       if (matches(line, '|') .gt. 1) then
          if (first) then
@@ -84,16 +84,28 @@ program guitar
             bars = bars // strip(bar)
          end do
 
-         write (ou, '(A)') bars
+         notes = notes // bars // nl
       else
          if (len(strip(line)) .eq. 0) first = .true.
 
-         write (ou, '(A)') line
+         notes = notes // line // nl
       end if
    end do
 
-   if (gtr .ne. 'stdin') close (iu)
-   if (mel .ne. 'stdout') close (ou)
+   if (file .eq. 'stdout') then
+      write (*, '(A)', advance='no') notes
+   else
+      open (newunit=unit, file=file, iostat=error, &
+         action='write', status='replace', access='stream')
+
+      if (error .ne. 0) then
+         write (stderr, "('Error: Cannot write file ''', A, '''.')") file
+         stop
+      end if
+
+      write (unit) notes
+      close (unit)
+   end if
 
 contains
 
@@ -137,6 +149,7 @@ contains
 
       integer :: i, j
       logical :: inverted
+      character(1024) :: tmp
 
       if (present(invert)) then
          inverted = invert

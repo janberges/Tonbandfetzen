@@ -63,11 +63,11 @@ lines to your .bashrc:
 
 You might also want to link the Vim syntax file to the appropriate location:
 
-    ln -s /path/to/Tonbandfetzen/vim/mel.vim ~/.vim/syntax/mel.vim
+    ln -s /path/to/Tonbandfetzen/config/syntax/tz.vim ~/.vim/syntax/
 
 To have Vim detect the corresponding file types, add this line to your .vimrc:
 
-    autocmd BufRead,BufNewFile *.mel,*.gtr setlocal filetype=mel
+    autocmd BufRead,BufNewFile *.mel,*.gtr setlocal filetype=tz
 
 ## Documentation
 

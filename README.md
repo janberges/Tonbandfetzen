@@ -61,9 +61,12 @@ lines to your .bashrc:
     export PERL5LIB=$REPO/perl/lib:$PERL5LIB
     export MANPATH=$REPO/doc:$MANPATH
 
-You might also want to link the Vim syntax file to the appropriate location:
+You might also want to link the Vim syntax and Bash completion files to the
+appropriate locations:
 
     ln -s /path/to/Tonbandfetzen/config/syntax/tz.vim ~/.vim/syntax/
+    ln -s /path/to/Tonbandfetzen/config/completions/tz \
+        ~/.local/share/bash-completion/completions/
 
 To have Vim detect the corresponding file types, add this line to your .vimrc:
 

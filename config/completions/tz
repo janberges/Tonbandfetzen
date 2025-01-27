@@ -1,0 +1,20 @@
+#!/bin/bash
+
+_tz()
+{
+    word="${COMP_WORDS[COMP_CWORD]}"
+
+    if [ $COMP_CWORD -eq 1 ]
+    then
+        COMPREPLY=($(compgen -W "mel guitar stick stack stretch repeat trim mono harmonics inspect riff2aiff aiff2riff tag" "$word"))
+    elif [ $COMP_CWORD -eq 2 ] && [ "${COMP_WORDS[COMP_CWORD-1]}" = harmonics ]
+    then
+        COMPREPLY=($(compgen -W "harmonic power major constant linear quadratic circular cubic water random" "$word"))
+    else
+        COMPREPLY=($(compgen -f "$word"))
+    fi
+
+    return 0
+}
+
+complete -F _tz tz

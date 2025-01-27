@@ -8,11 +8,11 @@ clean:
 	git clean -Xdf
 
 %.mp3: %.wav %.id3
-	tag $<
+	tz tag $<
 	ffmpeg -y -i $< $@
 
 %.wav: %.mel
-	mel $< $@
+	tz mel $< $@
 
 %.mel: %.gtr
-	guitar $< $@
+	tz guitar $< $@

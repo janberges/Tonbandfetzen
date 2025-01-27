@@ -14,9 +14,9 @@ modules_ifx = ${modules_ifort}
 
 override FFLAGS += ${modules_$(FC)}
 
-needless += build/aiff.o build/aiff2riff.o build/bytes.o build/cgi.o build/constants.o build/extended.o build/fjs.o build/guitar.o build/harmonics.o build/id3.o build/inspect.o build/interpreter.o build/intervals.o build/io.o build/lcg.o build/mel.o build/mono.o build/paths.o build/rationals.o build/repeat.o build/riff.o build/riff2aiff.o build/samples.o build/search.o build/spectra.o build/stack.o build/stick.o build/stretch.o build/synthesis.o build/tab.o build/tag.o build/trim.o build/*.mod
+needless += build/aiff.o build/aiff2riff.o build/bytes.o build/cgi.o build/constants.o build/extended.o build/fjs.o build/guitar.o build/harmonics.o build/id3.o build/inspect.o build/interpreter.o build/intervals.o build/io.o build/lcg.o build/mel.o build/mono.o build/paths.o build/rationals.o build/repeat.o build/riff.o build/riff2aiff.o build/samples.o build/search.o build/spectra.o build/stack.o build/stick.o build/stretch.o build/synthesis.o build/tab.o build/tag.o build/trim.o build/tz.o build/*.mod
 
-programs = bin/aiff2riff bin/guitar bin/harmonics bin/inspect bin/mel bin/mel.cgi bin/mono bin/repeat bin/riff2aiff bin/stack bin/stick bin/stretch bin/tag bin/trim
+programs = bin/mel.cgi bin/tz
 
 .PHONY: all clean cleaner
 
@@ -34,20 +34,8 @@ $(programs):
 build/%.o: src/%.f90
 	$(FC) $(FFLAGS) -c $< -o $@
 
-bin/aiff2riff: build/aiff.o build/aiff2riff.o build/bytes.o build/constants.o build/extended.o build/io.o build/riff.o
-bin/guitar: build/constants.o build/guitar.o build/io.o build/tab.o
-bin/harmonics: build/constants.o build/harmonics.o build/intervals.o build/io.o build/lcg.o build/samples.o build/spectra.o
-bin/inspect: build/aiff.o build/bytes.o build/constants.o build/extended.o build/id3.o build/inspect.o build/io.o build/paths.o build/riff.o
-bin/mel: build/bytes.o build/constants.o build/extended.o build/fjs.o build/interpreter.o build/intervals.o build/io.o build/lcg.o build/mel.o build/rationals.o build/riff.o build/samples.o build/search.o build/synthesis.o
 bin/mel.cgi: build/bytes.o build/cgi.o build/constants.o build/extended.o build/fjs.o build/interpreter.o build/intervals.o build/io.o build/lcg.o build/rationals.o build/riff.o build/samples.o build/search.o build/synthesis.o build/tab.o
-bin/mono: build/bytes.o build/constants.o build/extended.o build/io.o build/mono.o build/riff.o
-bin/repeat: build/bytes.o build/constants.o build/extended.o build/io.o build/rationals.o build/repeat.o build/riff.o
-bin/riff2aiff: build/aiff.o build/bytes.o build/constants.o build/extended.o build/io.o build/riff.o build/riff2aiff.o
-bin/stack: build/bytes.o build/constants.o build/extended.o build/io.o build/riff.o build/stack.o
-bin/stick: build/bytes.o build/constants.o build/extended.o build/io.o build/riff.o build/stick.o
-bin/stretch: build/bytes.o build/constants.o build/extended.o build/io.o build/rationals.o build/riff.o build/stretch.o
-bin/tag: build/bytes.o build/constants.o build/extended.o build/id3.o build/io.o build/paths.o build/riff.o build/tag.o
-bin/trim: build/bytes.o build/constants.o build/extended.o build/io.o build/rationals.o build/riff.o build/trim.o
+bin/tz: build/aiff.o build/aiff2riff.o build/bytes.o build/constants.o build/extended.o build/fjs.o build/guitar.o build/harmonics.o build/id3.o build/inspect.o build/interpreter.o build/intervals.o build/io.o build/lcg.o build/mel.o build/mono.o build/paths.o build/rationals.o build/repeat.o build/riff.o build/riff2aiff.o build/samples.o build/search.o build/spectra.o build/stack.o build/stick.o build/stretch.o build/synthesis.o build/tab.o build/tag.o build/trim.o build/tz.o
 
 build/aiff.o: build/bytes.o build/constants.o build/extended.o
 build/aiff2riff.o: build/aiff.o build/constants.o build/io.o build/riff.o
@@ -78,3 +66,4 @@ build/stretch.o: build/constants.o build/io.o build/rationals.o build/riff.o
 build/synthesis.o: build/constants.o build/lcg.o
 build/tag.o: build/constants.o build/id3.o build/io.o build/paths.o build/riff.o
 build/trim.o: build/constants.o build/io.o build/rationals.o build/riff.o
+build/tz.o: build/aiff2riff.o build/guitar.o build/harmonics.o build/inspect.o build/io.o build/mel.o build/mono.o build/repeat.o build/riff2aiff.o build/stack.o build/stick.o build/stretch.o build/tag.o build/trim.o

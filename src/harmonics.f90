@@ -1,4 +1,4 @@
-program harmonics
+subroutine harmonics
    use constants, only: dp
    use io, only: command_argument
    use samples, only: sample
@@ -27,4 +27,4 @@ program harmonics
 
       write (*, '(I2, 2F15.10)') n, amplitude, phase
    end do
-end program harmonics
+end subroutine harmonics

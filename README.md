@@ -5,19 +5,19 @@
 Tonbandfetzen is a collection of command-line tools that allow you to compose
 music based on audio fragments generated from plain text input. It contains:
 
-* `mel` - generate sound fragments from plain text
-* `guitar` - read guitar tablature
-* `stick` - concatenate audio data
-* `stack` - superimpose audio data
-* `stretch` - rescale audio data
-* `repeat` - loop audio data
-* `trim` - strip leading and trailing silence
-* `mono` - unzip audio channels
-* `harmonics` - show spectra of wave samples
-* `inspect` - show information on audio file
-* `riff2aiff` - convert .wav(e) into .aif(f) files
-* `aiff2riff` - convert .aif(f) into .wav(e) files
-* `tag` - add ID3v2 metadata to .wav(e) files
+* `tz mel` - generate sound fragments from plain text
+* `tz guitar` - read guitar tablature
+* `tz stick` - concatenate audio data
+* `tz stack` - superimpose audio data
+* `tz stretch` - rescale audio data
+* `tz repeat` - loop audio data
+* `tz trim` - strip leading and trailing silence
+* `tz mono` - unzip audio channels
+* `tz harmonics` - show spectra of wave samples
+* `tz inspect` - show information on audio file
+* `tz riff2aiff` - convert .wav(e) into .aif(f) files
+* `tz aiff2riff` - convert .aif(f) into .wav(e) files
+* `tz tag` - add ID3v2 metadata to .wav(e) files
 * `zplay` - generate and play sound fragments
 
 ## Usage
@@ -30,7 +30,7 @@ and parallel execution (`make -j`).
 At the heart of this toolbox, the program `mel` converts text into audio (try
 [here](https://janberges.de/mel.cgi)):
 
-    echo "T pyth M A2'8 W ,5 A2' A3' E4' A4' C#v5' E5' Gz5' A5'" | mel | aplay
+    echo "T pyth M A2'8 W ,5 A2' A3' E4' A4' C#v5' E5' Gz5' A5'" | tz mel | aplay
 
 The `guitar` preprocessor converts tablature into suitable `mel` input:
 
@@ -41,7 +41,7 @@ The `guitar` preprocessor converts tablature into suitable `mel` input:
     D3|----------2~~~0~~~~~~~~~~~~~~~~~|~~~~~~~~~~~~~~~~~~2~~~0~~~~~0~~~|
     A2|3~~~~~~~~~~~~~~~----------------|--------------------------2~~~0~|
     E2|----------------3~~~~~~~~~~~~~~~|0~~~~~~~~~~~~~~~2~~~~~~~3~~~~~~~|
-    " | guitar | mel | repeat | aplay
+    " | tz guitar | tz mel | tz repeat | aplay
 
 The [Functional Just System](https://misotanni.github.io) for just intonation
 invented by misotanni is partially supported.
@@ -79,7 +79,7 @@ Please have a look at the examples, some of which require Python or eSpeak NG:
 
 Each program has its own manual page:
 
-    man mel
+    man tz mel
 
 You can also listen to the examples and browse the manual pages
 [here](https://janberges.github.io/Tonbandfetzen).

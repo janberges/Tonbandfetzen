@@ -1,4 +1,4 @@
-program inspect
+subroutine inspect
    use aiff, only: read_aiff
    use constants, only: audio, stderr
    use id3, only: read_id3
@@ -35,4 +35,4 @@ program inspect
    write (*, "('Sample rate: ', F0.1, ' Hz')") s%rate
    write (*, "('Duration: ', F0.1, ' s')") s%points / s%rate
    write (*, "('Amplitude: ', F0.1)") s%amplitude
-end program inspect
+end subroutine inspect

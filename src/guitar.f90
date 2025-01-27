@@ -1,4 +1,4 @@
-program guitar
+subroutine guitar
    use constants, only: stderr
    use io, only: command_argument, slurp
    use tab, only: preprocess
@@ -26,4 +26,4 @@ program guitar
       write (unit) notes
       close (unit)
    end if
-end program guitar
+end subroutine guitar

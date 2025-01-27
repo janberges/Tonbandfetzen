@@ -1,4 +1,4 @@
-program riff2aiff
+subroutine riff2aiff
    use aiff, only: write_aiff
    use constants, only: audio
    use io, only: command_argument
@@ -9,4 +9,4 @@ program riff2aiff
 
    call read_riff(command_argument(-2, '/dev/stdin'), s)
    call write_aiff(command_argument(-1, '/dev/stdout'), s)
-end program riff2aiff
+end subroutine riff2aiff

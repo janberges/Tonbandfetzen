@@ -7,11 +7,11 @@ clean:
 	git clean -Xdf
 
 %.mp3: %.wav %.id3
-	tag $<
+	tz tag $<
 	ffmpeg -y -i $< $@
 
 %.wav: %.mel
-	mel $< $@
+	tz mel $< $@
 
 harmony.wav: parts/tunings.wav parts/series.wav parts/chords.wav
-	stick $+ $@
+	tz stick $+ $@

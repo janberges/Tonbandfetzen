@@ -12,5 +12,5 @@ aiff | aif | AIFF | AIF )
 wave | wav | WAVE | WAV | mp3 | MP3 )
     xdg-open "$infile";;
 *)
-    guitar "$infile" | mel > "$outfile" && xdg-open "$outfile";;
+    tz guitar "$infile" | tz mel > "$outfile" && xdg-open "$outfile";;
 esac

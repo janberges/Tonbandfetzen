@@ -1,4 +1,4 @@
-program stick
+subroutine stick
    use constants, only: audio, dp, i2
    use io, only: command_argument
    use riff, only: read_riff, write_riff
@@ -14,11 +14,11 @@ program stick
    s%rate = 1.0_dp
    s%amplitude = 0.0_dp
 
-   n = command_argument_count()
+   n = command_argument_count() - 2
 
-   allocate(p(n - 1))
+   allocate(p(n))
 
-   do i = 1, n - 1
+   do i = 1, n
       call read_riff(command_argument(i, '/dev/stdin'), p(i))
 
       s%points = s%points + p(i)%points
@@ -32,7 +32,7 @@ program stick
 
    offset = 0
 
-   do i = 1, n - 1
+   do i = 1, n
       if (p(i)%amplitude .ne. s%amplitude) then
          p(i)%sound = int(p(i)%sound * p(i)%amplitude / s%amplitude, i2)
       end if
@@ -46,4 +46,4 @@ program stick
    end do
 
    call write_riff(command_argument(-1, '/dev/stdout'), s)
-end program stick
+end subroutine stick

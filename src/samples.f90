@@ -104,7 +104,7 @@ contains
          if (how .ne. 'harmonic') then
             write (stderr, "('Warning: Unknown sample ''', A, '''.')") how
             write (stderr, "('The sample ''harmonic'' is used instead.')")
-            write (stderr, "('See ''man mel'' for list of samples.')")
+            write (stderr, "('See ''man tz mel'' for list of samples.')")
          end if
       end subroutine warn
    end subroutine sample

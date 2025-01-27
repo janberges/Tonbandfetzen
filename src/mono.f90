@@ -1,4 +1,4 @@
-program mono
+subroutine mono
    use constants, only: audio, i2
    use io, only: command_argument
    use riff, only: read_riff, write_riff
@@ -19,4 +19,4 @@ program mono
 
       call write_riff(command_argument(c + 1, '/dev/null'), m)
    end do
-end program mono
+end subroutine mono

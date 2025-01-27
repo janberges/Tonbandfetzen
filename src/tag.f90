@@ -1,4 +1,4 @@
-program tag
+subroutine tag
    use constants, only: audio, dp
    use id3, only: write_id3
    use io, only: command_argument
@@ -37,4 +37,4 @@ program tag
    s%amplitude = 1.0_dp
 
    call write_riff(outfile, s)
-end program tag
+end subroutine tag

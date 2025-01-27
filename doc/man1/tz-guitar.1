@@ -1,15 +1,15 @@
 .\" Man page for the command guitar of the Tonbandfetzen tool box
-.TH GUITAR 1 2010\(en2024 "Jan Berges" "Tonbandfetzen Manual"
+.TH TZ-GUITAR 1 2010\(en2024 "Jan Berges" "Tonbandfetzen Manual"
 .SH NAME
-guitar \- read guitar tablature
+tz guitar \- read guitar tablature
 .SH SYNOPSIS
-.BI guitar
+.B tz guitar
 .RI [ infile
 .RI [ outfile ]]
 .SH DESCRIPTION
 .PP
 Preprocess input for the program
-.BR mel
+.B tz mel
 to allow for guitar tablatures.
 Filenames default to
 .BR /dev/stdin
@@ -22,7 +22,7 @@ is a shorthand for the default value.
 The syntax of
 .IR infile
 is as described in
-.BR mel (1),
+.BR tz-mel (1),
 with the following exception:
 If a line contains at least two vertical bars
 .RB ( | ),

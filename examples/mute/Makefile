@@ -8,14 +8,14 @@ clean:
 	git clean -Xdf
 
 %.mp3: %.wav %.id3
-	tag $<
+	tz tag $<
 	ffmpeg -y -i $< $@
 
 %.wav: def.mel %.mel end.mel
-	cat $^ | mel $@
+	cat $^ | tz mel $@
 
 %.mel: %.gtr
-	guitar $< $@
+	tz guitar $< $@
 
 mute.wav: parts/part1.wav parts/part2.wav parts/part3.wav
-	stick $+ $@
+	tz stick $+ $@

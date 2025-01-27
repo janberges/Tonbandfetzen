@@ -1,4 +1,4 @@
-program stack
+subroutine stack
    use constants, only: audio, dp, i2, i2max
    use io, only: command_argument
    use riff, only: read_riff, write_riff
@@ -15,11 +15,11 @@ program stack
    s%rate = 1.0_dp
    s%amplitude = 0.0_dp
 
-   n = command_argument_count()
+   n = command_argument_count() - 2
 
-   allocate(p(n - 1))
+   allocate(p(n))
 
-   do i = 1, n - 1
+   do i = 1, n
       call read_riff(command_argument(i, '/dev/stdin'), p(i))
 
       s%channels = max(s%channels, p(i)%channels)
@@ -32,7 +32,7 @@ program stack
 
    sound = 0.0_dp
 
-   do i = 1, n - 1
+   do i = 1, n
       do t = 1, s%points
          do c = 1, s%channels
             sound(c, t) = sound(c, t) + p(i)%amplitude * p(i)%sound( &
@@ -50,4 +50,4 @@ program stack
    end if
 
    call write_riff(command_argument(-1, '/dev/stdout'), s)
-end program stack
+end subroutine stack

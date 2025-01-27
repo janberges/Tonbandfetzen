@@ -7,17 +7,17 @@ clean:
 	git clean -Xdf
 
 %.mp3: %.wav %.id3
-	tag $<
+	tz tag $<
 	ffmpeg -y -i $< $@
 
 %.wav: %.mel
-	mel $< $@
+	tz mel $< $@
 
 parts/verse.wav: chords/a.wav chords/b.wav chords/b.wav chords/a.wav
-	stick $+ $@
+	tz stick $+ $@
 
 parts/chorus.wav: chords/c.wav melody/melody.wav
-	stack $^ $@
+	tz stack $^ $@
 
 wanderer.wav: chords/e.wav parts/verse.wav parts/chorus.wav chords/d.wav chords/e.wav
-	stick $+ $@
+	tz stick $+ $@

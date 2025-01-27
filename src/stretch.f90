@@ -1,4 +1,4 @@
-program stretch
+subroutine stretch
    use constants, only: audio, dp, i2
    use io, only: command_argument
    use rationals, only: rational
@@ -37,4 +37,4 @@ program stretch
    if (factor .lt. 0.0_dp) s%sound = s%sound(:, s%points:1:-1)
 
    call write_riff(command_argument(3, '/dev/stdout'), s)
-end program stretch
+end subroutine stretch

@@ -1,4 +1,4 @@
-program repeat
+subroutine repeatz
    use constants, only: audio, dp
    use io, only: command_argument
    use rationals, only: rational
@@ -32,4 +32,4 @@ program repeat
    end if
 
    call write_riff(command_argument(3, '/dev/stdout'), s)
-end program repeat
+end subroutine repeatz

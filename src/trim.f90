@@ -1,4 +1,4 @@
-program trim
+subroutine trimz
    use constants, only: audio, dp, i2max
    use io, only: command_argument
    use rationals, only: rational
@@ -30,4 +30,4 @@ program trim
    s%sound = s0%sound(:, a:z)
 
    call write_riff(command_argument(3, '/dev/stdout'), s)
-end program trim
+end subroutine trimz

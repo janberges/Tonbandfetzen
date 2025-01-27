@@ -420,7 +420,7 @@ contains
             case default
                write (stderr, "('Warning: Unknown tuning ''', A, '''.')") tuning
                write (stderr, "('The tuning ''equal'' is used instead.')")
-               write (stderr, "('See ''man mel'' for list of tunings.')")
+               write (stderr, "('See ''man tz mel'' for list of tunings.')")
                tuning = 'equal'
             end select
 
@@ -778,7 +778,7 @@ contains
       type(audio) :: s
 
       if (how .eq. '#') then
-         if (i .gt. command_argument_count() - 2) then
+         if (i .gt. command_argument_count() - 3) then
             write (stderr, "('Error: File ', I0, ' missing.')") i
             stop
          end if

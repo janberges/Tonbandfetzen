@@ -58,7 +58,9 @@ contains
       i = num
       n = command_argument_count()
 
-      if (i .lt. 0) i = n + i + 1
+      if (-n .lt. i .and. i .lt. 0) i = i + n
+
+      i = i + 1
 
       if (i .lt. 1 .or. i .gt. n) then
          arg = def

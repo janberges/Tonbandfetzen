@@ -27,12 +27,11 @@ files in the Waveform Audio File Format (.wav). Hence, the composition process
 can be controlled using build-automation software, allowing for partial updates
 and parallel execution (`make -j`).
 
-At the heart of this toolbox, the program `mel` converts text into audio (try
-[here](https://janberges.de/tz.cgi)):
+At the heart of this toolbox, the program `tz mel` converts text into audio:
 
     echo "T pyth M A2'8 W ,5 A2' A3' E4' A4' C#v5' E5' Gz5' A5'" | tz mel | aplay
 
-The `guitar` preprocessor converts tablature into suitable `mel` input:
+The preprocessor `tz guitar` converts tablature into suitable `tz mel` input:
 
     echo "X synth |3
     E4|--------------------0~~~~~~~~~~~|~~~~0~~~~~~~~~~~~~~~~~~~~~~~~~~~|
@@ -43,8 +42,7 @@ The `guitar` preprocessor converts tablature into suitable `mel` input:
     E2|----------------3~~~~~~~~~~~~~~~|0~~~~~~~~~~~~~~~2~~~~~~~3~~~~~~~|
     " | tz guitar | tz mel | tz repeat | aplay
 
-The [Functional Just System](https://misotanni.github.io) for just intonation
-invented by misotanni is partially supported.
+You can try both [here](https://janberges.de/tz.cgi).
 
 ## Installation
 
@@ -91,5 +89,8 @@ You can also listen to the examples and browse the manual pages
 
 The name Tonbandfetzen originates from the song Explosion by Tocotronic from
 their 2007 album Kapitulation.
+
+This project utilizes the [Functional Just System](https://misotanni.github.io)
+for just intonation invented by misotanni.
 
 Have a look at [ForSynth](https://vmagnin.github.io/forsynth) by Vincent Magnin.

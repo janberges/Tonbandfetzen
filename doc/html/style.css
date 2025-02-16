@@ -25,3 +25,27 @@ dt {
 dd {
     margin-left: 90px;
 }
+
+pre {
+    font: bold large monospace;
+}
+
+.Constant { /* numeral */
+    color: #bf8040;
+}
+
+.Statement { /* lexical */
+    color: #afdf00;
+}
+
+.Identifier { /* special */
+    color: #404040;
+}
+
+.Comment {
+    color: #da193b;
+}
+
+.PreProc {
+    color: #bfff00;
+}

@@ -83,7 +83,7 @@ Each program has its own manual page:
     man tz mel
 
 You can also listen to the examples and browse the manual pages
-[here](https://janberges.github.io/Tonbandfetzen).
+[here](https://io.janberges.de/Tonbandfetzen).
 
 ## Hear also
 

@@ -17,9 +17,8 @@ program tz_dot_cgi
 
    character(*), parameter :: &
       code = 'https://github.com/janberges/Tonbandfetzen', &
-      docu = 'https://janberges.github.io/Tonbandfetzen/mel.html', &
-      logo = 'https://raw.githubusercontent.com/janberges/&
-         &Tonbandfetzen/master/logo/Tonbandfetzen.svg', &
+      docu = 'https://io.janberges.de/Tonbandfetzen/mel.html', &
+      logo = 'https://io.janberges.de/Tonbandfetzen/logo.svg', &
       cc0 = 'magnet:?xt=urn:btih:90dc5c0be029de84e523b9b3922520e79e0e6f08&
          &&dn=cc0.txt'
 

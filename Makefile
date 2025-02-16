@@ -16,7 +16,7 @@ override FFLAGS += ${modules_$(FC)}
 
 needless += build/aiff.o build/aiff2riff.o build/bytes.o build/cgi.o build/constants.o build/extended.o build/fjs.o build/guitar.o build/harmonics.o build/id3.o build/inspect.o build/interpreter.o build/intervals.o build/io.o build/lcg.o build/mel.o build/mono.o build/paths.o build/rationals.o build/repeat.o build/riff.o build/riff2aiff.o build/samples.o build/search.o build/spectra.o build/stack.o build/stick.o build/stretch.o build/synthesis.o build/tab.o build/tag.o build/trim.o build/tz.o build/*.mod
 
-programs = bin/mel.cgi bin/tz
+programs = bin/tz bin/tz.cgi
 
 .PHONY: all clean cleaner
 
@@ -34,8 +34,8 @@ $(programs):
 build/%.o: src/%.f90
 	$(FC) $(FFLAGS) -c $< -o $@
 
-bin/mel.cgi: build/bytes.o build/cgi.o build/constants.o build/extended.o build/fjs.o build/interpreter.o build/intervals.o build/io.o build/lcg.o build/rationals.o build/riff.o build/samples.o build/search.o build/synthesis.o build/tab.o
 bin/tz: build/aiff.o build/aiff2riff.o build/bytes.o build/constants.o build/extended.o build/fjs.o build/guitar.o build/harmonics.o build/id3.o build/inspect.o build/interpreter.o build/intervals.o build/io.o build/lcg.o build/mel.o build/mono.o build/paths.o build/rationals.o build/repeat.o build/riff.o build/riff2aiff.o build/samples.o build/search.o build/spectra.o build/stack.o build/stick.o build/stretch.o build/synthesis.o build/tab.o build/tag.o build/trim.o build/tz.o
+bin/tz.cgi: build/bytes.o build/cgi.o build/constants.o build/extended.o build/fjs.o build/interpreter.o build/intervals.o build/io.o build/lcg.o build/rationals.o build/riff.o build/samples.o build/search.o build/synthesis.o build/tab.o
 
 build/aiff.o: build/bytes.o build/constants.o build/extended.o
 build/aiff2riff.o: build/aiff.o build/constants.o build/io.o build/riff.o

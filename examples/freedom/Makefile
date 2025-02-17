@@ -14,8 +14,8 @@ clean:
 %.wav: def.mel %.mel
 	cat $^ | tz mel $@
 
-%_fitted.wav: def.mel %.fit %.wav
-	cat $< $*.fit | tz mel $*.wav - $@
+%_fitted.wav: %.wav def.mel %_fit.mel
+	cat $(filter-out $<, $^) | tz mel $< - $@
 
 url = https://janberges.de/freedom
 

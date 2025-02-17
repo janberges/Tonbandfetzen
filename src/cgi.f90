@@ -15,13 +15,6 @@ program tz_dot_cgi
    character(:), allocatable :: query
    integer, parameter :: limit = 1000000
 
-   character(*), parameter :: &
-      code = 'https://github.com/janberges/Tonbandfetzen', &
-      docu = 'https://io.janberges.de/Tonbandfetzen/', &
-      logo = 'https://io.janberges.de/Tonbandfetzen/logo.svg', &
-      cc0 = 'magnet:?xt=urn:btih:90dc5c0be029de84e523b9b3922520e79e0e6f08&
-         &&dn=cc0.txt'
-
    query = decode(environment_variable('QUERY_STRING'))
 
    if (query .eq. ' ') then
@@ -32,7 +25,7 @@ program tz_dot_cgi
          "    <meta charset='utf-8'>", &
          "    <title>Tonbandfetzen</title>", &
          "    <link rel='icon' type='image/svg+xml' sizes='any'", &
-         "      href='" // logo // "'>", &
+         "      href='https://io.janberges.de/Tonbandfetzen/logo.svg'>", &
          "    <style>", &
          "      body {", &
          "        font: 12px sans-serif;", &
@@ -74,7 +67,9 @@ program tz_dot_cgi
          "      a:hover { text-decoration: none }", &
          "    </style>", &
          "    <script>", &
-         "      // @license " // cc0 // " CC0-1.0", &
+         "      // @license &
+         &magnet:?xt=urn:btih:90dc5c0be029de84e523b9b3922520e79e0e6f08&
+         &&dn=cc0.txt CC0-1.0", &
          "      function enter() {", &
          "        document.getElementById('play').disabled = false", &
          "        var m = document.getElementById('mel').value", &
@@ -122,8 +117,10 @@ program tz_dot_cgi
          "    <button id='play' onclick='play()'>Interpret</button>", &
          "    <audio id='wav' controls autoplay>Sorry</audio>", &
          "    Please have a look at the", &
-         "    <a href='" // docu // "'>documentation</a> and the", &
-         "    <a href='" // code // "'>source code</a>.", &
+         "    <a href='https://io.janberges.de/Tonbandfetzen/'>&
+         &documentation</a> and the", &
+         "    <a href='https://github.com/janberges/Tonbandfetzen'>&
+         &source code</a>.", &
          "  </body>", &
          "</html>"
    else

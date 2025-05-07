@@ -119,7 +119,7 @@ contains
       real(dp) :: comma
       integer, intent(in) :: p
 
-      real(dp), parameter :: Pyth_comma = 3.0_dp ** 12.0_dp / 2.0_dp ** 19.0_dp
+      real(dp), parameter :: Pyth_comma = 3.0_dp ** 12 / 2.0_dp ** 19
       integer :: d
 
       d = abs(p)

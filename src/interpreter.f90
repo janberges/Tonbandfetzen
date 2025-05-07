@@ -519,7 +519,7 @@ contains
                tone = tone + 12 * j
             end if
 
-            f = f * 2.0_dp ** (j - 4.0_dp)
+            f = f * 2.0_dp ** (j - 4)
             fi = f
 
             word = next(numeral, 'none')

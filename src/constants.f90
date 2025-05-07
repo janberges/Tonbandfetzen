@@ -13,7 +13,7 @@ module constants
    implicit none
    public
 
-   integer, parameter :: i2max = 2 ** 15 - 1
+   integer(i2), parameter :: i2max = huge(1_i2) ! 2 ** 15 - 1
 
    real(dp), parameter :: pi = 4.0_dp * atan(1.0_dp)
 

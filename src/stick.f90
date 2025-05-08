@@ -9,7 +9,7 @@ subroutine stick
    type(audio), allocatable :: p(:)
    type(audio) :: s
 
-   s%channels = 1
+   s%channels = 1_i2
    s%points = 0
    s%rate = 1.0_dp
    s%amplitude = 0.0_dp

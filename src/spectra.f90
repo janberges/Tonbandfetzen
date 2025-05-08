@@ -15,7 +15,7 @@ contains
       real(dp) :: omega, phi
       complex(dp) :: transform(size(spectrum), size(wave))
 
-      omega = 2 * pi / size(wave)
+      omega = 2.0_dp * pi / size(wave)
 
       do m = 1, size(wave)
          do n = 1, size(spectrum)

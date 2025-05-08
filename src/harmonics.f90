@@ -19,7 +19,7 @@ subroutine harmonics
    write (*, '(A2, 2A15)') 'n', 'r[n]', 'phi[n]'
 
    do n = 1, size(spectrum)
-      amplitude = 2 * abs(spectrum(n))
+      amplitude = 2.0_dp * abs(spectrum(n))
 
       if (amplitude .lt. 1e-10_dp) cycle
 

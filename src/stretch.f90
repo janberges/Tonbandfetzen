@@ -26,10 +26,10 @@ subroutine stretch
       scaling = real(s0%points - 1, dp) / real(max(s%points, 2) - 1, dp)
 
       do t = 0, s%points - 1
-         t1 = 1 + scaling * t
+         t1 = 1.0_dp + scaling * t
          t0 = floor(t1)
          dt = t1 - t0
-         s%sound(:, 1 + t) = nint(s0%sound(:, t0) * (1 - dt) &
+         s%sound(:, 1 + t) = nint(s0%sound(:, t0) * (1.0_dp - dt) &
             + s0%sound(:, t0 + 1) * dt, i2)
       end do
    end if

@@ -315,10 +315,10 @@ contains
 
             select case (word)
             case ('loudness')
-               loudness = n(1.0_dp) .ne. 0
+               loudness = n(1.0_dp) .ne. 0.0_dp
 
             case ('synth')
-               synth = n(1.0_dp) .ne. 0
+               synth = n(1.0_dp) .ne. 0.0_dp
 
             case ('blend')
                blend = n(1.0_dp)
@@ -327,14 +327,14 @@ contains
                decay = n(1.0_dp)
 
             case ('tuned')
-               tuned = n(1.0_dp) .ne. 0
+               tuned = n(1.0_dp) .ne. 0.0_dp
 
             case ('status')
                write (stderr, "(*(A10, ':', F16.9, 1X, A, :, /))") &
                   'Time', t / s, 's', &
                   'Frequency', f * s, 'Hz', &
                   'Amplitude', a, 'arb. units', &
-                  'Balance', 10 * log10(r), 'dB', &
+                  'Balance', 10.0_dp * log10(r), 'dB', &
                   'Phase', phase, '(mod 1)'
 
             case ('report')

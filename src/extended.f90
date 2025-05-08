@@ -60,7 +60,7 @@ contains
 
       bytes = 0
 
-      if (x .lt. 0) bytes(1) = ibset(bytes(1), 7)
+      if (x .lt. 0.0_dp) bytes(1) = ibset(bytes(1), 7)
 
       do byte = 2, 1, -1
          do bit = 0, 5 + byte

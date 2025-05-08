@@ -7,27 +7,27 @@ module extended
 
 contains
 
-   function decode(code) result(value)
-      real(dp) :: value
+   function decode(code) result(x)
+      real(dp) :: x
 
       character(*), intent(in) :: code
 
-      integer :: byte, bytes(10), bit, digit, sign, exponent
+      integer :: byte, bytes(10), bit, digit, sgn, power
       real(dp) :: mantissa
 
       do byte = 1, 10
          bytes(byte) = ichar(code(byte:byte))
       end do
 
-      sign = merge(-1, 1, btest(bytes(1), 7))
+      sgn = merge(-1, 1, btest(bytes(1), 7))
       mantissa = 0.0_dp
-      exponent = -16383
+      power = -16383
 
       digit = 0
       do byte = 2, 1, -1
          do bit = 0, 5 + byte
             if (btest(bytes(byte), bit)) then
-               exponent = exponent + 2 ** digit
+               power = power + 2 ** digit
             end if
             digit = digit + 1
          end do
@@ -43,31 +43,31 @@ contains
          end do
       end do
 
-      value = sign * mantissa * 2.0_dp ** exponent
+      x = sgn * mantissa * 2.0_dp ** power
    end function decode
 
-   function encode(value) result(code)
+   function encode(x) result(code)
       character(10) :: code
 
-      real(dp), intent(in) :: value
+      real(dp), intent(in) :: x
 
-      integer :: byte, bytes(10), bit, exponent
+      integer :: byte, bytes(10), bit, power
       real(dp) :: mantissa
 
-      exponent = int(log(abs(value)) / log(2.0_dp))
-      mantissa = abs(value) / 2.0_dp ** exponent
-      exponent = exponent + 16383
+      power = int(log(abs(x)) / log(2.0_dp))
+      mantissa = abs(x) / 2.0_dp ** power
+      power = power + 16383
 
       bytes = 0
 
-      if (value .lt. 0) bytes(1) = ibset(bytes(1), 7)
+      if (x .lt. 0) bytes(1) = ibset(bytes(1), 7)
 
       do byte = 2, 1, -1
          do bit = 0, 5 + byte
-            if (modulo(exponent, 2) .eq. 1) then
+            if (modulo(power, 2) .eq. 1) then
                bytes(byte) = ibset(bytes(byte), bit)
             end if
-            exponent = exponent / 2
+            power = power / 2
          end do
       end do
 

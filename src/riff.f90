@@ -9,37 +9,36 @@ module riff
 
 contains
 
-   subroutine read_riff(file, s)
-      character(*), intent(in) :: file
+   subroutine read_riff(path, s)
+      character(*), intent(in) :: path
       type(audio), intent(out) :: s
 
-      integer :: unit
-      integer :: i, error
+      integer :: i, fun, error
       character(1) :: byte
       character(4) :: ckID, formType, applicationSignature
       character(10) :: extended
       integer(i4) :: ckSize, sampleRate, byteRate
       integer(i2) :: sampleSize, formatTag, blockAlign
 
-      open (newunit=unit, file=file, iostat=error, &
+      open (newunit=fun, file=path, iostat=error, &
          action='read', status='old', access='stream')
 
       if (error .ne. 0) then
-         write (stderr, "('Error: Cannot read RIFF file ''', A, '''.')") file
+         write (stderr, "('Error: Cannot read RIFF file ''', A, '''.')") path
          stop
       end if
 
       do
-         read (unit, iostat=error) ckID, ckSize
+         read (fun, iostat=error) ckID, ckSize
          if (error .eq. eof) exit
 
          select case (ckID)
          case ('RIFF')
-            read (unit) formType
+            read (fun) formType
 
          case ('fmt ')
-            read (unit) formatTag, s%channels, sampleRate, byteRate
-            read (unit) blockAlign, sampleSize
+            read (fun) formatTag, s%channels, sampleRate, byteRate
+            read (fun) blockAlign, sampleSize
 
             s%rate = real(sampleRate, dp)
 
@@ -51,43 +50,43 @@ contains
          case ('data')
             s%points = ckSize / (2 * s%channels)
             allocate(s%sound(s%channels, s%points))
-            read (unit) s%sound
+            read (fun) s%sound
 
          case ('APPL')
-            read (unit) applicationSignature
+            read (fun) applicationSignature
 
             if (applicationSignature .eq. 'FETZ') then
-               read (unit) extended
+               read (fun) extended
                s%amplitude = decode(extended)
             else
-               read (unit) (byte, i = 1, ckSize - 4)
+               read (fun) (byte, i = 1, ckSize - 4)
             end if
 
          case ('ID3 ', 'id3 ')
             allocate(character(ckSize) :: s%meta)
-            read (unit) s%meta
+            read (fun) s%meta
 
          case default
             do i = 1, ckSize
-               read (unit, iostat=error) byte
+               read (fun, iostat=error) byte
 
                if (error .ne. 0) then
                   write (stderr, "('Error: Corrupt RIFF file ''', A, '''.')") &
-                     file
+                     path
                   stop
                end if
             end do
          end select
       end do
 
-      close (unit)
+      close (fun)
    end subroutine read_riff
 
-   subroutine write_riff(file, s)
-      character(*), intent(in) :: file
+   subroutine write_riff(path, s)
+      character(*), intent(in) :: path
       type(audio), intent(in) :: s
 
-      integer :: unit, error
+      integer :: fun, error
       integer(i4), parameter :: fmtSize = 16_i4, applSize = 14_i4
       integer(i4) :: riffSize, dataSize, sampleRate, byteRate
       integer(i2), parameter :: sampleSize = 16_i2, formatTag = 1_i2
@@ -104,8 +103,8 @@ contains
 
       if (allocated(s%meta)) riffSize = riffSize + 8_i4 + len(s%meta)
 
-      if (file .eq. 'stdout' .or. file .eq. 'http') then
-         if (file .eq. 'http') then
+      if (path .eq. 'stdout' .or. path .eq. 'http') then
+         if (path .eq. 'http') then
             write (*, "('Content-Type: audio/x-wav')")
             write (*, "('Content-Length: ', I0, /)") riffSize + 8
          end if
@@ -122,27 +121,27 @@ contains
          if (allocated(s%meta)) write (*, '(*(A))', advance='no') &
             'ID3 ', c(len(s%meta, i4)), s%meta
       else
-         open (newunit=unit, file=file, iostat=error, &
+         open (newunit=fun, file=path, iostat=error, &
             action='write', status='replace', access='stream')
 
          if (error .ne. 0) then
             write (stderr, "('Error: Cannot write RIFF file ''', A, '''.')") &
-               file
+               path
             stop
          end if
 
-         write (unit) 'RIFF', riffSize, 'WAVE', &
+         write (fun) 'RIFF', riffSize, 'WAVE', &
             'fmt ', fmtSize, formatTag, s%channels, &
             sampleRate, byteRate, blockAlign, sampleSize, &
             'data', dataSize, s%sound
 
-         if (s%amplitude .ne. 1.0_dp) write (unit) &
+         if (s%amplitude .ne. 1.0_dp) write (fun) &
             'APPL', applSize, 'FETZ', encode(s%amplitude)
 
-         if (allocated(s%meta)) write (unit) &
+         if (allocated(s%meta)) write (fun) &
             'ID3 ', len(s%meta, i4), s%meta
 
-         close (unit)
+         close (fun)
       end if
    end subroutine write_riff
 end module riff

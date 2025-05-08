@@ -162,10 +162,10 @@ contains
       end do
    end subroutine read_id3
 
-   function write_id3(file) result(id3)
+   function write_id3(path) result(id3)
       character(:), allocatable :: id3
 
-      character(*), intent(in) :: file
+      character(*), intent(in) :: path
 
       character(4) :: frameID
       character(256) :: buffer
@@ -176,24 +176,24 @@ contains
       integer(i1), parameter :: flags = 0_i1
       integer(i1), parameter :: encoding = 3_i1
 
-      integer :: unit, error
-      logical :: exist
+      integer :: fun, error
+      logical :: exists
 
-      inquire (file=file, exist=exist)
+      inquire (file=path, exist=exists)
 
       id3 = ''
 
-      if (exist) then
-         open (newunit=unit, file=file, action='read', status='old', &
+      if (exists) then
+         open (newunit=fun, file=path, action='read', status='old', &
             iostat=error)
 
          if (error .ne. 0) then
-            write (stderr, "('Error: Cannot read ID3 file ''', A, '''.')") file
+            write (stderr, "('Error: Cannot read ID3 file ''', A, '''.')") path
             stop
          end if
 
          do
-            read (unit, '(A4, 1X, A)', iostat=error) frameID, buffer
+            read (fun, '(A4, 1X, A)', iostat=error) frameID, buffer
             text = trim(buffer)
 
             if (error .eq. eof) exit
@@ -226,15 +226,15 @@ contains
                // char(encoding) // text
          end do
 
-         close (unit)
+         close (fun)
       end if
 
       if (len(id3) .gt. 0) id3 = 'ID3' // char(version) // char(revision) &
          // char(flags) // encode_size(len(id3)) // id3
    end function write_id3
 
-   function decode_size(code, synchsafe) result(value)
-      integer :: value
+   function decode_size(code, synchsafe) result(s)
+      integer :: s
 
       character(*), intent(in) :: code
       logical, intent(in), optional :: synchsafe
@@ -247,16 +247,16 @@ contains
          if (.not. synchsafe) base = 256
       end if
 
-      value = 0
+      s = 0
       do byte = 1, 4
-         value = value + ichar(code(byte:byte)) * base ** (4 - byte)
+         s = s + ichar(code(byte:byte)) * base ** (4 - byte)
       end do
    end function decode_size
 
-   function encode_size(value, synchsafe) result(code)
+   function encode_size(s, synchsafe) result(code)
       character(4) :: code
 
-      integer, intent(in) :: value
+      integer, intent(in) :: s
       logical, intent(in), optional :: synchsafe
 
       integer :: byte, base
@@ -268,33 +268,33 @@ contains
       end if
 
       do byte = 1, 4
-         code(byte:byte) = char(modulo(value / base ** (4 - byte), base))
+         code(byte:byte) = char(modulo(s / base ** (4 - byte), base))
       end do
    end function encode_size
 
-   function decode_iso8859_1(code) result(value)
-      integer, allocatable :: value(:)
+   function decode_iso8859_1(code) result(unicode)
+      integer, allocatable :: unicode(:)
 
       character(*), intent(in) :: code
 
       integer :: byte
 
-      allocate(value(len(code)))
+      allocate(unicode(len(code)))
 
       do byte = 1, len(code)
-         value(byte) = ichar(code(byte:byte))
+         unicode(byte) = ichar(code(byte:byte))
       end do
    end function decode_iso8859_1
 
-   function decode_utf16(code) result(value)
-      integer, allocatable :: value(:)
+   function decode_utf16(code) result(unicode)
+      integer, allocatable :: unicode(:)
 
       character(*), intent(in) :: code
 
       integer :: c, s, v
       logical :: be
 
-      allocate(value(len(code) / 2))
+      allocate(unicode(len(code) / 2))
 
       be = .true.
 
@@ -311,36 +311,36 @@ contains
          else if (s .eq. 65534) then ! FFFE (wrong BOM)
             be = .not. be
          else if (55296 .le. s .and. s .lt. 56320) then ! high surrogate
-            value(v) = 1024 * (s - 55296)
+            unicode(v) = 1024 * (s - 55296)
          else if (56320 .le. s .and. s .lt. 57344) then ! low surrogate
-            value(v) = 65536 + s - 56320 + value(v)
+            unicode(v) = 65536 + s - 56320 + unicode(v)
             v = v + 1
          else ! basic multilingual plane
-            value(v) = s
+            unicode(v) = s
             v = v + 1
          end if
       end do
 
-      value = value(:v - 1)
+      unicode = unicode(:v - 1)
    end function decode_utf16
 
-   function encode_utf8(value) result(code)
+   function encode_utf8(unicode) result(code)
       character(:), allocatable :: code
 
-      integer, intent(in) :: value(:)
+      integer, intent(in) :: unicode(:)
 
       integer :: c, i, j, n, v
 
       code = ''
 
-      do v = lbound(value, 1), ubound(value, 1)
-         if (value(v) .lt. 128) then
-            code = code // char(value(v))
+      do v = lbound(unicode, 1), ubound(unicode, 1)
+         if (unicode(v) .lt. 128) then
+            code = code // char(unicode(v))
          else
             do n = 1, 5
-               if (value(v) .lt. 64 * 32 ** n) then
+               if (unicode(v) .lt. 64 * 32 ** n) then
                   do i = n, 0, -1
-                     c = 128 + modulo(value(v) / 64 ** i, 64)
+                     c = 128 + modulo(unicode(v) / 64 ** i, 64)
                      if (i .eq. n) then
                         do j = 1, n
                            c = c + 128 / 2 ** j

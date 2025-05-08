@@ -9,38 +9,37 @@ module aiff
 
 contains
 
-   subroutine read_aiff(file, s)
-      character(*), intent(in) :: file
+   subroutine read_aiff(path, s)
+      character(*), intent(in) :: path
       type(audio), intent(out) :: s
 
-      integer :: unit
-      integer :: i, error
+      integer :: i, fun, error
       character(1) :: byte
       character(4) :: ckID, formType, applicationSignature
       character(10) :: extended
       integer(i4) :: ckSize, offset, blockSize
       integer(i2) :: sampleSize
 
-      open (newunit=unit, file=file, iostat=error, &
+      open (newunit=fun, file=path, iostat=error, &
          action='read', status='old', access='stream')
 
       if (error .ne. 0) then
-         write (stderr, "('Error: Cannot read AIFF file ''', A, '''.')") file
+         write (stderr, "('Error: Cannot read AIFF file ''', A, '''.')") path
          stop
       end if
 
       do
-         read (unit, iostat=error) ckID, ckSize
+         read (fun, iostat=error) ckID, ckSize
          if (error .eq. eof) exit
 
          ckSize = r(ckSize)
 
          select case (ckID)
          case ('FORM')
-            read (unit) formType
+            read (fun) formType
 
          case ('COMM')
-            read (unit) s%channels, s%points, sampleSize, extended
+            read (fun) s%channels, s%points, sampleSize, extended
 
             s%channels = r(s%channels)
             s%points = r(s%points)
@@ -54,47 +53,47 @@ contains
 
          case ('SSND')
             allocate(s%sound(s%channels, s%points))
-            read (unit) offset, blockSize, s%sound
+            read (fun) offset, blockSize, s%sound
 
             offset = r(offset)
             blockSize = r(blockSize)
             s%sound = r(s%sound)
 
          case ('APPL')
-            read (unit) applicationSignature
+            read (fun) applicationSignature
 
             if (applicationSignature .eq. 'FETZ') then
-               read (unit) extended
+               read (fun) extended
                s%amplitude = decode(extended)
             else
-               read (unit) (byte, i = 1, ckSize - 4)
+               read (fun) (byte, i = 1, ckSize - 4)
             end if
 
          case ('ID3 ')
             allocate(character(ckSize) :: s%meta)
-            read (unit) s%meta
+            read (fun) s%meta
 
          case default
             do i = 1, ckSize
-               read (unit, iostat=error) byte
+               read (fun, iostat=error) byte
 
                if (error .ne. 0) then
                   write (stderr, "('Error: Corrupt AIFF file ''', A, '''.')") &
-                     file
+                     path
                   stop
                end if
             end do
          end select
       end do
 
-      close (unit)
+      close (fun)
    end subroutine read_aiff
 
-   subroutine write_aiff(file, s)
-      character(*), intent(in) :: file
+   subroutine write_aiff(path, s)
+      character(*), intent(in) :: path
       type(audio), intent(in) :: s
 
-      integer :: unit, error
+      integer :: fun, error
       integer(i4), parameter :: commSize = 18_i4, applSize = 14_i4
       integer(i4), parameter :: offset = 0_i4, blockSize = 0_i4
       integer(i4) :: formSize, ssndSize
@@ -110,8 +109,8 @@ contains
 
       if (allocated(s%meta)) formSize = formSize + 8_i4 + len(s%meta)
 
-      if (file .eq. 'stdout' .or. file .eq. 'http') then
-         if (file .eq. 'http') then
+      if (path .eq. 'stdout' .or. path .eq. 'http') then
+         if (path .eq. 'http') then
             write (*, "('Content-Type: audio/x-aiff')")
             write (*, "('Content-Length: ', I0, /)") formSize + 8
          end if
@@ -129,28 +128,28 @@ contains
          if (allocated(s%meta)) write (*, '(*(A))', advance='no') &
             'ID3 ', c(r(len(s%meta, i4))), s%meta
       else
-         open (newunit=unit, file=file, iostat=error, &
+         open (newunit=fun, file=path, iostat=error, &
             action='write', status='replace', access='stream')
 
          if (error .ne. 0) then
             write (stderr, "('Error: Cannot write AIFF file ''', A, '''.')") &
-               file
+               path
             stop
          end if
 
-         write (unit) 'FORM', r(formSize), 'AIFF', &
+         write (fun) 'FORM', r(formSize), 'AIFF', &
             'COMM', r(commSize), r(s%channels), &
             r(s%points), r(sampleSize), encode(s%rate), &
             'SSND', r(ssndSize), r(offset), r(blockSize), &
             r(s%sound)
 
-         if (s%amplitude .ne. 1.0_dp) write (unit) &
+         if (s%amplitude .ne. 1.0_dp) write (fun) &
             'APPL', r(applSize), 'FETZ', encode(s%amplitude)
 
-         if (allocated(s%meta)) write (unit) &
+         if (allocated(s%meta)) write (fun) &
             'ID3 ', r(len(s%meta, i4)), s%meta
 
-         close (unit)
+         close (fun)
       end if
    end subroutine write_aiff
 end module aiff

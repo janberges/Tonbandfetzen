@@ -6,7 +6,7 @@ module search
    public :: focus, reset, next, remember, revert, known, set, get, &
       numeral, lexical, special
 
-   character(:), allocatable :: sequence
+   character(:), allocatable :: text
    integer(i2), allocatable :: info(:)
 
    integer, save :: last, marks(0:99)
@@ -23,10 +23,10 @@ contains
    subroutine focus(it)
       character(*), intent(in) :: it
 
-      sequence = it
+      text = it
 
       if (allocated(info)) deallocate(info)
-      allocate(info(len(sequence)))
+      allocate(info(len(text)))
 
       call reset
    end subroutine focus
@@ -57,8 +57,8 @@ contains
          blocking = special
       end if
 
-      first = scan(sequence(last + 1:), set)
-      break = scan(sequence(last + 1:), blocking)
+      first = scan(text(last + 1:), set)
+      break = scan(text(last + 1:), blocking)
 
       if (first .eq. 0 .or. break .ne. 0 .and. break .lt. first) then
          if (present(def)) then
@@ -74,16 +74,16 @@ contains
       if (present(length)) then
          last = first + length - 1
       else
-         last = verify(sequence(first + 1:), set)
+         last = verify(text(first + 1:), set)
 
          if (last .eq. 0) then
-            last = len(sequence)
+            last = len(text)
          else
             last = last + first - 1
          end if
       end if
 
-      next = sequence(first:last)
+      next = text(first:last)
    end function next
 
    subroutine remember(mark)

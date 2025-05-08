@@ -4,26 +4,26 @@ subroutine guitar
    use tab, only: preprocess
    implicit none
 
-   integer :: unit, error
+   integer :: fun, error
 
-   character(:), allocatable :: file, notes
+   character(:), allocatable :: path, notes
 
    notes = preprocess(slurp(command_argument(1, '/dev/stdin')))
 
-   file = command_argument(2, '/dev/stdout')
+   path = command_argument(2, '/dev/stdout')
 
-   if (file .eq. 'stdout') then
+   if (path .eq. 'stdout') then
       write (*, '(A)', advance='no') notes
    else
-      open (newunit=unit, file=file, iostat=error, &
+      open (newunit=fun, file=path, iostat=error, &
          action='write', status='replace', access='stream')
 
       if (error .ne. 0) then
-         write (stderr, "('Error: Cannot write file ''', A, '''.')") file
+         write (stderr, "('Error: Cannot write file ''', A, '''.')") path
          stop
       end if
 
-      write (unit) notes
-      close (unit)
+      write (fun) notes
+      close (fun)
    end if
 end subroutine guitar

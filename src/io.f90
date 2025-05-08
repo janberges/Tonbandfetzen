@@ -7,24 +7,24 @@ module io
 
 contains
 
-   function slurp(file) result(content)
+   function slurp(path) result(content)
       character(:), allocatable :: content
 
-      character(*), intent(in) :: file
+      character(*), intent(in) :: path
 
-      integer :: unit, i, error
+      integer :: fun, i, error
       logical :: f
 
       character, parameter :: lf = new_line('A')
 
-      f = file .ne. 'stdin'
+      f = path .ne. 'stdin'
 
       if (f) then
-         open (newunit=unit, file=file, iostat=error, &
+         open (newunit=fun, file=path, iostat=error, &
             action='read', status='old', access='stream')
 
          if (error .ne. 0) then
-            write (stderr, "('Error: Cannot read file ''', A, '''.')") file
+            write (stderr, "('Error: Cannot read file ''', A, '''.')") path
             stop
          end if
       end if
@@ -33,7 +33,7 @@ contains
 
       do i = 1, len(content)
          if (f) then
-            read (unit, iostat=error) content(i:i)
+            read (fun, iostat=error) content(i:i)
          else
             read (*, '(A1)', iostat=error, advance='no') content(i:i)
             if (error .eq. eol) content(i:i) = lf
@@ -44,7 +44,7 @@ contains
          end if
       end do
 
-      if (f) close (unit)
+      if (f) close (fun)
    end function slurp
 
    function command_argument(num, def) result(arg)
@@ -53,7 +53,7 @@ contains
       integer, intent(in) :: num
       character(*), intent(in) :: def
 
-      integer :: i, n, size
+      integer :: i, n, length
 
       i = num
       n = command_argument_count()
@@ -65,9 +65,9 @@ contains
       if (i .lt. 1 .or. i .gt. n) then
          arg = def
       else
-         call get_command_argument(i, length=size)
+         call get_command_argument(i, length=length)
 
-         allocate(character(size) :: arg)
+         allocate(character(length) :: arg)
 
          call get_command_argument(i, value=arg)
 
@@ -75,19 +75,19 @@ contains
       end if
    end function command_argument
 
-   function environment_variable(name) result(value)
-      character(:), allocatable :: value
+   function environment_variable(name) result(var)
+      character(:), allocatable :: var
 
       character(*), intent(in) :: name
 
-      integer :: size
+      integer :: length
 
-      call get_environment_variable(name, length=size)
+      call get_environment_variable(name, length=length)
 
-      allocate(character(size) :: value)
+      allocate(character(length) :: var)
 
-      if (len(value) .gt. 0) then
-         call get_environment_variable(name, value=value)
+      if (len(var) .gt. 0) then
+         call get_environment_variable(name, value=var)
       end if
    end function environment_variable
 end module io

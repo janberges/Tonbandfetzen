@@ -6,7 +6,7 @@ import sys
 letters = 'FCGDAEB'
 signs = ['bb', 'b', '', '#', 'x']
 notes = [letter + sign for sign in signs for letter in letters]
-commas = ["''", "'", 'Pyth.', ",", ",,", ",,,"]
+commas = ["''", "'", 'Pyth.', ',', ',,', ',,,']
 
 equal = np.empty(5 * 7)
 fifth = np.empty_like(equal)

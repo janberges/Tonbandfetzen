@@ -14,7 +14,7 @@ BEGIN {
 	our @ISA       = qw(Exporter);
 	our @EXPORT    = qw($B $C $s $T $A4 $N $pi @p @a @z take make mel stick stack fix fit cut in);
 	our @EXPORT_OK = qw(noise ext rex);
-	}
+}
 
 our $B  = 16;       # sampleSize
 our $C  = 2;        # numChannels
@@ -54,19 +54,19 @@ sub take {
 			$B = unpack "s>", $B;
 			$C = unpack "s>", $C;
 			$s = rex($s);
-			}
+		}
 		elsif ($C eq "SSND") {
 			seek D, 8, 1;       # skip offset, blockSize
 			read D, $i, $S - 8; # soundData
-			}
+		}
 		else {
 			seek D, $S, 1; # skip chunk
-			}
 		}
+	}
 	close D;
 
 	[unpack $B > 16 ? "l>*" : $B > 8 ? "s>*" : "c*", $i];
-	}
+}
 
 sub make {
 	my $n = shift;
@@ -79,7 +79,7 @@ sub make {
 		"COMM", pack("(lsLs)>", 18, $C, @$i / $C, $B), ext($s),
 		"SSND", pack("(lLL)>", 8 + length $j, 0, 0), $j;
 	close D;
-	}
+}
 
 sub mel {
 	my $Fr = @p * $A4; # reference frequency
@@ -115,14 +115,14 @@ sub mel {
 			$R = $R0;
 
 			$i{$#y} = 1;
-			}
+		}
 
 		/([\d.]+):?([\d.]*)/;
 		my $n = ($1 or 0) / ($2 or 1);
 
 		if (/~/) {
 			$F = $F0 = $Fr = @p * $n / $s || 1;
-			}
+		}
 		elsif (/([A-G])/) {
 			$F = $F0 = $Fr = @p * $A4 * 2 ** ($n - 4 + ({
 				C => -9,
@@ -132,8 +132,8 @@ sub mel {
 				G => -2,
 				A => 0,
 				B => 2,
-				}->{$1} + /#/) / 12);
-			}
+			}->{$1} + /#/) / 12);
+		}
 		elsif ( /(-|\+)/) { $F  = $F0 = $Fr * 2 ** ({"-"  => -1, "+" => 1}->{$1} * $n / $N) }
 		elsif (/(\\|\/)/) { $ft =             2 ** ({"\\" => -1, "/" => 1}->{$1} * $n / $N) }
 		elsif ( /(_|\^)/) { $fT =             2 ** ({"_"  => -1, "^" => 1}->{$1} * $n / $N) }
@@ -154,8 +154,8 @@ sub mel {
 				for (1..$t) {
 					push @y, 0;
 					push @r, $R;
-					}
 				}
+			}
 			else {
 				my $f = $ft ** (1 / $t) * $fT ** (1 / $T);
 				my $y = $yt ** (1 / $t) * $yT ** (1 / $T); # growth factors per sampleFrame
@@ -171,10 +171,10 @@ sub mel {
 					$F *= $f;
 					$Y *= $y;
 					$R *= $r;
-					}
 				}
 			}
 		}
+	}
 
 	$dt and warn "output ", abs $dt / $s, " seconds too ", $dt > 0 ? "short" : "long", "\n";
 
@@ -183,7 +183,7 @@ sub mel {
 	for my $i (keys %i) {
 		$y[($i + $_) % @y] *= $a[$_] for 0..$#a;
 		$y[($i - $_) % @y] *= $z[$_] for 0..$#z;
-		}
+	}
 
 	$C == 1 and return \@y;
 
@@ -200,17 +200,17 @@ sub mel {
 		$n and $y[$i] /= sqrt $n;
 
 		push @i, map $y[$i] * $_, @c;
-		}
+	}
 
 	\@i;
-	}
+}
 
 sub stick {
 	my @i = ();
 	push @i, @$_ for @_;
 
 	\@i;
-	}
+}
 
 sub stack {
 	my $t = 0;
@@ -219,10 +219,10 @@ sub stack {
 	my @i = ();
 	for my $i (grep @$_, @_) {
 		$i[$_] += $$i[$_ % @$i] for 0..$t;
-		}
+	}
 
 	\@i;
-	}
+}
 
 sub fix {
 	my $i = shift;
@@ -237,7 +237,7 @@ sub fix {
 	$_ *= $q for @$i;
 
 	$i;
-	}
+}
 
 sub fit {
 	my  $i = shift;
@@ -255,10 +255,10 @@ sub fit {
 	for ($t > 0 ? 0..$t - 1 : $t + 1..0) {
 		my $j = $C * int $q * $_ + .5;
 		push @i, $$i[$j++] for 1..$C;
-		}
+	}
 
 	\@i;
-	}
+}
 
 sub cut {
 	my $i = shift;
@@ -269,7 +269,7 @@ sub cut {
 	$k-- while ! $$i[$k] and $j < $k;
 
 	[@$i[$C * int($j / $C)..$C * int($k / $C + 1) - 1]];
-	}
+}
 
 sub in {
 	my $a = shift || 0;
@@ -277,7 +277,7 @@ sub in {
 	my $n = shift || $s || return();
 	my $d = ($b - $a) / $n;
 	map $a + $d * $_, 1..$n;
-	}
+}
 
 # export ok:
 
@@ -297,10 +297,10 @@ sub noise {
 		my $w = 2 * $pi * $f * 2 ** ($i * (.5 - rand) / 12) / $s;
 		$i[$_] +=           $_  * sin($w *       $_  + $p)
 		       +  ($t - 1 - $_) * sin($w * ($t + $_) + $p) for 0..$t - 1;
-		}
+	}
 
 	fix(\@i, 1);
-	}
+}
 
 sub ext {
 	my $d = shift;
@@ -313,7 +313,7 @@ sub ext {
 	for (1..15) {
 		$b .= $e % 2;
 		$e = int $e / 2;
-		}
+	}
 
 	$b .= $d < 0 ? 1 : 0;
 	$b = reverse $b;
@@ -322,10 +322,10 @@ sub ext {
 		$b .= int $m;
 		$m -= int $m;
 		$m *= 2;
-		}
+	}
 
 	return pack "B80", $b;
-	}
+}
 
 sub rex {
 	my @b = split //, unpack "B80", shift;
@@ -337,6 +337,6 @@ sub rex {
 	$e += 2 ** $_ * pop @b for 0..14;
 
 	$m * 2 ** $e * (pop @b ? -1 : 1);
-	}
+}
 
 1;

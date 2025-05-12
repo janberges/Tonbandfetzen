@@ -18,7 +18,7 @@ $bd = mel q(
 	E3 \30 ,0 1 \0 ,25 2
 	B3 \30 ,0 1 \0 ,25 1
 	G3 \30 ,0 1 \0 ,25 2
-	);
+);
 
 # hihat
 
@@ -73,7 +73,7 @@ $C1 = stack $bd, stick $Em, $Em, $Em, $Am;
 for (1..4) {
 	my $V = cut fix take("freedom$_.aif"), 75;
 	push @V, fit $V, round(@$V / $C, $_ == 4 ? 2 * @$C1 / $C : @$A3 / $C);
-	}
+}
 
 # putting all together
 
@@ -93,6 +93,6 @@ sub round {
 	my $n = shift || 0;
 	my $f = shift || 1;
 	$f * int $n / $f + ($n <=> 0) / 2;
-	}
+}
 
 # 08/08/2013

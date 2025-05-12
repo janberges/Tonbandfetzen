@@ -9,7 +9,7 @@ $ms = $s / 1000;
 
 sub arcsin {
 	($_[0] <=> 0) * atan2(abs($_[0]), sqrt(1 - $_[0] ** 2));
-	}
+}
 
 @p = map { 2 / $pi * arcsin(sin($_)) } in 0, 2 * $pi;
 

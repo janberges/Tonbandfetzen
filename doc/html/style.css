@@ -49,3 +49,11 @@ pre {
 .PreProc {
     color: #193bda;
 }
+
+.Special {
+    color: #c000c0;
+}
+
+.Type {
+    color: #008000;
+}

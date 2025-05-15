@@ -44,6 +44,8 @@ The preprocessor `tz guitar` converts tablature into suitable `tz mel` input:
 
 You can try both [here](https://janberges.de/tz.cgi).
 
+On macOS with `zsh`, you can use `afplay =(...)` instead of `... | aplay`.
+
 ## Installation
 
 To build all tools, you only need a recent Fortran compiler:

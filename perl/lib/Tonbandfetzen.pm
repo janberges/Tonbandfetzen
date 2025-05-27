@@ -54,12 +54,10 @@ sub take {
 			$B = unpack "s>", $B;
 			$C = unpack "s>", $C;
 			$s = rex($s);
-		}
-		elsif ($C eq "SSND") {
+		} elsif ($C eq "SSND") {
 			seek D, 8, 1;       # skip offset, blockSize
 			read D, $i, $S - 8; # soundData
-		}
-		else {
+		} else {
 			seek D, $S, 1; # skip chunk
 		}
 	}
@@ -155,8 +153,7 @@ sub mel {
 					push @y, 0;
 					push @r, $R;
 				}
-			}
-			else {
+			} else {
 				my $f = $ft ** (1 / $t) * $fT ** (1 / $T);
 				my $y = $yt ** (1 / $t) * $yT ** (1 / $T); # growth factors per sampleFrame
 				my $r = $rt ** (1 / $t) * $rT ** (1 / $T);

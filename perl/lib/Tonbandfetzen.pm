@@ -1,9 +1,5 @@
 #!/usr/bin/perl
 
-# Tonbandfetzen
-# Jan Berges
-# January 7, 2014
-
 package Tonbandfetzen;
 
 use strict;

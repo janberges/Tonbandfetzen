@@ -18,7 +18,7 @@ music based on audio fragments generated from plain text input. It contains:
 * `tz riff2aiff` - convert .wav(e) into .aif(f) files
 * `tz aiff2riff` - convert .aif(f) into .wav(e) files
 * `tz tag` - add ID3v2 metadata to .wav(e) files
-* `zplay` - generate and play sound fragments
+* `tz play` - generate and play sound fragments
 
 ## Usage
 

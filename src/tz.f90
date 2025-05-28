@@ -2,8 +2,8 @@ program tz
    use io, only: command_argument
    implicit none
 
-   external :: aiff2riff, guitar, harmonics, inspect, mel, mono, repeatz, &
-      riff2aiff, stack, stick, stretch, tag, trimz
+   external :: aiff2riff, guitar, harmonics, inspect, mel, mono, playz, &
+      repeatz, riff2aiff, stack, stick, stretch, tag, trimz
 
    character(:), allocatable :: command
 
@@ -23,6 +23,7 @@ program tz
    case ('riff2aiff'); call riff2aiff
    case ('aiff2riff'); call aiff2riff
    case ('tag'); call tag
+   case ('play'); call playz
    case ('help'); call help
    case default
       write (*, "('Unknown command ""', A, '""', /)") command
@@ -46,6 +47,7 @@ contains
          'inspect [file]', &
          'riff2aiff [[infile] outfile]', &
          'aiff2riff [[infile] outfile]', &
-         'tag [infile [datafile [outfile]]]'
+         'tag [infile [datafile [outfile]]]', &
+         'play [infile [outfile]]'
    end subroutine help
 end program tz

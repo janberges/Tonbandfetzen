@@ -1,0 +1,29 @@
+.\" Man page for the command play of the Tonbandfetzen tool box
+.TH TZ-PLAY 1 2010\(en2025 "Jan Berges" "Tonbandfetzen Manual"
+.SH NAME
+tz play \- generate and play sound fragments
+.SH SYNOPSIS
+.B tz play
+.RI [ infile
+.RI [ outfile ]]
+.SH DESCRIPTION
+.PP
+Convert
+.IR infile
+to
+.IR outfile
+if necessary and play it using
+.BR xdg-open .
+Only WAVE, AIFF, MP3, and ASCII files (with
+.B tz mel
+or
+.B tz guitar
+input) are supported.
+This is a simple wrapper program added for convenience.
+Filenames default to
+.BR /dev/stdin
+or
+.BR /dev/shm/tmp.wav .
+The dash
+.RB ( - )
+is a shorthand for the default value.

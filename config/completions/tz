@@ -6,7 +6,7 @@ _tz()
 
     if [ $COMP_CWORD -eq 1 ]
     then
-        COMPREPLY=($(compgen -W "mel guitar stick stack stretch repeat trim mono harmonics inspect riff2aiff aiff2riff tag" "$word"))
+        COMPREPLY=($(compgen -W "mel guitar stick stack stretch repeat trim mono harmonics inspect riff2aiff aiff2riff tag play" "$word"))
     elif [ $COMP_CWORD -eq 2 ] && [ "${COMP_WORDS[COMP_CWORD-1]}" = harmonics ]
     then
         COMPREPLY=($(compgen -W "harmonic power major constant linear quadratic circular cubic water random" "$word"))

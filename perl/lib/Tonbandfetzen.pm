@@ -40,12 +40,12 @@ sub take {
 	seek D, 12, 0; # skip header
 
 	while (! eof D) {
-		read D, my $C, 4; # ckID
+		read D, my $I, 4; # ckID
 		read D, my $S, 4; # ckSize
 
 		$S = unpack "l>", $S;
 
-		if ($C eq "COMM") {
+		if ($I eq "COMM") {
 			read D, $C, 2;  # numChannels
 			seek D, 4, 1;   # skip numSampleFrames
 			read D, $B, 2;  # sampleSize
@@ -54,7 +54,7 @@ sub take {
 			$B = unpack "s>", $B;
 			$C = unpack "s>", $C;
 			$s = rex($s);
-		} elsif ($C eq "SSND") {
+		} elsif ($I eq "SSND") {
 			seek D, 8, 1;       # skip offset, blockSize
 			read D, $i, $S - 8; # soundData
 		} else {

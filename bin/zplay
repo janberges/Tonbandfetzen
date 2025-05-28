@@ -8,7 +8,7 @@ test "$outfile" = - && outfile=/dev/shm/tmp.wav
 
 case "${infile##*.}" in
 aiff | aif | AIFF | AIF )
-    aiff2riff "$infile" "$outfile" && xdg-open "$outfile";;
+    tz aiff2riff "$infile" "$outfile" && xdg-open "$outfile";;
 wave | wav | WAVE | WAV | mp3 | MP3 )
     xdg-open "$infile";;
 *)

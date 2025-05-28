@@ -7,7 +7,7 @@ clean:
 	rm -f *.aif *.wav
 
 %.aif: %.wav %.mel
-	mel $^ - | riff2aiff $@
+	tz mel $^ - | tz riff2aiff $@
 
 %.wav: %.txt
 	espeak-ng -vde+f5 -s130 -f$< -w$@

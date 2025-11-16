@@ -22,7 +22,7 @@ music based on audio fragments generated from plain text input. It contains:
 
 ## Usage
 
-Different task are spread across separate executables, which communicate via
+Different task are spread across separate subprograms, which communicate via
 files in the Waveform Audio File Format (.wav). Hence, the composition process
 can be controlled using build-automation software, allowing for partial updates
 and parallel execution (`make -j`).

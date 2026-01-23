@@ -53,7 +53,7 @@ build/io.o: build/constants.o
 build/lcg.o: build/constants.o
 build/mel.o: build/constants.o build/interpreter.o build/io.o build/riff.o
 build/mono.o: build/constants.o build/io.o build/riff.o
-build/play.o: build/aiff.o build/constants.o build/io.o build/paths.o build/riff.o build/tab.o
+build/play.o: build/aiff.o build/constants.o build/interpreter.o build/io.o build/paths.o build/riff.o build/tab.o
 build/rationals.o: build/constants.o
 build/repeat.o: build/constants.o build/io.o build/rationals.o build/riff.o
 build/riff.o: build/bytes.o build/constants.o build/extended.o

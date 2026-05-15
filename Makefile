@@ -67,4 +67,4 @@ build/stretch.o: build/constants.o build/io.o build/rationals.o build/riff.o
 build/synthesis.o: build/constants.o build/lcg.o
 build/tag.o: build/constants.o build/id3.o build/io.o build/paths.o build/riff.o
 build/trim.o: build/constants.o build/io.o build/rationals.o build/riff.o
-build/tz.o: build/aiff2riff.o build/guitar.o build/harmonics.o build/inspect.o build/io.o build/mel.o build/mono.o build/play.o build/repeat.o build/riff2aiff.o build/stack.o build/stick.o build/stretch.o build/tag.o build/trim.o
+build/tz.o: build/aiff2riff.o build/constants.o build/guitar.o build/harmonics.o build/inspect.o build/io.o build/mel.o build/mono.o build/play.o build/repeat.o build/riff2aiff.o build/stack.o build/stick.o build/stretch.o build/tag.o build/trim.o

@@ -1,4 +1,5 @@
 program tz
+   use constants, only: stderr
    use io, only: command_argument
    implicit none
 
@@ -26,7 +27,7 @@ program tz
    case ('play'); call playz
    case ('help'); call help
    case default
-      write (*, '("Unknown command """, A, """", /)') command
+      write (stderr, '("Error: Unknown command """, A, """.")') command
       call help
    end select
 

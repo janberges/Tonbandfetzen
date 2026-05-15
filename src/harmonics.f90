@@ -15,7 +15,7 @@ subroutine harmonics
 
    call fourier(wave, spectrum)
 
-   write (*, "(/ 'f(t) = sum r[n] cos(n omega t - phi[n])' /)")
+   write (*, '(/ "f(t) = sum r[n] cos(n omega t - phi[n])" /)')
    write (*, '(A2, 2A15)') 'n', 'r[n]', 'phi[n]'
 
    do n = 1, size(spectrum)

@@ -194,7 +194,7 @@ contains
 
          if (present(ratio)) then
             if (ratio) then
-               write (tmp, "(I0, ':', I0)") i - j, beats
+               write (tmp, '(I0, ":", I0)') i - j, beats
                sub = sub // trim(tmp)
             end if
          end if

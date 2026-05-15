@@ -21,7 +21,7 @@ contains
       tagID = id3(1:3)
 
       if (tagID .eq. 'TAG') then
-         write (stderr, "('Warning: ID3v1 not supported.')") feature
+         write (stderr, '("Warning: ID3v1 not supported.")') feature
          return
       end if
 
@@ -29,12 +29,12 @@ contains
       revision = ichar(id3(5:5), i1)
 
       if (version .le. 2) then
-         write (stderr, "('Warning: ', A, 'v2.', I0, ' not supported.')") &
+         write (stderr, '("Warning: ", A, "v2.", I0, " not supported.")') &
             tagID, version
          return
       end if
 
-      write (stderr, "('Metadata format: ', A, 'v2.', I0, '.', I0)") &
+      write (stderr, '("Metadata format: ", A, "v2.", I0, ".", I0)') &
          tagID, version, revision
 
       flags = ichar(id3(6:6))
@@ -52,7 +52,7 @@ contains
                feature = 'footer'
             end select
 
-            write (stderr, "('Warning: ID3 ', A, ' not supported.')") feature
+            write (stderr, '("Warning: ID3 ", A, " not supported.")') feature
             return
          end if
       end do
@@ -109,17 +109,17 @@ contains
 
          flags = ichar(id3(i + 9:i + 9))
 
-         if (btest(flags, 6)) write (stderr, "(A, ' tag-bound')") frameID
-         if (btest(flags, 5)) write (stderr, "(A, ' file-bound')") frameID
-         if (btest(flags, 4)) write (stderr, "(A, ' read-only')") frameID
+         if (btest(flags, 6)) write (stderr, '(A, " tag-bound")') frameID
+         if (btest(flags, 5)) write (stderr, '(A, " file-bound")') frameID
+         if (btest(flags, 4)) write (stderr, '(A, " read-only")') frameID
 
          flags = ichar(id3(i + 10:i + 10))
 
-         if (btest(flags, 6)) write (stderr, "(A, ' grouped')") frameID
-         if (btest(flags, 3)) write (stderr, "(A, ' compressed')") frameID
-         if (btest(flags, 2)) write (stderr, "(A, ' encrypted')") frameID
-         if (btest(flags, 1)) write (stderr, "(A, ' unsyrchronised')") frameID
-         if (btest(flags, 0)) write (stderr, "(A, ' states length')") frameID
+         if (btest(flags, 6)) write (stderr, '(A, " grouped")') frameID
+         if (btest(flags, 3)) write (stderr, '(A, " compressed")') frameID
+         if (btest(flags, 2)) write (stderr, '(A, " encrypted")') frameID
+         if (btest(flags, 1)) write (stderr, '(A, " unsyrchronised")') frameID
+         if (btest(flags, 0)) write (stderr, '(A, " states length")') frameID
 
          i = i + 10
 
@@ -148,14 +148,14 @@ contains
             end do
          else
             text = repeat(' ', 64)
-            write (text, "(I0, ' bytes')") frameSize
+            write (text, '(I0, " bytes")') frameSize
             text = trim(text)
          end if
 
          if (feature .ne. 'unknown') then
-            write (stderr, "(A, ' (', A, '): ', A)") frameID, feature, text
+            write (stderr, '(A, " (", A, "): ", A)') frameID, feature, text
          else
-            write (stderr, "(A, ': ', A)") frameID, text
+            write (stderr, '(A, ": ", A)') frameID, text
          end if
 
          i = i + frameSize
@@ -188,7 +188,7 @@ contains
             iostat=error)
 
          if (error .ne. 0) then
-            write (stderr, "('Error: Cannot read ID3 file ''', A, '''.')") path
+            write (stderr, '("Error: Cannot read ID3 file ''", A, "''.")') path
             stop
          end if
 
@@ -217,7 +217,7 @@ contains
                text = mime // char(0) // char(3) // 'cover' // char(0) &
                   // slurp(text)
             else if (frameID(1:1) .ne. 'T') then
-               write (stderr, "('Warning: ', A, ' not supported.')") frameID
+               write (stderr, '("Warning: ", A, " not supported.")') frameID
                continue
             end if
 

@@ -330,7 +330,7 @@ contains
                tuned = n(1.0_dp) .ne. 0.0_dp
 
             case ('status')
-               write (stderr, "(*(A10, ':', F16.9, 1X, A, :, /))") &
+               write (stderr, '(*(A10, ":", F16.9, 1X, A, :, /))') &
                   'Time', t / s, 's', &
                   'Frequency', f * s, 'Hz', &
                   'Amplitude', a, 'arb. units', &
@@ -338,23 +338,23 @@ contains
                   'Phase', phase, '(mod 1)'
 
             case ('report')
-               write (stderr, "('Note counts:')")
+               write (stderr, '("Note counts:")')
 
                do i = lbound(keycount, 1), ubound(keycount, 1)
                   if (keycount(i) .gt. 0) then
                      j = modulo(i + 4, 7) + 1
 
-                     write (stderr, "(A)", advance='no') 'FCGDAEB'(j:j)
+                     write (stderr, '(A)', advance='no') 'FCGDAEB'(j:j)
 
                      j = (i + 4 - (j - 1)) / 7
 
-                     if (j < 0) write (stderr, "(A)", advance='no') &
+                     if (j < 0) write (stderr, '(A)', advance='no') &
                         repeat('b', -j)
 
-                     if (j > 0) write (stderr, "(A)", advance='no') &
+                     if (j > 0) write (stderr, '(A)', advance='no') &
                         repeat('#', j)
 
-                     write (stderr, "(': ', I0)") keycount(i)
+                     write (stderr, '(": ", I0)') keycount(i)
                   end if
                end do
 
@@ -408,7 +408,7 @@ contains
                end if
 
             case default
-               write (stderr, "('Warning: Unknown action ''', A, '''.')") word
+               write (stderr, '("Warning: Unknown action ''", A, "''.")') word
             end select
 
          case ('T')
@@ -418,9 +418,9 @@ contains
             case ('equal', 'pyth', 'just', 'close')
                continue
             case default
-               write (stderr, "('Warning: Unknown tuning ''', A, '''.')") tuning
-               write (stderr, "('The tuning ''equal'' is used instead.')")
-               write (stderr, "('See ''man tz mel'' for list of tunings.')")
+               write (stderr, '("Warning: Unknown tuning ''", A, "''.")') tuning
+               write (stderr, '("The tuning ''equal'' is used instead.")')
+               write (stderr, '("See ''man tz mel'' for list of tunings.")')
                tuning = 'equal'
             end select
 
@@ -779,7 +779,7 @@ contains
 
       if (how .eq. '#') then
          if (i .gt. command_argument_count() - 3) then
-            write (stderr, "('Error: File ', I0, ' missing.')") i
+            write (stderr, '("Error: File ", I0, " missing.")') i
             stop
          end if
 

@@ -24,7 +24,7 @@ contains
             action='read', status='old', access='stream')
 
          if (error .ne. 0) then
-            write (stderr, "('Error: Cannot read file ''', A, '''.')") path
+            write (stderr, '("Error: Cannot read file ''", A, "''.")') path
             stop
          end if
       end if

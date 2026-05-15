@@ -26,14 +26,14 @@ program tz
    case ('play'); call playz
    case ('help'); call help
    case default
-      write (*, "('Unknown command ""', A, '""', /)") command
+      write (*, '("Unknown command """, A, """", /)') command
       call help
    end select
 
 contains
 
    subroutine help
-      write (*, "(A, /, *(:, /, '    tz ', A))") &
+      write (*, '(A, /, *(:, /, "    tz ", A))') &
          'Tonbandfetzen usage:', &
          'mel [[[wavefile ...] infile] outfile]', &
          'guitar [infile [outfile]]', &

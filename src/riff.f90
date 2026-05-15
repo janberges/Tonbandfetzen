@@ -24,7 +24,7 @@ contains
          action='read', status='old', access='stream')
 
       if (error .ne. 0) then
-         write (stderr, "('Error: Cannot read RIFF file ''', A, '''.')") path
+         write (stderr, '("Error: Cannot read RIFF file ''", A, "''.")') path
          stop
       end if
 
@@ -43,7 +43,7 @@ contains
             s%rate = real(sampleRate, dp)
 
             if (sampleSize .ne. 16_i2) then
-               write (stderr, "('Error: Only 16 bits supported.')")
+               write (stderr, '("Error: Only 16 bits supported.")')
                stop
             end if
 
@@ -71,7 +71,7 @@ contains
                read (fun, iostat=error) byte
 
                if (error .ne. 0) then
-                  write (stderr, "('Error: Corrupt RIFF file ''', A, '''.')") &
+                  write (stderr, '("Error: Corrupt RIFF file ''", A, "''.")') &
                      path
                   stop
                end if
@@ -105,8 +105,8 @@ contains
 
       if (path .eq. 'stdout' .or. path .eq. 'http') then
          if (path .eq. 'http') then
-            write (*, "('Content-Type: audio/x-wav')")
-            write (*, "('Content-Length: ', I0, /)") riffSize + 8
+            write (*, '("Content-Type: audio/x-wav")')
+            write (*, '("Content-Length: ", I0, /)') riffSize + 8
          end if
 
          write (*, '(*(A))', advance='no') &
@@ -125,7 +125,7 @@ contains
             action='write', status='replace', access='stream')
 
          if (error .ne. 0) then
-            write (stderr, "('Error: Cannot write RIFF file ''', A, '''.')") &
+            write (stderr, '("Error: Cannot write RIFF file ''", A, "''.")') &
                path
             stop
          end if

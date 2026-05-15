@@ -19,7 +19,7 @@ subroutine guitar
          action='write', status='replace', access='stream')
 
       if (error .ne. 0) then
-         write (stderr, '("Error: Cannot write file ''", A, "''.")') path
+         write (stderr, '("Error: Cannot write file """, A, """.")') path
          stop
       end if
 

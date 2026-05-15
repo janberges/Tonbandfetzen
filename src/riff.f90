@@ -24,7 +24,7 @@ contains
          action='read', status='old', access='stream')
 
       if (error .ne. 0) then
-         write (stderr, '("Error: Cannot read RIFF file ''", A, "''.")') path
+         write (stderr, '("Error: Cannot read RIFF file """, A, """.")') path
          stop
       end if
 
@@ -71,7 +71,7 @@ contains
                read (fun, iostat=error) byte
 
                if (error .ne. 0) then
-                  write (stderr, '("Error: Corrupt RIFF file ''", A, "''.")') &
+                  write (stderr, '("Error: Corrupt RIFF file """, A, """.")') &
                      path
                   stop
                end if
@@ -125,7 +125,7 @@ contains
             action='write', status='replace', access='stream')
 
          if (error .ne. 0) then
-            write (stderr, '("Error: Cannot write RIFF file ''", A, "''.")') &
+            write (stderr, '("Error: Cannot write RIFF file """, A, """.")') &
                path
             stop
          end if

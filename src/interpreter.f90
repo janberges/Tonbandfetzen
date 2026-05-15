@@ -408,7 +408,7 @@ contains
                end if
 
             case default
-               write (stderr, '("Warning: Unknown action ''", A, "''.")') word
+               write (stderr, '("Warning: Unknown action """, A, """.")') word
             end select
 
          case ('T')
@@ -418,9 +418,9 @@ contains
             case ('equal', 'pyth', 'just', 'close')
                continue
             case default
-               write (stderr, '("Warning: Unknown tuning ''", A, "''.")') tuning
-               write (stderr, '("The tuning ''equal'' is used instead.")')
-               write (stderr, '("See ''man tz mel'' for list of tunings.")')
+               write (stderr, '("Warning: Unknown tuning """, A, """.")') tuning
+               write (stderr, '("The tuning ""equal"" is used instead.")')
+               write (stderr, '("See ""man tz mel"" for list of tunings.")')
                tuning = 'equal'
             end select
 

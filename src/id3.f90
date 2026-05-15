@@ -188,7 +188,7 @@ contains
             iostat=error)
 
          if (error .ne. 0) then
-            write (stderr, '("Error: Cannot read ID3 file ''", A, "''.")') path
+            write (stderr, '("Error: Cannot read ID3 file """, A, """.")') path
             stop
          end if
 

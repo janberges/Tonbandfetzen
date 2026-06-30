@@ -22,6 +22,6 @@ html/%.pdf: man1/%.1
 .SECONDEXPANSION:
 html/%.html: $$(shell git ls-files ../%) $$(shell git ls-files ../examples/%)
 	echo "<html lang='en'><head><meta charset='utf-8'><title>$*</title><link rel='stylesheet' type='text/css' href='style.css'></head><body><h1>$*</h1>" > $@
-	for f in $^; do test "$$f" != "$${f#*.git}" && continue; vim $$f -c 'se nonu' -c TOhtml -c 'w! tmp.html' -c 'qa!'; t="$${f#../$*/}"; t="$${t#../examples/$*/}"; echo "<h2>$$t</h2>" >> $@; awk '/<pre/,/pre>/' tmp.html >> $@; done
+	for f in $^; do test "$$f" != "$${f#*.git}" && continue; vim $$f -c 'se nonu' -c TOhtml -c 'w! tmp.html' -c 'qa!'; t="$${f#../$*/}"; t="$${t#../examples/$*/}"; echo "<h2>$$t</h2>" >> $@; awk '/<pre/,/pre>/' tmp.html | sed 's|\(<a href="[^"]*\)\.\(">\)|\1\2|' | sed 's|\.</a>|</a>.|' >> $@; done
 	echo "</body></html>" >> $@
 	rm -f tmp.html

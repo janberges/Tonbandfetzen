@@ -119,7 +119,7 @@ program tz_dot_cgi
          "    Please have a look at the", &
          "    <a href='https://io.janberges.de/Tonbandfetzen/'>&
          &documentation</a> and the", &
-         "    <a href='https://github.com/janberges/Tonbandfetzen'>&
+         "    <a href='https://codeberg.org/janberges/Tonbandfetzen'>&
          &source code</a>.", &
          "  </body>", &
          "</html>"

@@ -82,7 +82,7 @@ Please have a look at the examples, some of which require Python or eSpeak NG:
 
 Each program has its own manual page:
 
-    man tz mel
+    man tz-mel
 
 You can also listen to the examples and browse the manual pages
 [here](https://io.janberges.de/Tonbandfetzen).

@@ -72,8 +72,8 @@ contains
                from = till + 2
 
                if (scan(bar, '-~') .ne. 0) then
-                  bar = sub(bar, 'X', replace='-')
-                  bar = sub(bar, 'SZNT', replace='~')
+                  bar = sub(bar, '_X', replace='-')
+                  bar = sub(bar, '^SZNT', replace='~')
 
                   bar = sub(bar, '-~', invert=.true., &
                      keep=.true., replace='~')

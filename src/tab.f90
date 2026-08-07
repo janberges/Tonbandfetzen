@@ -73,13 +73,16 @@ contains
 
                if (scan(bar, '-~') .ne. 0) then
                   bar = sub(bar, '_X', replace='-')
-                  bar = sub(bar, '^SZNT', replace='~')
+                  bar = sub(bar, 'N', replace='~')
+                  bar = sub(bar, 'SZT', replace='^')
 
-                  bar = sub(bar, '-~', invert=.true., &
+                  bar = sub(bar, '-~^', invert=.true., &
                      keep=.true., replace='~')
 
-                  bar = sub(bar, '0.123456789:', before='-~', &
+                  bar = sub(bar, '0.123456789:', before='-~^', &
                      insert='U', keep=.true.)
+
+                  bar = sub(bar, '^', replace='~', add='K')
 
                   beats = matches(bar, '-~')
 
@@ -131,10 +134,10 @@ contains
       end do
    end function matches
 
-   function sub(string, set, invert, before, insert, ratio, keep, replace)
+   function sub(string, set, invert, before, insert, ratio, keep, replace, add)
       character(:), allocatable :: sub
       character(*), intent(in) :: string, set
-      character(*), intent(in), optional :: before, insert, replace
+      character(*), intent(in), optional :: before, insert, replace, add
       logical, intent(in), optional :: invert, ratio, keep
 
       integer :: i, j
@@ -206,6 +209,8 @@ contains
          if (present(replace)) then
             sub = sub // repeat(replace, i - j)
          end if
+
+         if (present(add)) sub = sub // add
       end do
    end function sub
 end module tab

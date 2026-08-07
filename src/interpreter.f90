@@ -22,6 +22,7 @@ contains
       integer, intent(in), optional :: limit
 
       character(*), parameter :: initial = '!"%&+-=?@ABCDEFGNQSUVWXYZ[]`~'
+      character(*), parameter :: dynamic = '"''WY`'
 
       character(:), allocatable :: symbol, word ! special/lexical string
 
@@ -73,6 +74,8 @@ contains
 
       logical :: synth, tuned ! employ Karplus and Strong's synthesizer?
       real(dp) :: blend, decay ! blend and inverse decay-stretch factors
+
+      logical :: slur ! continue without interruption?
 
       real(dp) :: phase ! turn = 1
 
@@ -156,6 +159,8 @@ contains
 
       call reset
       mark_set = .false.
+
+      slur = .false.
 
       do
          symbol = next(special, length=1)
@@ -255,6 +260,8 @@ contains
 
       call reset
       mark_set = .false.
+
+      slur = .false.
 
       do
          symbol = next(special, length=1)
@@ -648,8 +655,9 @@ contains
       function done()
          logical :: done
 
-         done = symbol .eq. 'none'
-         done = done .or. scan(symbol, initial) .gt. 0
+         slur = scan(symbol, dynamic) .eq. 0 .and. slur
+         done = scan(symbol, initial) .ne. 0 .and. .not. slur
+         done = done .or. symbol .eq. 'none'
          done = done .and. c .gt. 0
       end function done
 
@@ -742,7 +750,10 @@ contains
                end if
             end if
 
-         case ('K', 'L')
+         case ('K')
+            slur = .true.
+
+         case ('L')
             call get(i)
             i = i + 1
             call set(i)
@@ -753,7 +764,7 @@ contains
                if (l .or. j .eq. -1) exit
             end do
 
-            if (symbol .eq. 'K' .eqv. l) then
+            if (.not. l) then
                do
                   if (next(special, length=1) .ne. '*') return
                   if (next('*', length=1, barrier='*') .eq. 'none') exit

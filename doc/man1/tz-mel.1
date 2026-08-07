@@ -435,8 +435,13 @@ is
 it is set to the maximum allowed value
 .RB ( 32767 ).
 .TP
-.RI "\fBK L\fR[" n " ...]"
-Skip/only consider subsequent command if the number of the current iteration matches any of the integers
+.BI K
+Continue sound without interruption at current time even if initial values follow.
+Adjacent release and attack envelopes are omitted.
+This yields legato articulation usually indicated by a slur.
+.TP
+.RI \fBL\fR[ n " ...]"
+Only consider subsequent command if the number of the current iteration matches any of the integers
 .IR n " ..."
 .TP
 .RI \fBX\fR w [...]

@@ -12,14 +12,14 @@ subroutine playz
    type(audio) :: s
    logical :: macos
 
-   outfile = 'tz-play.tmp.wav'
-   command = 'open'
-
    inquire (file='/usr/bin/sw_vers', exist=macos)
 
-   if (.not. macos) then
-      outfile = '/dev/shm/' // outfile
-      command = 'xdg-' // command
+   if (macos) then
+      outfile = 'tz-play.tmp.wav'
+      command = 'open -a "QuickTime Player"'
+   else
+      outfile = '/dev/shm/tz-play.tmp.wav'
+      command = 'xdg-open'
    end if
 
    infile = command_argument(1, '/dev/stdin')

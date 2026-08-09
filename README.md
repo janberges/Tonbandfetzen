@@ -50,7 +50,6 @@ On macOS with `zsh`, you can use `afplay =(...)` instead of `... | aplay`.
 
 To build all tools, you only need a recent Fortran compiler:
 
-    cd /path/to/Tonbandfetzen
     make FC=gfortran FFLAGS=-O3
 
 To make the tools and documentation accessible, consider adding the following
@@ -64,10 +63,9 @@ lines to your .bashrc:
 You might also want to link the Vim syntax and Bash completion files to the
 appropriate locations:
 
-    ln -s /path/to/Tonbandfetzen/config/syntax/tz.vim ~/.vim/syntax/
-    ln -s /path/to/Tonbandfetzen/config/ftdetect/tz.vim ~/.vim/ftdetect/
-    ln -s /path/to/Tonbandfetzen/config/completions/tz \
-        ~/.local/share/bash-completion/completions/
+    ln -s $PWD/config/syntax/tz.vim ~/.vim/syntax/
+    ln -s $PWD/config/ftdetect/tz.vim ~/.vim/ftdetect/
+    ln -s $PWD/config/completions/tz ~/.local/share/bash-completion/completions/
 
 ## Documentation
 

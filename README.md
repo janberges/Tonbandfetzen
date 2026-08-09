@@ -65,12 +65,9 @@ You might also want to link the Vim syntax and Bash completion files to the
 appropriate locations:
 
     ln -s /path/to/Tonbandfetzen/config/syntax/tz.vim ~/.vim/syntax/
+    ln -s /path/to/Tonbandfetzen/config/ftdetect/tz.vim ~/.vim/ftdetect/
     ln -s /path/to/Tonbandfetzen/config/completions/tz \
         ~/.local/share/bash-completion/completions/
-
-To have Vim detect the corresponding file types, add this line to your .vimrc:
-
-    autocmd BufRead,BufNewFile *.mel,*.gtr setlocal filetype=tz
 
 ## Documentation
 

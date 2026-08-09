@@ -2,7 +2,7 @@ subroutine playz
    use aiff, only: read_aiff
    use constants, only: audio
    use interpreter, only: play
-   use io, only: command_argument, environment_variable, slurp
+   use io, only: command_argument, slurp
    use paths, only: extension
    use riff, only: write_riff
    use tab, only: preprocess
@@ -10,11 +10,14 @@ subroutine playz
 
    character(:), allocatable :: infile, outfile, command
    type(audio) :: s
+   logical :: macos
 
    outfile = 'tz-play.tmp.wav'
    command = 'open'
 
-   if (index(environment_variable('OSTYPE'), 'darwin') .eq. 0) then
+   inquire (file='/usr/bin/sw_vers', exist=macos)
+
+   if (.not. macos) then
       outfile = '/dev/shm/' // outfile
       command = 'xdg-' // command
    end if

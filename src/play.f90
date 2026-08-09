@@ -31,6 +31,11 @@ subroutine playz
       return
 
    case ('aiff', 'aif', 'AIFF', 'AIF')
+      if (macos) then
+         call execute_command_line(command // ' ' // infile)
+         return
+      end if
+
       call read_aiff(infile, s)
 
    case default

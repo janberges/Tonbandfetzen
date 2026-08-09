@@ -80,7 +80,6 @@ contains
       real(dp) :: phase ! turn = 1
 
       integer :: i, j, k ! arbitrary integers/indices
-      logical :: l ! arbitrary logical
 
       real(dp) :: s ! equivalent of a second
 
@@ -760,18 +759,16 @@ contains
 
             do
                j = int(n(-1.0_dp))
-               l = i .eq. j
-               if (l .or. j .eq. -1) exit
+               if (i .eq. j) return
+               if (j .eq. -1) exit
             end do
 
-            if (.not. l) then
-               do
-                  if (next(special, length=1) .ne. '*') return
-                  if (next('*', length=1, barrier='*') .eq. 'none') exit
-               end do
+            do
+               if (next(special, length=1) .ne. '*') return
+               if (next('*', length=1, barrier='*') .eq. 'none') exit
+            end do
 
-               over = .true.
-            end if
+            over = .true.
 
          case ('*')
             if (next('*', length=1, barrier='*') .eq. 'none') over = .true.

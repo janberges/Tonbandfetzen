@@ -21,7 +21,7 @@ contains
       tagID = id3(1:3)
 
       if (tagID .eq. 'TAG') then
-         write (stderr, '("Warning: ID3v1 not supported.")') feature
+         write (stderr, '("Warning: ID3v1 not supported.")')
          return
       end if
 

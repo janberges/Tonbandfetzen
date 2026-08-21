@@ -72,12 +72,13 @@ contains
                from = till + 2
 
                if (scan(bar, '-~') .ne. 0) then
-                  bar = sub(bar, '_X', replace='-')
-                  bar = sub(bar, 'N', replace='~')
+                  bar = sub(bar, '_N', replace='-')
                   bar = sub(bar, 'SZT', replace='^')
 
-                  bar = sub(bar, '-~^', invert=.true., &
+                  bar = sub(bar, '-~^X', invert=.true., &
                      keep=.true., replace='~')
+
+                  bar = sub(bar, 'X', replace='=~')
 
                   bar = sub(bar, '0.123456789:', before='-~^', &
                      insert='U', keep=.true.)

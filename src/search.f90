@@ -9,7 +9,7 @@ module search
    character(:), allocatable :: text
    integer(i2), allocatable :: info(:)
 
-   integer, save :: last, marks(0:99)
+   integer :: last, marks(0:99)
 
    character(*), parameter :: &
       numeral = '.0123456789:', &

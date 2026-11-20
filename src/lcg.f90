@@ -8,7 +8,7 @@ module lcg
    public :: minstd
 
    integer(i8), parameter :: a = 48271_i8, m = 2147483647_i8
-   integer(i8), save :: i = 1_i8
+   integer(i8) :: i = 1_i8
    real(dp), parameter :: s = 1.0_dp / m
 
 contains
